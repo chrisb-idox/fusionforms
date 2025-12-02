@@ -77,14 +77,35 @@ export const BuilderBody = () => {
         <Title order={3} fw={600}>
           Form canvas
         </Title>
-        <Group align="flex-start" gap="md" wrap="nowrap" justify="space-between">
-          <Box w={260} style={{ position: 'sticky', top: 96, alignSelf: 'flex-start' }}>
+        <Group
+          align="flex-start"
+          gap="md"
+          wrap="nowrap"
+          justify="space-between"
+          w="100%"
+        >
+          <Box
+            style={{
+              position: 'sticky',
+              top: 96,
+              alignSelf: 'flex-start',
+              flex: '0 0 260px',
+            }}
+          >
             <PalettePanel />
           </Box>
-          <Box style={{ flex: 1, minWidth: 0 }}>
+          <Box style={{ flex: '1 1 auto', minWidth: 0 }}>
             <CanvasPanel />
           </Box>
-          <Box w={300} style={{ position: 'sticky', top: 96, alignSelf: 'flex-start' }}>
+          <Box
+            style={{
+              position: 'sticky',
+              top: 96,
+              alignSelf: 'flex-start',
+              flex: '0 0 320px',
+              marginLeft: 'auto',
+            }}
+          >
             <PropertiesPanel />
           </Box>
         </Group>

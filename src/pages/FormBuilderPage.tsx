@@ -83,7 +83,7 @@ const BuilderContent = () => {
           <BuilderHeader onPreview={() => setPreviewOpen(true)} />
         </AppShell.Header>
         <AppShell.Main>
-          <Container size="xl" px="md">
+          <Container fluid px="md">
             <BuilderBody />
           </Container>
         </AppShell.Main>
