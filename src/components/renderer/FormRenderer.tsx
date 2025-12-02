@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   Button,
   Checkbox,
@@ -289,9 +290,13 @@ const FieldRenderer = ({
 };
 
 export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: buildDefaultValues(schema),
   });
+
+  useEffect(() => {
+    reset(buildDefaultValues(schema));
+  }, [schema, reset]);
   const submit = handleSubmit(onSubmit ?? ((values) => console.log(values)));
 
   const renderTable = (rows: RowSchema[]) => (
