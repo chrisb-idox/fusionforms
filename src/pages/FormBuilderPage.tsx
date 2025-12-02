@@ -93,9 +93,8 @@ const BuilderContent = () => {
         opened={previewOpen}
         onClose={handleClosePreview}
         title="Form preview"
-        size="100%"
+        size="90%"
         radius="md"
-        fullScreen
       >
         <FormRenderer
           schema={schema}
