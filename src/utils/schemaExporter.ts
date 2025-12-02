@@ -17,7 +17,9 @@ const encodeHtml = (value: string) =>
 const bindingToken = (field: FieldSchema) =>
   field.bindingProperty ? `\${${field.bindingProperty}}` : undefined;
 
-const renderField = (field: FieldSchema) => {
+const indentLine = (line: string, level: number) => `${'  '.repeat(level)}${line}`;
+
+const renderFieldLines = (field: FieldSchema, level: number) => {
   const attrs = { ...(field.htmlAttributes || {}) };
   attrs.id = field.originalId || attrs.id || field.name;
   attrs.name = field.originalName || attrs.name || field.name;
@@ -29,96 +31,168 @@ const renderField = (field: FieldSchema) => {
       ? String(field.defaultValue)
       : '');
 
+  const lines: string[] = [];
+  const labelFor = attrs.id || attrs.name;
+
   switch (field.type) {
     case 'textarea':
-      return `<label for="${attrs.id || attrs.name}">${encodeHtml(field.label)}</label><textarea ${attrString}>${encodeHtml(
-        value,
-      )}</textarea>`;
+      lines.push(
+        indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level),
+        indentLine(`<textarea ${attrString}>${encodeHtml(value)}</textarea>`, level),
+      );
+      break;
     case 'select':
-      return `<label for="${attrs.id || attrs.name}">${encodeHtml(field.label)}</label><select ${attrString}>${(field.options || [])
-        .map((opt) => `<option value="${encodeHtml(opt.value)}">${encodeHtml(opt.label)}</option>`)
-        .join('')}</select>`;
+      lines.push(
+        indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level),
+        indentLine(`<select ${attrString}>`, level),
+      );
+      (field.options || []).forEach((opt) => {
+        lines.push(
+          indentLine(
+            `<option value="${encodeHtml(opt.value)}">${encodeHtml(opt.label)}</option>`,
+            level + 1,
+          ),
+        );
+      });
+      lines.push(indentLine(`</select>`, level));
+      break;
     case 'checkbox':
-      return `<label><input type="checkbox" ${attrString} value="${encodeHtml(
-        value || 'on',
-      )}" /> ${encodeHtml(field.label)}</label>`;
+      lines.push(
+        indentLine(
+          `<label><input type="checkbox" ${attrString} value="${encodeHtml(
+            value || 'on',
+          )}" /> ${encodeHtml(field.label)}</label>`,
+          level,
+        ),
+      );
+      break;
     case 'radio':
-      return `<div>${encodeHtml(field.label)}${(field.options || [])
-        .map(
-          (opt) =>
+      lines.push(indentLine(`<div>`, level));
+      lines.push(indentLine(encodeHtml(field.label), level + 1));
+      (field.options || []).forEach((opt) => {
+        lines.push(
+          indentLine(
             `<label><input type="radio" ${attrString} value="${encodeHtml(opt.value)}" /> ${encodeHtml(
               opt.label,
             )}</label>`,
-        )
-        .join('')}</div>`;
+            level + 1,
+          ),
+        );
+      });
+      lines.push(indentLine(`</div>`, level));
+      break;
     case 'date':
-      return `<label for="${attrs.id || attrs.name}">${encodeHtml(field.label)}</label><input type="date" ${attrString} value="${encodeHtml(
-        value,
-      )}" />`;
+      lines.push(
+        indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level),
+        indentLine(
+          `<input type="date" ${attrString} value="${encodeHtml(value)}" />`,
+          level,
+        ),
+      );
+      break;
     case 'number':
-      return `<label for="${attrs.id || attrs.name}">${encodeHtml(field.label)}</label><input type="number" ${attrString} value="${encodeHtml(
-        value,
-      )}" />`;
+      lines.push(
+        indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level),
+        indentLine(
+          `<input type="number" ${attrString} value="${encodeHtml(value)}" />`,
+          level,
+        ),
+      );
+      break;
     default:
-      return `<label for="${attrs.id || attrs.name}">${encodeHtml(field.label)}</label><input type="text" ${attrString} value="${encodeHtml(
-        value,
-      )}" />`;
+      lines.push(
+        indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level),
+        indentLine(
+          `<input type="text" ${attrString} value="${encodeHtml(value)}" />`,
+          level,
+        ),
+      );
+      break;
   }
+
+  return lines;
 };
 
-const renderTable = (rows: RowSchema[], tableAttrs?: Record<string, string>): string => {
-  return `<table ${attrsToString(tableAttrs)}><tbody>${rows
-    .map(
-      (row) =>
-        `<tr ${attrsToString(row.htmlAttributes)}>${row.columns
-          .map((column) => {
-            const cellAttrs = {
-              ...column.htmlAttributes,
-              ...(column.colSpan && column.colSpan > 1 ? { colspan: String(column.colSpan) } : {}),
-              ...(column.rowSpan && column.rowSpan > 1 ? { rowspan: String(column.rowSpan) } : {}),
-            };
-            const fieldsHtml = column.fields.map((field) => renderField(field)).join('');
-            const nestedHtml = (column.nestedTables || [])
-              .map((table) => renderTable(table.rows, table.tableAttributes))
-              .join('');
-            const staticHtml = column.staticHtml || '';
-            return `<td ${attrsToString(cellAttrs)}>${staticHtml}${fieldsHtml}${nestedHtml}</td>`;
-          })
-          .join('')}</tr>`,
-    )
-    .join('')}</tbody></table>`;
+const renderTableLines = (
+  rows: RowSchema[],
+  level: number,
+  tableAttrs?: Record<string, string>,
+): string[] => {
+  const lines: string[] = [];
+  lines.push(indentLine(`<table ${attrsToString(tableAttrs)}>`, level));
+  lines.push(indentLine(`<tbody>`, level + 1));
+  rows.forEach((row) => {
+    lines.push(indentLine(`<tr ${attrsToString(row.htmlAttributes)}>`, level + 2));
+    row.columns.forEach((column) => {
+      const cellAttrs = {
+        ...column.htmlAttributes,
+        ...(column.colSpan && column.colSpan > 1 ? { colspan: String(column.colSpan) } : {}),
+        ...(column.rowSpan && column.rowSpan > 1 ? { rowspan: String(column.rowSpan) } : {}),
+      };
+      lines.push(indentLine(`<td ${attrsToString(cellAttrs)}>`, level + 3));
+
+      if (column.staticHtml) {
+        column.staticHtml
+          .split('\n')
+          .map((line) => line.trim())
+          .filter(Boolean)
+          .forEach((line) => lines.push(indentLine(line, level + 4)));
+      }
+
+      column.fields.forEach((field) => {
+        lines.push(...renderFieldLines(field, level + 4));
+      });
+
+      (column.nestedTables || []).forEach((nested) => {
+        lines.push(...renderTableLines(nested.rows, level + 4, nested.tableAttributes));
+      });
+
+      lines.push(indentLine(`</td>`, level + 3));
+    });
+    lines.push(indentLine(`</tr>`, level + 2));
+  });
+  lines.push(indentLine(`</tbody>`, level + 1));
+  lines.push(indentLine(`</table>`, level));
+  return lines;
 };
 
-const renderSection = (section: SectionSchema) => {
+const renderSectionLines = (section: SectionSchema, level: number): string[] => {
   if (section.layout === 'table') {
-    return renderTable(section.rows, section.tableAttributes);
+    return renderTableLines(section.rows, level, section.tableAttributes);
   }
 
-  const rows = section.rows
-    .map((row) => {
-      const cols = row.columns
-        .map((col) => {
-          const fieldsHtml = col.fields.map((field) => renderField(field)).join('');
-          return `<div style="flex:${col.span / 4}; padding:4px;">${fieldsHtml}</div>`;
-        })
-        .join('');
-      return `<div style="display:flex; gap:8px;">${cols}</div>`;
-    })
-    .join('');
-
-  return `<section>${rows}</section>`;
+  const lines: string[] = [];
+  lines.push(indentLine(`<section>`, level));
+  section.rows.forEach((row) => {
+    lines.push(indentLine(`<div style="display:flex; gap:8px;">`, level + 1));
+    row.columns.forEach((col) => {
+      lines.push(
+        indentLine(`<div style="flex:${col.span / 4}; padding:4px;">`, level + 2),
+      );
+      col.fields.forEach((field) => {
+        lines.push(...renderFieldLines(field, level + 3));
+      });
+      lines.push(indentLine(`</div>`, level + 2));
+    });
+    lines.push(indentLine(`</div>`, level + 1));
+  });
+  lines.push(indentLine(`</section>`, level));
+  return lines;
 };
 
 export const schemaToHtml = (schema: FormSchema) => {
-  const body = schema.sections.map((section) => renderSection(section)).join('\n');
+  const bodyLines = schema.sections
+    .flatMap((section) => renderSectionLines(section, 1))
+    .join('\n');
+
   return `<!doctype html>
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <title>${encodeHtml(schema.name)}</title>
-</head>
-<body>
-${body}
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>${encodeHtml(schema.name)}</title>
+  </head>
+  <body>
+${bodyLines}
+  </body>
 </html>`;
 };
