@@ -1,6 +1,6 @@
-## Form Builder MVP - Progress Notes
+## FusionForms Form Builder MVP - Progress Notes
 
-Context for future sessions about the Form Builder MVP built with React, Vite, Mantine, dnd-kit, and react-hook-form.
+Context for future sessions about the FusionForms Form Builder MVP (renamed from webforms) built with React, Vite, Mantine, dnd-kit, and react-hook-form.
 
 ### Current state
 - Project scaffolded via Vite React TS. Mantine provider added globally (`src/main.tsx`), and base styling adjusted (`src/index.css`, `src/App.css`).
