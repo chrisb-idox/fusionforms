@@ -13,7 +13,8 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { parseSampleHtmlToSchema } from '../utils/sampleParser';
 
 interface SampleEntry {
   name: string;
@@ -28,6 +29,8 @@ export const SampleViewerPage = () => {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let cancelled = false;
@@ -61,6 +64,29 @@ export const SampleViewerPage = () => {
     () => samples.find((item) => item.file === selectedFile) || null,
     [samples, selectedFile],
   );
+
+  const handleImportToBuilder = async () => {
+    if (!selectedSample) return;
+    setImporting(true);
+    setError(null);
+    try {
+      const response = await fetch(`/samples/${selectedSample.file}`);
+      if (!response.ok) {
+        throw new Error(`Failed to load sample (${response.status})`);
+      }
+      const html = await response.text();
+      const schema = parseSampleHtmlToSchema(html, selectedSample.name);
+      navigate('/', { state: { importedSchema: schema } });
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Unable to load sample into the builder',
+      );
+    } finally {
+      setImporting(false);
+    }
+  };
 
   return (
     <AppShell
@@ -120,7 +146,7 @@ export const SampleViewerPage = () => {
             )}
 
             {samples.length > 0 && (
-              <Group align="flex-end" gap="md">
+              <Group align="flex-end" gap="md" wrap="wrap">
                 <Select
                   label="Select sample"
                   placeholder="Choose a sample"
@@ -132,6 +158,14 @@ export const SampleViewerPage = () => {
                   onChange={setSelectedFile}
                   style={{ maxWidth: 320 }}
                 />
+                <Button
+                  variant="light"
+                  onClick={handleImportToBuilder}
+                  disabled={!selectedSample}
+                  loading={importing}
+                >
+                  Load in builder
+                </Button>
                 {selectedSample?.description && (
                   <Text size="sm" c="dimmed">
                     {selectedSample.description}

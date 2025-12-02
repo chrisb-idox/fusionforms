@@ -7,6 +7,7 @@ import { FormBuilderProvider, useFormBuilder } from '../context/FormBuilderConte
 import type { FormSchema } from '../types/formSchema';
 import { createId } from '../types/formSchema';
 import { createEmptySection } from '../context/formBuilderHelpers';
+import { useLocation } from 'react-router-dom';
 
 const createInitialSchema = (): FormSchema => {
   const section = createEmptySection('Getting started');
@@ -108,7 +109,10 @@ const BuilderContent = () => {
 };
 
 export const FormBuilderPage = () => {
-  const [initialSchema] = useState<FormSchema>(() => createInitialSchema());
+  const location = useLocation();
+  const importedSchema =
+    (location.state as { importedSchema?: FormSchema } | null)?.importedSchema;
+  const [initialSchema] = useState<FormSchema>(() => importedSchema ?? createInitialSchema());
 
   return (
     <FormBuilderProvider initialSchema={initialSchema}>
