@@ -165,7 +165,9 @@ export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormS
   const headingText =
     doc.querySelector('h1,h2,h3')?.textContent?.trim() || sampleName || 'Imported sample';
 
-  const tables = Array.from(doc.querySelectorAll('table'));
+  const tables = Array.from(doc.querySelectorAll('table')).filter(
+    (table) => !table.parentElement?.closest('table'),
+  );
 
   const sections: SectionSchema[] =
     tables.length > 0
