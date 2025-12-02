@@ -9,10 +9,11 @@ import {
   Text,
   TextInput,
   Textarea,
+  Table,
 } from '@mantine/core';
 import { Controller, useForm } from 'react-hook-form';
 import type { Control, FieldValues, SubmitHandler } from 'react-hook-form';
-import type { FieldSchema, FormSchema } from '../../types/formSchema';
+import type { FieldSchema, FormSchema, RowSchema } from '../../types/formSchema';
 
 interface FormRendererProps {
   schema: FormSchema;
@@ -293,23 +294,55 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
   });
   const submit = handleSubmit(onSubmit ?? ((values) => console.log(values)));
 
+  const renderTable = (rows: RowSchema[]) => (
+    <Table withRowBorders withColumnBorders highlightOnHover>
+      <Table.Tbody>
+        {rows.map((row) => (
+          <Table.Tr key={row.id}>
+            {row.columns.map((column) => (
+              <Table.Td
+                key={column.id}
+                colSpan={column.colSpan ?? 1}
+                rowSpan={column.rowSpan ?? 1}
+                style={{ verticalAlign: 'top' }}
+              >
+                <Stack gap="sm">
+                  {column.fields.map((field) => (
+                    <FieldRenderer key={field.id} field={field} control={control} />
+                  ))}
+                  {column.nestedTables?.map((nested) => (
+                    <Stack key={nested.id} gap="xs">
+                      {renderTable(nested.rows)}
+                    </Stack>
+                  ))}
+                </Stack>
+              </Table.Td>
+            ))}
+          </Table.Tr>
+        ))}
+      </Table.Tbody>
+    </Table>
+  );
+
   return (
     <form onSubmit={submit}>
       <Stack gap="lg">
         {schema.sections.map((section) => (
           <Stack key={section.id} gap="md">
             <Text fw={700}>{section.title}</Text>
-            {section.rows.map((row) => (
-              <Group key={row.id} align="flex-start" gap="md">
-                {row.columns.map((column) => (
-                  <Stack key={column.id} gap="md" style={{ flex: column.span / 4 }}>
-                    {column.fields.map((field) => (
-                      <FieldRenderer key={field.id} field={field} control={control} />
+            {section.layout === 'table'
+              ? renderTable(section.rows)
+              : section.rows.map((row) => (
+                  <Group key={row.id} align="flex-start" gap="md">
+                    {row.columns.map((column) => (
+                      <Stack key={column.id} gap="md" style={{ flex: column.span / 4 }}>
+                        {column.fields.map((field) => (
+                          <FieldRenderer key={field.id} field={field} control={control} />
+                        ))}
+                      </Stack>
                     ))}
-                  </Stack>
+                  </Group>
                 ))}
-              </Group>
-            ))}
           </Stack>
         ))}
         <Group justify="flex-end">

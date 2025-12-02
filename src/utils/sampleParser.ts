@@ -1,10 +1,29 @@
-import type { FieldSchema, FieldType, FormSchema, RowSchema } from '../types/formSchema';
+import type {
+  ColumnSchema,
+  FieldSchema,
+  FieldType,
+  FormSchema,
+  RowSchema,
+  SectionSchema,
+  TableSchema,
+} from '../types/formSchema';
 import { createId } from '../types/formSchema';
 
 const getBindingProperty = (value: string | null | undefined): string | undefined => {
   if (!value) return undefined;
   const match = value.match(/\$\{\s*([^}]+)\s*}/);
   return match?.[1];
+};
+
+const collectAttributes = (element: Element): Record<string, string> => {
+  const attrs: Record<string, string> = {};
+  element.getAttributeNames().forEach((name) => {
+    const value = element.getAttribute(name);
+    if (value !== null) {
+      attrs[name] = value;
+    }
+  });
+  return attrs;
 };
 
 const getLabelForElement = (doc: Document, element: Element): string | undefined => {
@@ -84,34 +103,59 @@ const mapElementToField = (doc: Document, element: Element): FieldSchema => {
     id: createId(),
     type,
     name,
+    originalName: name,
+    originalId: element.getAttribute('id') || undefined,
     label,
     placeholder,
     bindingProperty,
     defaultValue,
+    htmlAttributes: collectAttributes(element),
     helpText: undefined,
     options,
     validations: [],
   };
 };
 
-const groupFieldsIntoRows = (fieldGroups: FieldSchema[][][]): RowSchema[] => {
-  const rows: RowSchema[] = [];
+const parseTable = (doc: Document, tableEl: HTMLTableElement): TableSchema => {
+  const rowEls = Array.from(
+    tableEl.querySelectorAll(':scope > tr, :scope > tbody > tr, :scope > thead > tr'),
+  );
 
-  fieldGroups.forEach((group) => {
-    if (group.length === 0) return;
-    const span: 1 | 2 | 3 | 4 =
-      group.length === 1 ? 4 : group.length === 2 ? 2 : group.length === 3 ? 1 : 1;
-    rows.push({
-      id: createId(),
-      columns: group.map((fieldsInColumn) => ({
+  const rows: RowSchema[] = rowEls.map((tr) => {
+    const cellEls = Array.from(tr.querySelectorAll(':scope > td, :scope > th'));
+
+    const columns: ColumnSchema[] = cellEls.map((cell) => {
+      const nestedTables = Array.from(cell.querySelectorAll(':scope > table')).map(
+        (nested) => parseTable(doc, nested as HTMLTableElement),
+      );
+
+      const fields = Array.from(cell.querySelectorAll('input, textarea, select'))
+        .filter((el) => el.closest('table') === tableEl)
+        .map((el) => mapElementToField(doc, el));
+
+      return {
         id: createId(),
-        span,
-        fields: fieldsInColumn,
-      })),
+        span: 4,
+        colSpan: Number(cell.getAttribute('colspan') || '1'),
+        rowSpan: Number(cell.getAttribute('rowspan') || '1'),
+        htmlAttributes: collectAttributes(cell),
+        fields,
+        nestedTables,
+      };
     });
+
+    return {
+      id: createId(),
+      columns,
+      htmlAttributes: collectAttributes(tr),
+    };
   });
 
-  return rows;
+  return {
+    id: createId(),
+    rows,
+    tableAttributes: collectAttributes(tableEl),
+  };
 };
 
 export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormSchema => {
@@ -121,54 +165,50 @@ export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormS
   const headingText =
     doc.querySelector('h1,h2,h3')?.textContent?.trim() || sampleName || 'Imported sample';
 
-  const tableRows = Array.from(doc.querySelectorAll('tr'));
+  const tables = Array.from(doc.querySelectorAll('table'));
 
-  const rowFieldGroups: FieldSchema[][][] = tableRows
-    .map((tr) => {
-      const cells = Array.from(tr.querySelectorAll('td,th'));
-      const cellFields = cells
-        .map((cell) =>
-          Array.from(cell.querySelectorAll('input, textarea, select')).map((el) =>
-            mapElementToField(doc, el),
-          ),
-        )
-        .filter((fields) => fields.length > 0);
+  const sections: SectionSchema[] =
+    tables.length > 0
+      ? tables.map((table, index) => {
+          const parsed = parseTable(doc, table as HTMLTableElement);
+          return {
+            id: createId(),
+            title: headingText + (tables.length > 1 ? ` — Table ${index + 1}` : ''),
+            rows: parsed.rows,
+            layout: 'table',
+            tableAttributes: parsed.tableAttributes,
+          };
+        })
+      : [];
 
-      if (cellFields.length > 0) {
-        return cellFields as FieldSchema[][];
-      }
-
-      const directFields = Array.from(tr.querySelectorAll('input, textarea, select')).map(
-        (el) => mapElementToField(doc, el),
-      );
-      return directFields.length ? [directFields] : [];
-    })
-    .filter((group) => group.length > 0);
-
-  let rows = groupFieldsIntoRows(rowFieldGroups);
-
-  if (rows.length === 0) {
+  if (sections.length === 0) {
     const allFields = Array.from(doc.querySelectorAll('input, textarea, select')).map((el) =>
       mapElementToField(doc, el),
     );
-    const fallbackGroups: FieldSchema[][][] = [];
+    const fallbackRows: RowSchema[] = [];
     for (let i = 0; i < allFields.length; i += 2) {
-      fallbackGroups.push([allFields.slice(i, i + 2)]);
+      fallbackRows.push({
+        id: createId(),
+        columns: allFields.slice(i, i + 2).map((field) => ({
+          id: createId(),
+          span: 2,
+          fields: [field],
+        })),
+      });
     }
-    rows = groupFieldsIntoRows(fallbackGroups);
+    sections.push({
+      id: createId(),
+      title: headingText,
+      rows: fallbackRows,
+      layout: 'stack',
+    });
   }
-
-  const section = {
-    id: createId(),
-    title: headingText,
-    rows,
-  };
 
   return {
     id: createId(),
     name: headingText,
     description: `Imported from sample: ${sampleName}`,
     version: 1,
-    sections: rows.length > 0 ? [section] : [],
+    sections,
   };
 };

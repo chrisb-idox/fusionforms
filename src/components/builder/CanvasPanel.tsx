@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionIcon, Card, Group, Paper, Stack, Text, ThemeIcon } from '@mantine/core';
+import { ActionIcon, Card, Group, Paper, Stack, Table, Text, ThemeIcon } from '@mantine/core';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -196,6 +196,41 @@ interface SectionEditorProps {
 const SectionEditor = ({ section }: SectionEditorProps) => {
   const { selection, selectElement, addRow, removeSection } = useFormBuilder();
 
+  const renderTable = (rows: RowSchema[], level = 0) => (
+    <Table
+      withRowBorders
+      withColumnBorders
+      highlightOnHover
+      style={{ background: 'white', borderRadius: 8, overflow: 'hidden' }}
+    >
+      <Table.Tbody>
+        {rows.map((row) => (
+          <Table.Tr key={row.id}>
+            {row.columns.map((column) => (
+              <Table.Td
+                key={column.id}
+                colSpan={column.colSpan ?? 1}
+                rowSpan={column.rowSpan ?? 1}
+                style={{ verticalAlign: 'top' }}
+              >
+                <Stack gap="xs">
+                  {column.fields.map((field) => (
+                    <FieldItem key={field.id} field={field} columnId={column.id} />
+                  ))}
+                  {column.nestedTables?.map((nested) => (
+                    <Stack key={nested.id} gap="xs" pt="xs">
+                      {renderTable(nested.rows, level + 1)}
+                    </Stack>
+                  ))}
+                </Stack>
+              </Table.Td>
+            ))}
+          </Table.Tr>
+        ))}
+      </Table.Tbody>
+    </Table>
+  );
+
   return (
     <Card
       padding="md"
@@ -225,32 +260,38 @@ const SectionEditor = ({ section }: SectionEditorProps) => {
         </ActionIcon>
       </Group>
 
-      <SortableContext
-        items={section.rows.map((row) => row.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        <Stack gap="sm">
-          {section.rows.map((row) => (
-            <RowEditor key={row.id} row={row} sectionId={section.id} />
-          ))}
-        </Stack>
-      </SortableContext>
+      {section.layout === 'table' ? (
+        renderTable(section.rows)
+      ) : (
+        <SortableContext
+          items={section.rows.map((row) => row.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <Stack gap="sm">
+            {section.rows.map((row) => (
+              <RowEditor key={row.id} row={row} sectionId={section.id} />
+            ))}
+          </Stack>
+        </SortableContext>
+      )}
 
-      <Card
-        mt="sm"
-        padding="sm"
-        radius="md"
-        withBorder
-        style={{ cursor: 'pointer' }}
-        onClick={(event) => {
-          event.stopPropagation();
-          addRow(section.id);
-        }}
-      >
-        <Text size="sm" fw={600}>
-          + Add row
-        </Text>
-      </Card>
+      {section.layout !== 'table' && (
+        <Card
+          mt="sm"
+          padding="sm"
+          radius="md"
+          withBorder
+          style={{ cursor: 'pointer' }}
+          onClick={(event) => {
+            event.stopPropagation();
+            addRow(section.id);
+          }}
+        >
+          <Text size="sm" fw={600}>
+            + Add row
+          </Text>
+        </Card>
+      )}
     </Card>
   );
 };

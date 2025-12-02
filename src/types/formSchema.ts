@@ -26,6 +26,9 @@ export interface FieldSchema {
   name: string;
   label: string;
   bindingProperty?: string;
+  originalId?: string;
+  originalName?: string;
+  htmlAttributes?: Record<string, string>;
   placeholder?: string;
   helpText?: string;
   defaultValue?: string | number | boolean;
@@ -37,17 +40,24 @@ export interface ColumnSchema {
   id: string;
   span: 1 | 2 | 3 | 4;
   fields: FieldSchema[];
+  colSpan?: number;
+  rowSpan?: number;
+  htmlAttributes?: Record<string, string>;
+  nestedTables?: TableSchema[];
 }
 
 export interface RowSchema {
   id: string;
   columns: ColumnSchema[];
+  htmlAttributes?: Record<string, string>;
 }
 
 export interface SectionSchema {
   id: string;
   title: string;
   rows: RowSchema[];
+  layout?: 'table' | 'stack';
+  tableAttributes?: Record<string, string>;
 }
 
 export interface FormSchema {
@@ -66,6 +76,12 @@ export type Selection =
   | { type: 'section'; id: string }
   | { type: 'row'; id: string }
   | { type: 'field'; id: string };
+
+export interface TableSchema {
+  id: string;
+  rows: RowSchema[];
+  tableAttributes?: Record<string, string>;
+}
 
 export const createId = () =>
   typeof crypto !== 'undefined' && 'randomUUID' in crypto
