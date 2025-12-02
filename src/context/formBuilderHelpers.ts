@@ -1,4 +1,10 @@
-import type { FieldSchema, FieldType, RowSchema, SectionSchema } from '../types/formSchema';
+import type {
+  FieldSchema,
+  FieldType,
+  RowSchema,
+  SectionSchema,
+  TableSchema,
+} from '../types/formSchema';
 import { createId } from '../types/formSchema';
 
 export const createDefaultField = (type: FieldType = 'text'): FieldSchema => {
@@ -26,8 +32,9 @@ export const createEmptyRow = (): RowSchema => ({
   columns: [
     {
       id: createId(),
-      span: 4,
+      span: 4 as 4,
       fields: [],
+      nestedTables: [] as TableSchema[],
     },
   ],
 });
@@ -36,4 +43,54 @@ export const createEmptySection = (title?: string): SectionSchema => ({
   id: createId(),
   title: title || 'Untitled section',
   rows: [createEmptyRow()],
+});
+
+export const createTableSection = (title?: string): SectionSchema => ({
+  id: createId(),
+  title: title || 'Table section',
+  layout: 'table',
+  tableAttributes: { border: '1', cellpadding: '6', cellspacing: '0' },
+  rows: [
+    {
+      id: createId(),
+      columns: [
+        {
+          id: createId(),
+          span: 4 as 4,
+          fields: [createDefaultField('text')],
+          colSpan: 1 as 1,
+          rowSpan: 1 as 1,
+          nestedTables: [],
+        },
+        {
+          id: createId(),
+          span: 4 as 4,
+          fields: [createDefaultField('text')],
+          colSpan: 1 as 1,
+          rowSpan: 1 as 1,
+          nestedTables: [],
+        },
+      ],
+    },
+  ],
+});
+
+export const createNestedTable = (): TableSchema => ({
+  id: createId(),
+  tableAttributes: { border: '1', cellpadding: '4', cellspacing: '0' },
+  rows: [
+    {
+      id: createId(),
+      columns: [
+        {
+          id: createId(),
+          span: 4 as 4,
+          fields: [createDefaultField('text')],
+          colSpan: 1 as 1,
+          rowSpan: 1 as 1,
+          nestedTables: [],
+        },
+      ],
+    },
+  ],
 });

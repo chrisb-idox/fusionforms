@@ -194,7 +194,7 @@ interface SectionEditorProps {
 }
 
 const SectionEditor = ({ section }: SectionEditorProps) => {
-  const { selection, selectElement, addRow, removeSection } = useFormBuilder();
+  const { selection, selectElement, addRow, removeSection, addNestedTable } = useFormBuilder();
 
   const renderTable = (rows: RowSchema[], level = 0) => (
     <Table
@@ -218,6 +218,12 @@ const SectionEditor = ({ section }: SectionEditorProps) => {
                     <FieldItem key={field.id} field={field} columnId={column.id} />
                   ))}
                 </Group>
+                {column.staticHtml && (
+                  <div
+                    style={{ fontSize: 13, color: '#475569' }}
+                    dangerouslySetInnerHTML={{ __html: column.staticHtml }}
+                  />
+                )}
                 <Stack gap="xs" pt={column.fields.length ? 'xs' : 0}>
                   {column.nestedTables?.map((nested) => (
                     <Stack key={nested.id} gap="xs" pt="xs">
@@ -225,6 +231,18 @@ const SectionEditor = ({ section }: SectionEditorProps) => {
                     </Stack>
                   ))}
                 </Stack>
+                <ActionIcon
+                  variant="subtle"
+                  color="blue"
+                  size="sm"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    addNestedTable(column.id);
+                  }}
+                  title="Add nested table"
+                >
+                  +
+                </ActionIcon>
               </Table.Td>
             ))}
           </Table.Tr>

@@ -2,6 +2,7 @@ import { Button, Group, Select, Stack, Text, TextInput } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { useFormBuilder } from '../../context/FormBuilderContext';
 import { actionCodes } from '../../data/actionCodes';
+import { schemaToHtml } from '../../utils/schemaExporter';
 
 interface BuilderHeaderProps {
   onPreview: () => void;
@@ -18,6 +19,24 @@ export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
       alert(`Saved schema as ${filename} in localStorage`);
     } catch (error) {
       console.error('Failed to save schema', error);
+    }
+  };
+
+  const handleExportHtml = () => {
+    try {
+      const html = schemaToHtml(schema);
+      const action = schema.actionCode ? `_${schema.actionCode}` : '';
+      const filename = `${(schema.name || 'form').replace(/\\s+/g, '_')}${action}.html`;
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to export HTML', error);
+      alert('Could not export HTML');
     }
   };
 
@@ -51,6 +70,9 @@ export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
         </Button>
         <Button variant="default" onClick={handleSave}>
           Save
+        </Button>
+        <Button variant="default" onClick={handleExportHtml}>
+          Export HTML
         </Button>
         <Button onClick={onPreview}>Preview</Button>
       </Group>

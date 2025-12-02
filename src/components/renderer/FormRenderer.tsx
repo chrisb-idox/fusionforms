@@ -314,6 +314,12 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                 rowSpan={column.rowSpan ?? 1}
                 style={{ verticalAlign: 'top' }}
               >
+                {column.staticHtml && (
+                  <div
+                    style={{ fontSize: 13, color: '#475569', marginBottom: 4 }}
+                    dangerouslySetInnerHTML={{ __html: column.staticHtml }}
+                  />
+                )}
                 <Group gap="sm" align="flex-start" wrap="wrap">
                   {column.fields.map((field) => (
                     <FieldRenderer key={field.id} field={field} control={control} />

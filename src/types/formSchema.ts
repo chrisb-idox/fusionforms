@@ -44,6 +44,7 @@ export interface ColumnSchema {
   rowSpan?: number;
   htmlAttributes?: Record<string, string>;
   nestedTables?: TableSchema[];
+  staticHtml?: string;
 }
 
 export interface RowSchema {

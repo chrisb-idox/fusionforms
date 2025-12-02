@@ -12,6 +12,8 @@ import {
   createDefaultField,
   createEmptyRow,
   createEmptySection,
+  createNestedTable,
+  createTableSection,
 } from './formBuilderHelpers';
 
 interface FormBuilderState {
@@ -27,8 +29,10 @@ type Action =
   | { type: 'updateRow'; payload: { id: string; data: Partial<RowSchema> } }
   | { type: 'updateField'; payload: { id: string; data: Partial<FieldSchema> } }
   | { type: 'addSection'; payload?: { title?: string } }
+  | { type: 'addTableSection'; payload?: { title?: string } }
   | { type: 'addRow'; payload: { sectionId: string } }
   | { type: 'addField'; payload: { columnId: string; type?: FieldType } }
+  | { type: 'addNestedTable'; payload: { columnId: string } }
   | { type: 'removeSection'; payload: { id: string } }
   | { type: 'removeRow'; payload: { id: string } }
   | { type: 'removeField'; payload: { id: string } }
@@ -43,8 +47,10 @@ interface FormBuilderContextValue extends FormBuilderState {
   updateRow: (id: string, data: Partial<RowSchema>) => void;
   updateField: (id: string, data: Partial<FieldSchema>) => void;
   addSection: (title?: string) => void;
+  addTableSection: (title?: string) => void;
   addRow: (sectionId: string) => void;
   addField: (columnId: string, type?: FieldType) => void;
+  addNestedTable: (columnId: string) => void;
   removeSection: (id: string) => void;
   removeRow: (id: string) => void;
   removeField: (id: string) => void;
@@ -125,6 +131,14 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
           sections: [...state.schema.sections, createEmptySection(action.payload?.title)],
         },
       };
+    case 'addTableSection':
+      return {
+        ...state,
+        schema: {
+          ...state.schema,
+          sections: [...state.schema.sections, createTableSection(action.payload?.title)],
+        },
+      };
     case 'addRow':
       return {
         ...state,
@@ -135,6 +149,27 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
               ? { ...section, rows: [...section.rows, createEmptyRow()] }
               : section,
           ),
+        },
+      };
+    case 'addNestedTable':
+      return {
+        ...state,
+        schema: {
+          ...state.schema,
+          sections: state.schema.sections.map((section) => ({
+            ...section,
+            rows: section.rows.map((row) => ({
+              ...row,
+              columns: row.columns.map((column) =>
+                column.id === action.payload.columnId
+                  ? {
+                      ...column,
+                      nestedTables: [...(column.nestedTables || []), createNestedTable()],
+                    }
+                  : column,
+              ),
+            })),
+          })),
         },
       };
     case 'addField':
@@ -274,9 +309,13 @@ export const FormBuilderProvider = ({
       updateField: (id, data) =>
         dispatch({ type: 'updateField', payload: { id, data } }),
       addSection: (title) => dispatch({ type: 'addSection', payload: { title } }),
+      addTableSection: (title) =>
+        dispatch({ type: 'addTableSection', payload: { title } }),
       addRow: (sectionId) => dispatch({ type: 'addRow', payload: { sectionId } }),
       addField: (columnId, type) =>
         dispatch({ type: 'addField', payload: { columnId, type } }),
+      addNestedTable: (columnId) =>
+        dispatch({ type: 'addNestedTable', payload: { columnId } }),
       removeSection: (id) => dispatch({ type: 'removeSection', payload: { id } }),
       removeRow: (id) => dispatch({ type: 'removeRow', payload: { id } }),
       removeField: (id) => dispatch({ type: 'removeField', payload: { id } }),

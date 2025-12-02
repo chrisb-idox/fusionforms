@@ -134,6 +134,10 @@ const parseTable = (doc: Document, tableEl: HTMLTableElement): TableSchema => {
         .filter((el) => el.closest('table') === tableEl)
         .map((el) => mapElementToField(doc, el));
 
+      const clone = cell.cloneNode(true) as HTMLElement;
+      clone.querySelectorAll('input, textarea, select, table').forEach((el) => el.remove());
+      const staticHtml = clone.innerHTML.trim() || undefined;
+
       return {
         id: createId(),
         span: 4,
@@ -142,6 +146,7 @@ const parseTable = (doc: Document, tableEl: HTMLTableElement): TableSchema => {
         htmlAttributes: collectAttributes(cell),
         fields,
         nestedTables,
+        staticHtml,
       };
     });
 

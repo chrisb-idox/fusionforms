@@ -15,7 +15,7 @@ const fieldTypes: { label: string; type: FieldType }[] = [
 ];
 
 export const PalettePanel = () => {
-  const { schema, selection, addField, addRow, addSection } = useFormBuilder();
+  const { schema, selection, addField, addRow, addSection, addTableSection } = useFormBuilder();
 
   const targetSectionId =
     selection?.type === 'section'
@@ -103,6 +103,20 @@ export const PalettePanel = () => {
           >
             <Text size="sm" fw={600}>
               Add row
+            </Text>
+          </Card>
+        </Group>
+        <Group grow>
+          <Card
+            padding="sm"
+            withBorder
+            radius="md"
+            shadow="xs"
+            style={{ cursor: 'pointer' }}
+            onClick={() => addTableSection('New table')}
+          >
+            <Text size="sm" fw={600}>
+              Add table section
             </Text>
           </Card>
         </Group>
