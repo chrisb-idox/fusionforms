@@ -1,7 +1,8 @@
-import { Card, Divider, Stack, Text, TextInput, Textarea } from '@mantine/core';
+import { Card, Divider, Select, Stack, Text, TextInput, Textarea } from '@mantine/core';
 import { useMemo } from 'react';
 import { useFormBuilder } from '../../context/FormBuilderContext';
 import type { FieldSchema, SectionSchema } from '../../types/formSchema';
+import { edmsProperties } from '../../data/edmsProperties';
 
 export const PropertiesPanel = () => {
   const { schema, selection, updateForm, updateSection, updateField } = useFormBuilder();
@@ -98,6 +99,27 @@ export const PropertiesPanel = () => {
               }
               autosize
               minRows={2}
+            />
+            <Select
+              label="Bind to EDMS property"
+              placeholder="Choose a property"
+              searchable
+              clearable
+              data={edmsProperties.map((prop) => ({ value: prop, label: prop }))}
+              value={selectedField.bindingProperty || null}
+              onChange={(value) => {
+                const updates: Partial<FieldSchema> = {
+                  bindingProperty: value || undefined,
+                };
+                if (value) {
+                  if (selectedField.name.startsWith('field_')) {
+                    updates.name = value;
+                  }
+                  updates.defaultValue = `\${${value}}`;
+                }
+                updateField(selectedField.id, updates);
+              }}
+              description="Select a system property to link this field."
             />
           </>
         )}

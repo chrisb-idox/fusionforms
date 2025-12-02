@@ -1,8 +1,5 @@
 import { createContext, useContext, useMemo, useReducer } from 'react';
 import type { ReactNode } from 'react';
-import {
-  createId,
-} from '../types/formSchema';
 import type {
   FieldSchema,
   FieldType,
@@ -11,6 +8,11 @@ import type {
   SectionSchema,
   Selection,
 } from '../types/formSchema';
+import {
+  createDefaultField,
+  createEmptyRow,
+  createEmptySection,
+} from './formBuilderHelpers';
 
 interface FormBuilderState {
   schema: FormSchema;
@@ -60,42 +62,6 @@ const reorder = <T,>(items: T[], from: number, to: number) => {
   next.splice(to, 0, moved);
   return next;
 };
-
-const createDefaultField = (type: FieldType = 'text'): FieldSchema => {
-  const label = `${type[0].toUpperCase()}${type.slice(1)} field`;
-  return {
-    id: createId(),
-    type,
-    name: `field_${Math.random().toString(36).slice(2, 6)}`,
-    label,
-    placeholder: `Enter ${label.toLowerCase()}`,
-    options:
-      type === 'select' || type === 'radio'
-        ? [
-            { label: 'Option 1', value: 'option1' },
-            { label: 'Option 2', value: 'option2' },
-          ]
-        : undefined,
-    validations: [],
-  };
-};
-
-const createEmptyRow = (): RowSchema => ({
-  id: createId(),
-  columns: [
-    {
-      id: createId(),
-      span: 4,
-      fields: [],
-    },
-  ],
-});
-
-const createEmptySection = (title?: string): SectionSchema => ({
-  id: createId(),
-  title: title || 'Untitled section',
-  rows: [createEmptyRow()],
-});
 
 const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
   switch (action.type) {
@@ -329,16 +295,11 @@ export const FormBuilderProvider = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useFormBuilder = () => {
   const context = useContext(FormBuilderContext);
   if (!context) {
     throw new Error('useFormBuilder must be used within a FormBuilderProvider');
   }
   return context;
-};
-
-export const helpers = {
-  createDefaultField,
-  createEmptyRow,
-  createEmptySection,
 };

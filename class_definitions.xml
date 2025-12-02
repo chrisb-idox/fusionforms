@@ -1,0 +1,2533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExportedObjects EMVersion="4.0.40.218">
+  <ClassDefinitions>
+    <DocumentClassDefinition>
+      <DocumentClassDefinitionProperties>
+        <ObjectType>1027</ObjectType>
+        <SymbolicName>DesignDocument</SymbolicName>
+        <PropertyDefinitions>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <Name>Expiration Date</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyMaximumDateTime />
+            <PropertyMinimumDateTime />
+            <CopyToReservation>1</CopyToReservation>
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsDateOnly>0</IsDateOnly>
+            <ModificationAccessRequired />
+            <PrimaryId>6cb4fc5f-f4bc-420b-8b01-5694ee20620c</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>d32e507b-afb2-11d2-8bd6-00e0290f729a</PrimaryId>
+            <Name>Is Versioning Enabled</Name>
+            <PropertyDefaultBoolean>1</PropertyDefaultBoolean>
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>255</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Document Title</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>1</IsNameProperty>
+            <PrimaryId>d32e5055-afb2-11d2-8bd6-00e0290f729a</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>ab4b6cb1-a3d8-42f6-8b90-947c558b466d</PrimaryId>
+            <Settability>0</Settability>
+            <Name>FusionDocType</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32 />
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>25f8e53b-1aa8-4d09-bca5-20cd008efe7b</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Comments Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>719e75ba-daff-4ccc-9fe3-e457b4fd57ae</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Renditions Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>9854db22-e632-4f43-abff-98abc931b154</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Markups Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>260</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Primary Attachment Name</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>38f1598d-d453-4670-8b5d-95b45d2a862b</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>1d977bd3-26bd-4e52-a3ea-06aec4dc479e</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Is Cadtop Drawing</Name>
+            <PropertyDefaultBoolean>0</PropertyDefaultBoolean>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <ModificationAccessRequired />
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Client Document Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>67a6124e-411f-491c-b99b-5ef69aea240f</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61de3c37-e540-4251-b63d-e05495147452</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4d1f56d0-de70-4bc1-aa9e-01048ad1a9fd</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Revision Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61fdacd6-89c8-40d9-b095-b280f81dfffc</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <PropertyMaximumDateTime />
+            <PrimaryId>1d082bfb-5433-4dd8-9c6f-117a8709f731</PrimaryId>
+            <Settability>0</Settability>
+            <PropertyMinimumDateTime />
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+            <Name>Revision Date</Name>
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>82065afc-2239-48e4-8254-f024e0e45fed</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>1</Settability>
+            <Name>ECM Document Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>70e825de-5811-4ffc-b132-adc53fb8cfd6</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4205d641-6611-46fa-bf34-670879a17041</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Facility</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>c6a4becf-5f06-482a-b253-e178ab88a5d9</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <Settability>0</Settability>
+            <Name>System</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>fdf3c3da-ffda-47c5-a952-cb483da1458c</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>500</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Title 1</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>20b810f3-ac00-481d-9bf2-97578002f6ec</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>500</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Title 2</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>c840efe5-ce96-459d-9d20-e6243dd1fbc0</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>500</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Title 3</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>b3ce26fd-f979-44fe-ba2b-1d9794572080</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>500</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Title 4</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>754787db-4044-41bb-af3f-36f0dc5fcfb6</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+        </PropertyDefinitions>
+        <ExternalAliases />
+        <DisplayNames>
+          <LocalizedString>
+            <ObjectType>1075</ObjectType>
+            <LocalizedText>Design Document</LocalizedText>
+            <LocaleName>en-us</LocaleName>
+          </LocalizedString>
+        </DisplayNames>
+        <ReplicationGroup />
+        <AliasIds />
+        <Id>885eade9-0bc7-4998-b472-a3c2c2dfdfb9</Id>
+        <IsHidden>0</IsHidden>
+        <ExternalReplicaIdentities />
+        <SuperclassDefinition>
+          <ObjectRef>
+            <ObjectId>85508fad-8ef9-41b5-8a94-453b926e3ee2</ObjectId>
+            <ClassId>c57469a4-1592-4428-b7ee-0c970e4db76a</ClassId>
+          </ObjectRef>
+        </SuperclassDefinition>
+        <Name>Design Document</Name>
+        <AllowsInstances>1</AllowsInstances>
+      </DocumentClassDefinitionProperties>
+    </DocumentClassDefinition>
+    <DocumentClassDefinition>
+      <DocumentClassDefinitionProperties>
+        <ObjectType>1027</ObjectType>
+        <SymbolicName>EngineeringDeliverable</SymbolicName>
+        <PropertyDefinitions>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <Name>Expiration Date</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyMaximumDateTime />
+            <PropertyMinimumDateTime />
+            <CopyToReservation>1</CopyToReservation>
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsDateOnly>0</IsDateOnly>
+            <ModificationAccessRequired />
+            <PrimaryId>6cb4fc5f-f4bc-420b-8b01-5694ee20620c</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>d32e507b-afb2-11d2-8bd6-00e0290f729a</PrimaryId>
+            <Name>Is Versioning Enabled</Name>
+            <PropertyDefaultBoolean>1</PropertyDefaultBoolean>
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>255</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Document Title</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>1</IsNameProperty>
+            <PrimaryId>d32e5055-afb2-11d2-8bd6-00e0290f729a</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>ab4b6cb1-a3d8-42f6-8b90-947c558b466d</PrimaryId>
+            <Settability>0</Settability>
+            <Name>FusionDocType</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32 />
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>25f8e53b-1aa8-4d09-bca5-20cd008efe7b</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Comments Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>719e75ba-daff-4ccc-9fe3-e457b4fd57ae</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Renditions Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>9854db22-e632-4f43-abff-98abc931b154</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Markups Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>260</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Primary Attachment Name</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>38f1598d-d453-4670-8b5d-95b45d2a862b</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>1d977bd3-26bd-4e52-a3ea-06aec4dc479e</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Is Cadtop Drawing</Name>
+            <PropertyDefaultBoolean>0</PropertyDefaultBoolean>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <ModificationAccessRequired />
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Client Document Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>67a6124e-411f-491c-b99b-5ef69aea240f</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61de3c37-e540-4251-b63d-e05495147452</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4d1f56d0-de70-4bc1-aa9e-01048ad1a9fd</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Revision Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61fdacd6-89c8-40d9-b095-b280f81dfffc</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <PropertyMaximumDateTime />
+            <PrimaryId>1d082bfb-5433-4dd8-9c6f-117a8709f731</PrimaryId>
+            <Settability>0</Settability>
+            <PropertyMinimumDateTime />
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+            <Name>Revision Date</Name>
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>82065afc-2239-48e4-8254-f024e0e45fed</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>1</Settability>
+            <Name>ECM Document Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>70e825de-5811-4ffc-b132-adc53fb8cfd6</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4205d641-6611-46fa-bf34-670879a17041</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Facility</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>c6a4becf-5f06-482a-b253-e178ab88a5d9</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <Settability>0</Settability>
+            <Name>System</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>fdf3c3da-ffda-47c5-a952-cb483da1458c</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+        </PropertyDefinitions>
+        <ExternalAliases />
+        <DisplayNames>
+          <LocalizedString>
+            <ObjectType>1075</ObjectType>
+            <LocalizedText>Engineering Deliverable</LocalizedText>
+            <LocaleName>en-us</LocaleName>
+          </LocalizedString>
+        </DisplayNames>
+        <ReplicationGroup />
+        <AliasIds />
+        <Id>85508fad-8ef9-41b5-8a94-453b926e3ee2</Id>
+        <IsHidden>0</IsHidden>
+        <ExternalReplicaIdentities />
+        <SuperclassDefinition>
+          <ObjectRef>
+            <ObjectId>dd55cce6-2110-4f11-bc7e-54f47cc49cbd</ObjectId>
+            <ClassId>c57469a4-1592-4428-b7ee-0c970e4db76a</ClassId>
+          </ObjectRef>
+        </SuperclassDefinition>
+        <Name>Engineering Deliverable</Name>
+        <AllowsInstances>1</AllowsInstances>
+      </DocumentClassDefinitionProperties>
+    </DocumentClassDefinition>
+    <DocumentClassDefinition>
+      <DocumentClassDefinitionProperties>
+        <ObjectType>1027</ObjectType>
+        <SymbolicName>EngineeringDocument</SymbolicName>
+        <PropertyDefinitions>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <Name>Expiration Date</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyMaximumDateTime />
+            <PropertyMinimumDateTime />
+            <CopyToReservation>1</CopyToReservation>
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsDateOnly>0</IsDateOnly>
+            <ModificationAccessRequired />
+            <PrimaryId>6cb4fc5f-f4bc-420b-8b01-5694ee20620c</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>d32e507b-afb2-11d2-8bd6-00e0290f729a</PrimaryId>
+            <Name>Is Versioning Enabled</Name>
+            <PropertyDefaultBoolean>1</PropertyDefaultBoolean>
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>255</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Document Title</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>1</IsNameProperty>
+            <PrimaryId>d32e5055-afb2-11d2-8bd6-00e0290f729a</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>ab4b6cb1-a3d8-42f6-8b90-947c558b466d</PrimaryId>
+            <Settability>0</Settability>
+            <Name>FusionDocType</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32 />
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>25f8e53b-1aa8-4d09-bca5-20cd008efe7b</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Comments Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>719e75ba-daff-4ccc-9fe3-e457b4fd57ae</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Renditions Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>9854db22-e632-4f43-abff-98abc931b154</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Markups Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>260</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Primary Attachment Name</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>38f1598d-d453-4670-8b5d-95b45d2a862b</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>1d977bd3-26bd-4e52-a3ea-06aec4dc479e</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Is Cadtop Drawing</Name>
+            <PropertyDefaultBoolean>0</PropertyDefaultBoolean>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <ModificationAccessRequired />
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Client Document Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>67a6124e-411f-491c-b99b-5ef69aea240f</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61de3c37-e540-4251-b63d-e05495147452</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4d1f56d0-de70-4bc1-aa9e-01048ad1a9fd</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Revision Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61fdacd6-89c8-40d9-b095-b280f81dfffc</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <PropertyMaximumDateTime />
+            <PrimaryId>1d082bfb-5433-4dd8-9c6f-117a8709f731</PrimaryId>
+            <Settability>0</Settability>
+            <PropertyMinimumDateTime />
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+            <Name>Revision Date</Name>
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>82065afc-2239-48e4-8254-f024e0e45fed</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>1</Settability>
+            <Name>ECM Document Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>70e825de-5811-4ffc-b132-adc53fb8cfd6</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4205d641-6611-46fa-bf34-670879a17041</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Facility</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>c6a4becf-5f06-482a-b253-e178ab88a5d9</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <Settability>0</Settability>
+            <Name>System</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>fdf3c3da-ffda-47c5-a952-cb483da1458c</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Engineered By</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>f6a0974d-e28d-4a1b-876b-bdee52c16585</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <Name>Engineer Assigned</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <CopyToReservation>1</CopyToReservation>
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <ModificationAccessRequired />
+            <PrimaryId>6c56edee-0bf3-46e4-a1bf-578be6ba1784</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <PropertyDefaultBoolean />
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <Name>Engineer Revision Date</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyMaximumDateTime />
+            <PropertyMinimumDateTime />
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <ModificationAccessRequired />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <PrimaryId>d1ead577-f413-444d-9266-df8dd454d4b8</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionDateTime>
+        </PropertyDefinitions>
+        <ExternalAliases />
+        <DisplayNames>
+          <LocalizedString>
+            <ObjectType>1075</ObjectType>
+            <LocalizedText>Engineering Document</LocalizedText>
+            <LocaleName>en-us</LocaleName>
+          </LocalizedString>
+        </DisplayNames>
+        <ReplicationGroup />
+        <AliasIds />
+        <Id>9ba88eb7-6736-4f4d-ba06-f8d45bbebd88</Id>
+        <IsHidden>0</IsHidden>
+        <ExternalReplicaIdentities />
+        <SuperclassDefinition>
+          <ObjectRef>
+            <ObjectId>85508fad-8ef9-41b5-8a94-453b926e3ee2</ObjectId>
+            <ClassId>c57469a4-1592-4428-b7ee-0c970e4db76a</ClassId>
+          </ObjectRef>
+        </SuperclassDefinition>
+        <Name>Engineering Document</Name>
+        <AllowsInstances>1</AllowsInstances>
+      </DocumentClassDefinitionProperties>
+    </DocumentClassDefinition>
+    <SubscribableClassDefinition>
+      <SubscribableClassDefinitionProperties>
+        <ObjectType>1027</ObjectType>
+        <SymbolicName>Facility</SymbolicName>
+        <PropertyDefinitions>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString>Customization</PropertyDefaultString>
+            <Settability>0</Settability>
+            <Name>Fusion Custom Object Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>99bcf921-8260-467d-b93e-7c5a8dc4759c</PrimaryId>
+            <ChoiceList>
+              <ObjectRef>
+                <ObjectId>cc5c7ffd-0b59-45bd-a3d2-d48fe5003616</ObjectId>
+                <ClassId>d32e4f70-afb2-11d2-8bd6-00e0290f729a</ClassId>
+              </ObjectRef>
+            </ChoiceList>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Facility No</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>5468208d-8716-4dbd-a2b7-0b862c4cbfd7</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>255</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Description</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4f2d07f2-de5a-4b6d-8fb9-1e56dd66930f</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+        </PropertyDefinitions>
+        <ExternalAliases />
+        <DisplayNames>
+          <LocalizedString>
+            <ObjectType>1075</ObjectType>
+            <LocalizedText>Facility</LocalizedText>
+            <LocaleName>en-us</LocaleName>
+          </LocalizedString>
+        </DisplayNames>
+        <ReplicationGroup />
+        <AliasIds />
+        <Id>a7012ad6-c39d-49f2-b404-ea75e57a3dd6</Id>
+        <IsHidden>0</IsHidden>
+        <ExternalReplicaIdentities />
+        <SuperclassDefinition>
+          <ObjectRef>
+            <ObjectId>6df312c7-20ee-498a-a042-40c2caa5c391</ObjectId>
+            <ClassId>f028e2d2-c18c-407d-a5a2-38c6d383f4bc</ClassId>
+          </ObjectRef>
+        </SuperclassDefinition>
+        <Name>Facility</Name>
+        <AllowsInstances>1</AllowsInstances>
+      </SubscribableClassDefinitionProperties>
+    </SubscribableClassDefinition>
+    <SubscribableClassDefinition>
+      <SubscribableClassDefinitionProperties>
+        <ObjectType>1027</ObjectType>
+        <SymbolicName>MasterFileIndex</SymbolicName>
+        <PropertyDefinitions>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString>Customization</PropertyDefaultString>
+            <Settability>0</Settability>
+            <Name>Fusion Custom Object Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>99bcf921-8260-467d-b93e-7c5a8dc4759c</PrimaryId>
+            <ChoiceList>
+              <ObjectRef>
+                <ObjectId>cc5c7ffd-0b59-45bd-a3d2-d48fe5003616</ObjectId>
+                <ClassId>d32e4f70-afb2-11d2-8bd6-00e0290f729a</ClassId>
+              </ObjectRef>
+            </ChoiceList>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Document Class</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>8878a7b9-5e98-426c-81d9-e29d015666d8</PrimaryId>
+            <ChoiceList>
+              <ObjectRef>
+                <ObjectId>a042e6cf-35b5-48dc-b72c-ee3168cb5a7a</ObjectId>
+                <ClassId>d32e4f70-afb2-11d2-8bd6-00e0290f729a</ClassId>
+              </ObjectRef>
+            </ChoiceList>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Level Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>1563ae90-5d1b-4cd6-9949-9ed705776690</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+        </PropertyDefinitions>
+        <ExternalAliases />
+        <DisplayNames>
+          <LocalizedString>
+            <ObjectType>1075</ObjectType>
+            <LocalizedText>Master File Index</LocalizedText>
+            <LocaleName>en-us</LocaleName>
+          </LocalizedString>
+        </DisplayNames>
+        <ReplicationGroup />
+        <AliasIds />
+        <Id>a6e22c25-06c8-4f02-8f11-48eca8f81d8c</Id>
+        <IsHidden>0</IsHidden>
+        <ExternalReplicaIdentities />
+        <SuperclassDefinition>
+          <ObjectRef>
+            <ObjectId>6df312c7-20ee-498a-a042-40c2caa5c391</ObjectId>
+            <ClassId>f028e2d2-c18c-407d-a5a2-38c6d383f4bc</ClassId>
+          </ObjectRef>
+        </SuperclassDefinition>
+        <Name>Master File Index</Name>
+        <AllowsInstances>1</AllowsInstances>
+      </SubscribableClassDefinitionProperties>
+    </SubscribableClassDefinition>
+    <SubscribableClassDefinition>
+      <SubscribableClassDefinitionProperties>
+        <ObjectType>1027</ObjectType>
+        <SymbolicName>MFIDiscipline</SymbolicName>
+        <PropertyDefinitions>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString>Customization</PropertyDefaultString>
+            <Settability>0</Settability>
+            <Name>Fusion Custom Object Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>99bcf921-8260-467d-b93e-7c5a8dc4759c</PrimaryId>
+            <ChoiceList>
+              <ObjectRef>
+                <ObjectId>cc5c7ffd-0b59-45bd-a3d2-d48fe5003616</ObjectId>
+                <ClassId>d32e4f70-afb2-11d2-8bd6-00e0290f729a</ClassId>
+              </ObjectRef>
+            </ChoiceList>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Document Class</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>8878a7b9-5e98-426c-81d9-e29d015666d8</PrimaryId>
+            <ChoiceList>
+              <ObjectRef>
+                <ObjectId>a042e6cf-35b5-48dc-b72c-ee3168cb5a7a</ObjectId>
+                <ClassId>d32e4f70-afb2-11d2-8bd6-00e0290f729a</ClassId>
+              </ObjectRef>
+            </ChoiceList>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Level Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>1563ae90-5d1b-4cd6-9949-9ed705776690</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61de3c37-e540-4251-b63d-e05495147452</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+        </PropertyDefinitions>
+        <ExternalAliases />
+        <DisplayNames>
+          <LocalizedString>
+            <ObjectType>1075</ObjectType>
+            <LocalizedText>MFI Discipline</LocalizedText>
+            <LocaleName>en-us</LocaleName>
+          </LocalizedString>
+        </DisplayNames>
+        <ReplicationGroup />
+        <AliasIds />
+        <Id>4ee72ab0-f74f-41db-bc1f-ece50d1da782</Id>
+        <IsHidden>0</IsHidden>
+        <ExternalReplicaIdentities />
+        <SuperclassDefinition>
+          <ObjectRef>
+            <ObjectId>a6e22c25-06c8-4f02-8f11-48eca8f81d8c</ObjectId>
+            <ClassId>f028e2d2-c18c-407d-a5a2-38c6d383f4bc</ClassId>
+          </ObjectRef>
+        </SuperclassDefinition>
+        <Name>MFI Discipline</Name>
+        <AllowsInstances>1</AllowsInstances>
+      </SubscribableClassDefinitionProperties>
+    </SubscribableClassDefinition>
+    <SubscribableClassDefinition>
+      <SubscribableClassDefinitionProperties>
+        <ObjectType>1027</ObjectType>
+        <SymbolicName>MFIDocumentType</SymbolicName>
+        <PropertyDefinitions>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString>Customization</PropertyDefaultString>
+            <Settability>0</Settability>
+            <Name>Fusion Custom Object Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>99bcf921-8260-467d-b93e-7c5a8dc4759c</PrimaryId>
+            <ChoiceList>
+              <ObjectRef>
+                <ObjectId>cc5c7ffd-0b59-45bd-a3d2-d48fe5003616</ObjectId>
+                <ClassId>d32e4f70-afb2-11d2-8bd6-00e0290f729a</ClassId>
+              </ObjectRef>
+            </ChoiceList>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Document Class</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>8878a7b9-5e98-426c-81d9-e29d015666d8</PrimaryId>
+            <ChoiceList>
+              <ObjectRef>
+                <ObjectId>a042e6cf-35b5-48dc-b72c-ee3168cb5a7a</ObjectId>
+                <ClassId>d32e4f70-afb2-11d2-8bd6-00e0290f729a</ClassId>
+              </ObjectRef>
+            </ChoiceList>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Level Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>1563ae90-5d1b-4cd6-9949-9ed705776690</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61de3c37-e540-4251-b63d-e05495147452</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4d1f56d0-de70-4bc1-aa9e-01048ad1a9fd</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+        </PropertyDefinitions>
+        <ExternalAliases />
+        <DisplayNames>
+          <LocalizedString>
+            <ObjectType>1075</ObjectType>
+            <LocalizedText>MFI Document Type</LocalizedText>
+            <LocaleName>en-us</LocaleName>
+          </LocalizedString>
+        </DisplayNames>
+        <ReplicationGroup />
+        <AliasIds />
+        <Id>d6deeecb-26b3-4b84-9779-2d52aca59357</Id>
+        <IsHidden>0</IsHidden>
+        <ExternalReplicaIdentities />
+        <SuperclassDefinition>
+          <ObjectRef>
+            <ObjectId>a6e22c25-06c8-4f02-8f11-48eca8f81d8c</ObjectId>
+            <ClassId>f028e2d2-c18c-407d-a5a2-38c6d383f4bc</ClassId>
+          </ObjectRef>
+        </SuperclassDefinition>
+        <Name>MFI Document Type</Name>
+        <AllowsInstances>1</AllowsInstances>
+      </SubscribableClassDefinitionProperties>
+    </SubscribableClassDefinition>
+    <DocumentClassDefinition>
+      <DocumentClassDefinitionProperties>
+        <ObjectType>1027</ObjectType>
+        <SymbolicName>MRPackage</SymbolicName>
+        <PropertyDefinitions>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <Name>Expiration Date</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyMaximumDateTime />
+            <PropertyMinimumDateTime />
+            <CopyToReservation>1</CopyToReservation>
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsDateOnly>0</IsDateOnly>
+            <ModificationAccessRequired />
+            <PrimaryId>6cb4fc5f-f4bc-420b-8b01-5694ee20620c</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>d32e507b-afb2-11d2-8bd6-00e0290f729a</PrimaryId>
+            <Name>Is Versioning Enabled</Name>
+            <PropertyDefaultBoolean>1</PropertyDefaultBoolean>
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>255</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Document Title</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>1</IsNameProperty>
+            <PrimaryId>d32e5055-afb2-11d2-8bd6-00e0290f729a</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>ab4b6cb1-a3d8-42f6-8b90-947c558b466d</PrimaryId>
+            <Settability>0</Settability>
+            <Name>FusionDocType</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32 />
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>25f8e53b-1aa8-4d09-bca5-20cd008efe7b</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Comments Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>719e75ba-daff-4ccc-9fe3-e457b4fd57ae</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Renditions Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>9854db22-e632-4f43-abff-98abc931b154</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Markups Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>260</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Primary Attachment Name</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>38f1598d-d453-4670-8b5d-95b45d2a862b</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>1d977bd3-26bd-4e52-a3ea-06aec4dc479e</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Is Cadtop Drawing</Name>
+            <PropertyDefaultBoolean>0</PropertyDefaultBoolean>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <ModificationAccessRequired />
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Client Document Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>67a6124e-411f-491c-b99b-5ef69aea240f</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61de3c37-e540-4251-b63d-e05495147452</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4d1f56d0-de70-4bc1-aa9e-01048ad1a9fd</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Revision Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61fdacd6-89c8-40d9-b095-b280f81dfffc</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <PropertyMaximumDateTime />
+            <PrimaryId>1d082bfb-5433-4dd8-9c6f-117a8709f731</PrimaryId>
+            <Settability>0</Settability>
+            <PropertyMinimumDateTime />
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+            <Name>Revision Date</Name>
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>82065afc-2239-48e4-8254-f024e0e45fed</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>1</Settability>
+            <Name>ECM Document Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>70e825de-5811-4ffc-b132-adc53fb8cfd6</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4205d641-6611-46fa-bf34-670879a17041</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Facility</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>c6a4becf-5f06-482a-b253-e178ab88a5d9</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <Settability>0</Settability>
+            <Name>System</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>fdf3c3da-ffda-47c5-a952-cb483da1458c</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MR Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>f8105156-ab82-49b4-bc76-d666036de24f</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>State</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>22c1da64-d9f0-4ab8-970b-50062d97a70e</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>County</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>d9616e1f-eefe-4b6e-9e44-f79ef1094686</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>State Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>c677de1c-5e0b-4bb1-860c-e12ff979eaa0</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>055d1ec8-7512-453e-818c-1dc0e1287882</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Quantity</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32 />
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionFloat64>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultFloat64 />
+            <PropertyMaximumFloat64 />
+            <PrimaryId>6e74b5ca-8b0e-4737-9fac-24e906441b69</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Price</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <PropertyMinimumFloat64 />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionFloat64>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <Name>Related State Codes</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <ModificationAccessRequired />
+            <IsValueRequired>0</IsValueRequired>
+            <MaximumLengthString>64</MaximumLengthString>
+            <CopyToReservation>1</CopyToReservation>
+            <PrimaryId>a76df9c9-be00-4740-b0a6-5b46052e9baa</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <Name>Related States</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <ModificationAccessRequired />
+            <IsValueRequired>0</IsValueRequired>
+            <MaximumLengthString>64</MaximumLengthString>
+            <CopyToReservation>1</CopyToReservation>
+            <PrimaryId>79a990bb-b22e-447b-8c24-fe3afd07b6ff</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <Name>All States</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyDefaultString />
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <ModificationAccessRequired />
+            <IsValueRequired>0</IsValueRequired>
+            <MaximumLengthString>255</MaximumLengthString>
+            <CopyToReservation>1</CopyToReservation>
+            <PrimaryId>02685f5c-aabb-481d-962b-1d9c38bba1ad</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionString>
+        </PropertyDefinitions>
+        <ExternalAliases />
+        <DisplayNames>
+          <LocalizedString>
+            <ObjectType>1075</ObjectType>
+            <LocalizedText>MR Package</LocalizedText>
+            <LocaleName>en-us</LocaleName>
+          </LocalizedString>
+        </DisplayNames>
+        <ReplicationGroup />
+        <AliasIds />
+        <Id>75aec0da-c768-47b6-9d1c-39c50cbaf09c</Id>
+        <IsHidden>0</IsHidden>
+        <ExternalReplicaIdentities />
+        <SuperclassDefinition>
+          <ObjectRef>
+            <ObjectId>85508fad-8ef9-41b5-8a94-453b926e3ee2</ObjectId>
+            <ClassId>c57469a4-1592-4428-b7ee-0c970e4db76a</ClassId>
+          </ObjectRef>
+        </SuperclassDefinition>
+        <Name>MR Package</Name>
+        <AllowsInstances>1</AllowsInstances>
+      </DocumentClassDefinitionProperties>
+    </DocumentClassDefinition>
+    <DocumentClassDefinition>
+      <DocumentClassDefinitionProperties>
+        <ObjectType>1027</ObjectType>
+        <SymbolicName>ProjectDocument</SymbolicName>
+        <PropertyDefinitions>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <Name>Expiration Date</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyMaximumDateTime />
+            <PropertyMinimumDateTime />
+            <CopyToReservation>1</CopyToReservation>
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsDateOnly>0</IsDateOnly>
+            <ModificationAccessRequired />
+            <PrimaryId>6cb4fc5f-f4bc-420b-8b01-5694ee20620c</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>d32e507b-afb2-11d2-8bd6-00e0290f729a</PrimaryId>
+            <Name>Is Versioning Enabled</Name>
+            <PropertyDefaultBoolean>1</PropertyDefaultBoolean>
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>255</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Document Title</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>1</IsNameProperty>
+            <PrimaryId>d32e5055-afb2-11d2-8bd6-00e0290f729a</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>ab4b6cb1-a3d8-42f6-8b90-947c558b466d</PrimaryId>
+            <Settability>0</Settability>
+            <Name>FusionDocType</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32 />
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>25f8e53b-1aa8-4d09-bca5-20cd008efe7b</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Comments Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>719e75ba-daff-4ccc-9fe3-e457b4fd57ae</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Renditions Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionInteger32>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>9854db22-e632-4f43-abff-98abc931b154</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Markups Count</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <IsHidden>0</IsHidden>
+            <ModificationAccessRequired />
+            <PropertyMaximumInteger32 />
+            <ChoiceList />
+            <CopyToReservation>0</CopyToReservation>
+            <AliasIds />
+            <PropertyDefaultInteger32>0</PropertyDefaultInteger32>
+            <PropertyMinimumInteger32 />
+          </PropertyDefinitionInteger32>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>260</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Primary Attachment Name</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>38f1598d-d453-4670-8b5d-95b45d2a862b</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionBoolean>
+            <ObjectType>1077</ObjectType>
+            <PrimaryId>1d977bd3-26bd-4e52-a3ea-06aec4dc479e</PrimaryId>
+            <Settability>0</Settability>
+            <Name>Is Cadtop Drawing</Name>
+            <PropertyDefaultBoolean>0</PropertyDefaultBoolean>
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <ModificationAccessRequired />
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <CopyToReservation>1</CopyToReservation>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionBoolean>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Client Document Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>67a6124e-411f-491c-b99b-5ef69aea240f</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61de3c37-e540-4251-b63d-e05495147452</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4d1f56d0-de70-4bc1-aa9e-01048ad1a9fd</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Revision Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>61fdacd6-89c8-40d9-b095-b280f81dfffc</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <PropertyMaximumDateTime />
+            <PrimaryId>1d082bfb-5433-4dd8-9c6f-117a8709f731</PrimaryId>
+            <Settability>0</Settability>
+            <PropertyMinimumDateTime />
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+            <Name>Revision Date</Name>
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Discipline Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>82065afc-2239-48e4-8254-f024e0e45fed</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>1</Settability>
+            <Name>ECM Document Number</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>70e825de-5811-4ffc-b132-adc53fb8cfd6</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>MFI Document Type Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4205d641-6611-46fa-bf34-670879a17041</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Facility</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>c6a4becf-5f06-482a-b253-e178ab88a5d9</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <Settability>0</Settability>
+            <Name>System</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>fdf3c3da-ffda-47c5-a952-cb483da1458c</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <Name>Lifecycle Template</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyDefaultString>ProjectDocumentLifecycle</PropertyDefaultString>
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <ModificationAccessRequired />
+            <IsValueRequired>0</IsValueRequired>
+            <MaximumLengthString>64</MaximumLengthString>
+            <CopyToReservation>1</CopyToReservation>
+            <PrimaryId>2a64976e-0d56-4dcc-b0b2-fb2a11e638df</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <Name>Lifecycle State</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyDefaultString>Work In Progress</PropertyDefaultString>
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <ModificationAccessRequired />
+            <IsValueRequired>0</IsValueRequired>
+            <MaximumLengthString>64</MaximumLengthString>
+            <CopyToReservation>1</CopyToReservation>
+            <PrimaryId>638c72c2-e6bb-44f8-b169-c721e24d8922</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <Name>Approved By</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyDefaultString />
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <ModificationAccessRequired />
+            <IsValueRequired>0</IsValueRequired>
+            <MaximumLengthString>64</MaximumLengthString>
+            <CopyToReservation>1</CopyToReservation>
+            <PrimaryId>9153df8f-b1ae-48e6-a89f-c98e503e4ccd</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionString>
+          <PropertyDefinitionDateTime>
+            <ObjectType>1077</ObjectType>
+            <PropertyDefaultDateTime />
+            <Name>Approval Date</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyMaximumDateTime />
+            <PropertyMinimumDateTime />
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <ModificationAccessRequired />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <PrimaryId>a2f4a214-130f-4c5b-a90a-729f3c3227aa</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionDateTime>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <Name>Previous Revision Code</Name>
+            <IsNameProperty>0</IsNameProperty>
+            <PropertyDefaultString />
+            <IsHidden>0</IsHidden>
+            <Settability>0</Settability>
+            <AuditAs />
+            <ExternalAliases />
+            <ModificationAccessRequired />
+            <IsValueRequired>0</IsValueRequired>
+            <MaximumLengthString>64</MaximumLengthString>
+            <CopyToReservation>1</CopyToReservation>
+            <PrimaryId>571e7445-cdf5-4d38-9db4-7629f7618c91</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+          </PropertyDefinitionString>
+        </PropertyDefinitions>
+        <ExternalAliases />
+        <DisplayNames>
+          <LocalizedString>
+            <ObjectType>1075</ObjectType>
+            <LocalizedText>Project Document</LocalizedText>
+            <LocaleName>en-us</LocaleName>
+          </LocalizedString>
+        </DisplayNames>
+        <ReplicationGroup />
+        <AliasIds />
+        <Id>dd55cce6-2110-4f11-bc7e-54f47cc49cbd</Id>
+        <IsHidden>0</IsHidden>
+        <ExternalReplicaIdentities />
+        <SuperclassDefinition>
+          <ObjectRef>
+            <ObjectId>62190113-e0dd-4f67-a306-90332976fc35</ObjectId>
+            <ClassId>c57469a4-1592-4428-b7ee-0c970e4db76a</ClassId>
+          </ObjectRef>
+        </SuperclassDefinition>
+        <Name>Project Document</Name>
+        <AllowsInstances>0</AllowsInstances>
+      </DocumentClassDefinitionProperties>
+    </DocumentClassDefinition>
+    <SubscribableClassDefinition>
+      <SubscribableClassDefinitionProperties>
+        <ObjectType>1027</ObjectType>
+        <SymbolicName>System</SymbolicName>
+        <PropertyDefinitions>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString>Customization</PropertyDefaultString>
+            <Settability>0</Settability>
+            <Name>Fusion Custom Object Type</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>99bcf921-8260-467d-b93e-7c5a8dc4759c</PrimaryId>
+            <ChoiceList>
+              <ObjectRef>
+                <ObjectId>cc5c7ffd-0b59-45bd-a3d2-d48fe5003616</ObjectId>
+                <ClassId>d32e4f70-afb2-11d2-8bd6-00e0290f729a</ClassId>
+              </ObjectRef>
+            </ChoiceList>
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>583842da-d7ee-40cf-9f80-86ab79ab81cc</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Level</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>1</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>938e2c8a-0965-409d-9205-a7113f7022f1</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Parent Code</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>ebdfcad1-1278-4b00-9738-ceea5dcf79bd</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>System No</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>a25ebad0-5211-4130-b07c-a42b84995f5f</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>255</MaximumLengthString>
+            <PropertyDefaultString />
+            <Settability>0</Settability>
+            <Name>Description</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>4f2d07f2-de5a-4b6d-8fb9-1e56dd66930f</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+          <PropertyDefinitionString>
+            <ObjectType>1077</ObjectType>
+            <MaximumLengthString>64</MaximumLengthString>
+            <Settability>0</Settability>
+            <Name>Facilities</Name>
+            <ModificationAccessRequired />
+            <ExternalAliases />
+            <IsValueRequired>0</IsValueRequired>
+            <CopyToReservation>1</CopyToReservation>
+            <IsNameProperty>0</IsNameProperty>
+            <PrimaryId>a0e1181b-0379-45fe-b265-3f77d8568181</PrimaryId>
+            <ChoiceList />
+            <AliasIds />
+            <IsHidden>0</IsHidden>
+          </PropertyDefinitionString>
+        </PropertyDefinitions>
+        <ExternalAliases />
+        <DisplayNames>
+          <LocalizedString>
+            <ObjectType>1075</ObjectType>
+            <LocalizedText>System</LocalizedText>
+            <LocaleName>en-us</LocaleName>
+          </LocalizedString>
+        </DisplayNames>
+        <ReplicationGroup />
+        <AliasIds />
+        <Id>539868ff-7ae7-4785-8b93-bbf69b865ab2</Id>
+        <IsHidden>0</IsHidden>
+        <ExternalReplicaIdentities />
+        <SuperclassDefinition>
+          <ObjectRef>
+            <ObjectId>6df312c7-20ee-498a-a042-40c2caa5c391</ObjectId>
+            <ClassId>f028e2d2-c18c-407d-a5a2-38c6d383f4bc</ClassId>
+          </ObjectRef>
+        </SuperclassDefinition>
+        <Name>System</Name>
+        <AllowsInstances>1</AllowsInstances>
+      </SubscribableClassDefinitionProperties>
+    </SubscribableClassDefinition>
+  </ClassDefinitions>
+</ExportedObjects>

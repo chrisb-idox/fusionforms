@@ -25,13 +25,16 @@ const buildDefaultValues = (schema: FormSchema) => {
     section.rows.forEach((row) =>
       row.columns.forEach((column) =>
         column.fields.forEach((field) => {
+          const boundValue = field.bindingProperty
+            ? `\${${field.bindingProperty}}`
+            : undefined;
           const fallback =
             field.type === 'checkbox'
               ? false
               : field.type === 'radio' || field.type === 'select'
                 ? ''
                 : '';
-          defaults[field.name] = field.defaultValue ?? fallback;
+          defaults[field.name] = field.defaultValue ?? boundValue ?? fallback;
         }),
       ),
     ),

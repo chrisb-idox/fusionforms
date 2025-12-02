@@ -3,16 +3,13 @@ import { AppShell, Container, Modal } from '@mantine/core';
 import { BuilderBody } from '../components/builder/BuilderBody';
 import { BuilderHeader } from '../components/builder/BuilderHeader';
 import { FormRenderer } from '../components/renderer/FormRenderer';
-import {
-  FormBuilderProvider,
-  helpers as schemaHelpers,
-  useFormBuilder,
-} from '../context/FormBuilderContext';
+import { FormBuilderProvider, useFormBuilder } from '../context/FormBuilderContext';
 import type { FormSchema } from '../types/formSchema';
 import { createId } from '../types/formSchema';
+import { createEmptySection } from '../context/formBuilderHelpers';
 
 const createInitialSchema = (): FormSchema => {
-  const section = schemaHelpers.createEmptySection('Getting started');
+  const section = createEmptySection('Getting started');
   const [firstRow] = section.rows;
   firstRow.columns[0].fields = [
     {
@@ -90,7 +87,6 @@ const BuilderContent = () => {
         <FormRenderer
           schema={schema}
           onSubmit={(values) => {
-            // eslint-disable-next-line no-console
             console.log('Form submitted', values);
             handleClosePreview();
           }}

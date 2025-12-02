@@ -1,0 +1,172 @@
+<link rel="stylesheet" type="text/css" href="$[APP_PATH]/Customization/Default/Profiles/OGDemo/WebForms/DocumentFormStyles.css" /> <html>
+
+<head>
+
+</head>
+
+<body>
+
+    <table cellSpacing=1 cellPadding=10 border="2" class="HtmlDialog_ContextTableClass">
+
+        <tbody>
+
+        <td noWrap>
+
+            <table cellpadding="2">
+
+                <tr valign=center align=center>
+
+                    <th nowrap><H2>Calculation</H2></th>
+
+                </tr>
+
+            </table>
+
+            <hr>
+
+            <table>
+
+                <td noWrap>
+
+                    <table>
+
+                        <tr valign="top" align="left">
+
+                            <td nowrap><label class="HTMLDialog_PrimaryKeyLabel">Document No</label></td>
+
+                            <td noWrap><input type="text" size=30 maxlength=40 id="__DocumentNumber" Name="__DocumentNumber" value="${DocumentNumber}"></td>
+
+                            <td nowrap><label for="__Revision" class="HTMLDialog_PrimaryKeyLabel">Rev No</label></td>
+
+                            <td noWrap><input type="text" size=5 maxlength=10 id="__Revision" Name="__Revision" value="${Revision}"></td>
+
+                            <td nowrap><label for="__CalculationType" class="HTMLDialog_PrimaryKeyLabel">Calculation Type</label></td>
+
+                            <td noWrap><input type="text" size=5 maxlength=10 id="__CalculationType" Name="__CalculationType" value="${CalculationType}" readonly></td>
+
+                        </tr>
+
+                    </table>
+
+                </td>
+
+            </table>
+
+            <hr>
+
+            <table>
+
+                <tr valign="top" align="left">
+
+                    <td nowrap>
+
+                        <label for="__RegionCode" class="HTMLDialog_Required">Region</label>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <label for="__LocationCode" class="HTMLDialog_Required">Location</label>
+
+                        &nbsp;&nbsp;&nbsp;
+
+                        <label for="__DisciplineCode" class="HTMLDialog_Required">Discipline</label>
+
+                    </td>
+
+                </tr>
+
+                <tr valign="top" align="left">
+
+                    <td nowrap>
+
+                        <input type="text" size=5 maxlength=5 id="__RegionCode" Name="__RegionCode" value="${RegionCode}" class="HtmlDialog_LookupClass">
+
+                        <label>&nbsp;&nbsp;</label>
+
+                        <input type="text" size=5 maxlength=5 id="__LocationCode" Name="__LocationCode" value="${LocationCode}" class="HtmlDialog_LookupClass">
+
+                        <label>&nbsp;&nbsp;</label>
+
+                        <input type="text" size=5 maxlength=5 id="__DisciplineCode" Name="__DisciplineCode" value="${DisciplineCode}" class="HtmlDialog_LookupClass">
+
+                        <label>&nbsp;&nbsp;</label>
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+            <table>
+
+                <td noWrap>
+
+                    <table>
+
+                        <tr valign="top" align="left">
+
+                            <td noWrap>Document Title</td>
+
+                            <td noWrap><textarea id="__DocumentTitle" Name="__DocumentTitle" rows=5 cols=108>${DocumentTitle}</textarea></td>
+
+                        </tr>
+
+                        <tr valign="top" align="left">
+
+                            <td noWrap>Volumes</td>
+
+                            <td noWrap><input type="text" size=30 maxlength=40 id="__Volumes" Name="__Volumes" value="${Volumes}"></td>
+
+                        </tr>
+
+                    </table>
+
+                </td>
+
+            </table>
+
+                <hr>
+
+                <table cellpadding="2" columns=3>
+
+                    <td nowrap>
+
+                        &nbsp;
+
+                    </td>
+
+                    <td noWrap>
+
+                        &nbsp;
+
+                    </td>
+
+                    <td nowrap>
+
+                        <font size="2">
+
+                            <font color="blue"><B>Blue</B></font> fields are required and must be unique, <B>Bold</B> fields are required entry<br>
+
+                            <font color="pink"><B>Pink</B></font> textboxes have lookups available, <font color="lightgreen"><B>Light green</B></font> textboxes have date lookup available
+
+                        </font>
+
+                    </td>
+
+                </table>
+
+        </td>
+
+        </tbody>
+
+    </table>
+
+    <div id=system_details style="visibility:hidden">
+
+        <input id="__TableName" Name="__TableName" size=8 value="${TableName}">
+
+    </div>
+
+</body>
+
+</html>
+

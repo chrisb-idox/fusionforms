@@ -1,13 +1,6 @@
 import React from 'react';
 import { ActionIcon, Card, Group, Paper, Stack, Text, ThemeIcon } from '@mantine/core';
-import type { DragEndEvent } from '@dnd-kit/core';
-import {
-  DndContext,
-  PointerSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
+import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useFormBuilder } from '../../context/FormBuilderContext';
@@ -95,22 +88,6 @@ const FieldItem = ({ field, columnId }: FieldItemProps) => {
   );
 };
 
-interface ColumnEditorProps {
-  column: ColumnSchema;
-}
-
-const ColumnEditor = ({ column }: ColumnEditorProps) => {
-  return (
-    <Stack gap="xs">
-      <SortableContext items={column.fields.map((field) => field.id)} strategy={verticalListSortingStrategy}>
-        {column.fields.map((field) => (
-          <FieldItem key={field.id} field={field} columnId={column.id} />
-        ))}
-      </SortableContext>
-    </Stack>
-  );
-};
-
 interface RowEditorProps {
   row: RowSchema;
   sectionId: string;
@@ -167,19 +144,45 @@ const RowEditor = ({ row, sectionId }: RowEditorProps) => {
       </Group>
       <Group align="flex-start" gap="sm">
         {row.columns.map((column) => (
-          <Paper
-            key={column.id}
-            style={{ flex: column.span / 4 }}
-            p="xs"
-            bg="#f8fafc"
-            radius="md"
-            withBorder
-          >
-            <ColumnEditor column={column} />
-          </Paper>
+          <ColumnEditor key={column.id} column={column} />
         ))}
       </Group>
     </Card>
+  );
+};
+
+interface ColumnEditorProps {
+  column: ColumnSchema;
+}
+
+const ColumnEditor = ({ column }: ColumnEditorProps) => {
+  const { setNodeRef, isOver } = useDroppable({
+    id: `column-${column.id}`,
+    data: { type: 'column', columnId: column.id },
+  });
+
+  return (
+    <Paper
+      ref={setNodeRef}
+      style={{ flex: column.span / 4 }}
+      p="xs"
+      bg={isOver ? '#edf2ff' : '#f8fafc'}
+      radius="md"
+      withBorder
+    >
+      <Stack gap="xs">
+        <SortableContext items={column.fields.map((field) => field.id)} strategy={verticalListSortingStrategy}>
+          {column.fields.map((field) => (
+            <FieldItem key={field.id} field={field} columnId={column.id} />
+          ))}
+        </SortableContext>
+        {column.fields.length === 0 && (
+          <Text size="xs" c="dimmed" ta="center">
+            Drag fields here
+          </Text>
+        )}
+      </Stack>
+    </Paper>
   );
 };
 
@@ -250,73 +253,31 @@ const SectionEditor = ({ section }: SectionEditorProps) => {
 };
 
 export const CanvasPanel = () => {
-  const { schema, reorderRows, reorderFields, selectElement, selection } = useFormBuilder();
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-
-    const activeType = active.data.current?.type;
-    const overType = over.data.current?.type;
-
-    if (activeType === 'row' && overType === 'row') {
-      const sectionId = active.data.current?.sectionId;
-      const overSectionId = over.data.current?.sectionId;
-      if (sectionId && sectionId === overSectionId) {
-        const section = schema.sections.find((s) => s.id === sectionId);
-        if (!section) return;
-        const oldIndex = section.rows.findIndex((row) => row.id === active.id);
-        const newIndex = section.rows.findIndex((row) => row.id === over.id);
-        if (oldIndex !== -1 && newIndex !== -1) {
-          reorderRows(sectionId, oldIndex, newIndex);
-        }
-      }
-    }
-
-    if (activeType === 'field' && overType === 'field') {
-      const columnId = active.data.current?.columnId;
-      const overColumnId = over.data.current?.columnId;
-      if (columnId && columnId === overColumnId) {
-        const column = schema.sections
-          .flatMap((section) => section.rows)
-          .flatMap((row) => row.columns)
-          .find((col) => col.id === columnId);
-        if (!column) return;
-        const oldIndex = column.fields.findIndex((field) => field.id === active.id);
-        const newIndex = column.fields.findIndex((field) => field.id === over.id);
-        if (oldIndex !== -1 && newIndex !== -1) {
-          reorderFields(columnId, oldIndex, newIndex);
-        }
-      }
-    }
-  };
+  const { schema, selectElement, selection } = useFormBuilder();
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <Stack gap="md">
-        <Card
-          withBorder
-          padding="md"
-          radius="md"
-          bg={selection?.type === 'form' ? '#eef2ff' : 'white'}
-          style={{ border: selection?.type === 'form' ? '1px solid #228be6' : undefined, cursor: 'pointer' }}
-          onClick={() => selectElement({ type: 'form', id: schema.id })}
-        >
-          <Text fw={700}>{schema.name}</Text>
-          <Text size="sm" c="dimmed">
-            {schema.description || 'Click to edit form properties.'}
-          </Text>
+    <Stack gap="md">
+      <Card
+        withBorder
+        padding="md"
+        radius="md"
+        bg={selection?.type === 'form' ? '#eef2ff' : 'white'}
+        style={{ border: selection?.type === 'form' ? '1px solid #228be6' : undefined, cursor: 'pointer' }}
+        onClick={() => selectElement({ type: 'form', id: schema.id })}
+      >
+        <Text fw={700}>{schema.name}</Text>
+        <Text size="sm" c="dimmed">
+          {schema.description || 'Click to edit form properties.'}
+        </Text>
+      </Card>
+      {schema.sections.map((section) => (
+        <SectionEditor key={section.id} section={section} />
+      ))}
+      {schema.sections.length === 0 && (
+        <Card withBorder>
+          <Text c="dimmed">No sections yet. Add one from the palette.</Text>
         </Card>
-        {schema.sections.map((section) => (
-          <SectionEditor key={section.id} section={section} />
-        ))}
-        {schema.sections.length === 0 && (
-          <Card withBorder>
-            <Text c="dimmed">No sections yet. Add one from the palette.</Text>
-          </Card>
-        )}
-      </Stack>
-    </DndContext>
+      )}
+    </Stack>
   );
 };

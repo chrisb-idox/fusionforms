@@ -1,0 +1,190 @@
+<link rel="stylesheet" type="text/css" href="$[APP_PATH]/Customization/Default/Profiles/OGDemo/WebForms/DocumentFormStyles.css" /> <html>
+<head>
+</head>
+<body>
+    <table cellSpacing=1 cellPadding=10 border="2" class="HtmlDialog_ContextTableClass">
+        <tbody>
+        <td noWrap>
+            <table cellpadding="2">
+                <tr valign=center align=center>
+                    <th nowrap><H2>Design Documents</H2></th>
+                </tr>
+            </table>
+            <hr>
+            <table>
+                <td noWrap>
+                    <table>
+                        <tr valign="top" align="left">
+                            <td nowrap><label class="HTMLDialog_PrimaryKeyLabel">Document No</label></td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=30 maxlength=40 id="__DocumentNumber" Name="__DocumentNumber" value="${DocumentNumber}" readonly></td>
+                            <td nowrap><label class="HTMLDialog_PrimaryKeyLabel">Rev No</label></td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=10 id="__Revision" Name="__Revision" value="${Revision}"></td>
+                            <td nowrap><label class="HTMLDialog_PrimaryKeyLabel">Sheet No</label></td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=10 id="__SheetNumber" Name="__SheetNumber" value="${SheetNumber}"></td>
+                        </tr>
+                    </table>
+                </td>
+            </table>
+            <hr>
+            <table>
+                <tr valign="top" align="left">
+                    <td nowrap>
+                        <label class="HTMLDialog_Required">Region</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="HTMLDialog_Required">Location</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="HTMLDialog_Required">Discipline</label>
+                        &nbsp;&nbsp;
+                    </td>
+                </tr>
+                <tr valign="top" align="left">
+                    <td nowrap>
+                        <input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__RegionCode" Name="__RegionCode" value="${RegionCode}">
+                        <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__LocationCode" Name="__LocationCode" value="${LocationCode}">
+                        <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__DisciplineCode" Name="__DisciplineCode" value="${DisciplineCode}">
+                        <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    </td>
+                </tr>
+                <tr valign="top" align="left">
+                    <td nowrap>
+                        <label class="HTMLDialog_Required">System</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="HTMLDialog_Required">Subsystem</label>
+                        &nbsp;&nbsp;
+                    </td>
+                </tr>
+                <tr valign="top" align="left">
+                    <td nowrap>
+                        <input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__SystemCode" Name="__SystemCode" value="${SystemCode}">
+                        <label>&nbsp;&nbsp;</label>
+                        <input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__SubsystemCode" Name="__SubsystemCode" value="${SubsystemCode}">
+                        <label>&nbsp;&nbsp;</label>
+                    </td>
+                </tr>
+            </table>
+
+            <table>
+                <td noWrap>
+                    <table>
+                        <tr valign="top" align="left">
+                            <td noWrap>Document Title</td>
+                            <td noWrap><textarea readonly style="background-color: #dfdfdf" id="__DocumentTitle" Name="__DocumentTitle" rows=5 cols=108>${DocumentTitle}</textarea></td>
+                        </tr>
+                    </table>
+                </td>
+            </table>
+            <table columns=2>
+                <td noWrap>
+                    <table>
+                        <tr valign="top" align="left">
+                            <td noWrap>Vendor Document No</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=30 maxlength=80 id="__VendorDocumentNumber" Name="__VendorDocumentNumber" value="${VendorDocumentNumber}"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Effectivity Status</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=10 maxlength=10 id="__EffectivityStatus" Name="__EffectivityStatus" value="${EffectivityStatus}"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Issuer</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=30 maxlength=30 id="__Issuer" Name="__Issuer" value="${Issuer}" class="HtmlDialog_UserPickerClass" data-picker-mode="User"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Reviewer</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=30 maxlength=30 id="__Reviewer" Name="__Reviewer" value="${Reviewer}" class="HtmlDialog_UserPickerClass" data-picker-mode="User"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Approver</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=30 maxlength=30 id="__Approver" Name="__Approver" value="${Approver}" class="HtmlDialog_UserPickerClass" data-picker-mode="User"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Originated By</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=30 maxlength=30 id="__OriginatedBy" Name="__OriginatedBy" value="${OriginatedBy}" class="HtmlDialog_UserPickerClass" data-picker-mode="User"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Outstanding DCR</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=10 maxlength=10 id="__OutstandingChanges" Name="__OutstandingChanges" value="${OutstandingChanges}"></td>
+                        </tr>
+                    </table>
+                </td>
+                <td noWrap>
+                    <table>
+                        <tr valign="top" align="left">
+                            <td noWrap>Vendor Code</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=10 maxlength=5 id="__VendorCode" Name="__VendorCode" value="${VendorCode}"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Effective From</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=10 maxlength=10 id="__EffectiveDate" Name="__EffectiveDate" value="${EffectiveDate}"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Issue Date</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=10 maxlength=10 id="__IssueDate" Name="__IssueDate" value="${IssueDate}"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Review Date</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=10 maxlength=10 id="__ReviewDate" Name="__ReviewDate" value="${ReviewDate}"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Approval Date</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=10 maxlength=10 id="__ApprovalDate" Name="__ApprovalDate" value="${ApprovalDate}"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Project</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=10 maxlength=20 id="__ProjectCode" Name="__ProjectCode" value="${ProjectCode}"></td>
+                        </tr>
+                        <tr valign="top" align="left">
+                            <td noWrap>Pending DCR</td>
+                            <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=10 maxlength=10 id="__PendingChanges" Name="__PendingChanges" value="${PendingChanges}"></td>
+                        </tr>
+                    </table>
+                </td>
+            </table>
+            <p>
+                <hr>
+                <table>
+                    <tr>
+                        <td nowrap><label for="__DocumentType">Doc. Type</label></td>
+                        <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__DocumentType" Name="__DocumentType" value="${DocumentType}"></td>
+                        <td noWrap>&nbsp;Doc. Status</td>
+                        <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__DocumentStatus" Name="__DocumentStatus" value="${DocumentStatus}"></td>
+                        <td noWrap>&nbsp;Media Code</td>
+                        <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__MediaCode" Name="__MediaCode" value="${MediaCode}"></td>
+                        <td noWrap>&nbsp;Doc. Format</td>
+                        <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__DocumentFormat" Name="__DocumentFormat" value="${DocumentFormat}"></td>
+                    </tr>
+                    <tr>
+                        <td noWrap>Container</td>
+                        <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__StorageContainer" Name="__StorageContainer" value="${StorageContainer}"></td>
+                        <td noWrap>&nbsp;Container BC</td>
+                        <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=15 maxlength=20 id="__ContainerBarcode" Name="__ContainerBarcode" value="${ContainerBarcode}"></td>
+                        <td noWrap>&nbsp;Item BC</td>
+                        <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=15 maxlength=20 id="__ItemBarcode" Name="__ItemBarcode" value="${ItemBarcode}"></td>
+                        <td noWrap>&nbsp;Facility</td>
+                        <td noWrap><input readonly style="background-color: #dfdfdf" type="text" size=5 maxlength=5 id="__Facility" Name="__Facility" value="${Facility}"></td>
+                    </tr>
+                </table>
+                <hr>
+                <table cellpadding="2" columns=3>
+                    <td nowrap>
+                        &nbsp;
+                    </td>
+                    <td noWrap>
+                        &nbsp;
+                    </td>
+                    <td nowrap>
+                        <font size="2">
+                            <font color="blue"><B>Blue</B></font> fields are required and must be unique, <B>Bold</B> fields are required entry<br>
+                            <font color="pink"><B>Pink</B></font> textboxes have lookups available, <font color="lightgreen"><B>Light green</B></font> textboxes have date lookup available
+                        </font>
+                    </td>
+                </table>
+        </td>
+        </tbody>
+    </table>
+    <div id=system_details style="visibility:hidden">
+        <input readonly style="background-color: #dfdfdf" id="__TableName" Name="__TableName" size=8 value="${TableName}">
+    </div>
+</body>
+</html>

@@ -1,4 +1,6 @@
 import { Card, Group, SimpleGrid, Stack, Text } from '@mantine/core';
+import { useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 import type { FieldType } from '../../types/formSchema';
 import { useFormBuilder } from '../../context/FormBuilderContext';
 
@@ -65,26 +67,17 @@ export const PalettePanel = () => {
       <Stack gap="sm">
         <Text fw={600}>Palette</Text>
         <Text size="sm" c="dimmed">
-          Choose a field type to add it to the current column.
+          Drag a field into the canvas or click to add it to the current column.
         </Text>
         <SimpleGrid cols={2} spacing="xs">
           {fieldTypes.map((item) => (
-            <Card
+            <PaletteItem
               key={item.type}
-              padding="sm"
-              withBorder
-              radius="md"
-              shadow="xs"
-              onClick={() => handleAddField(item.type)}
-              style={{ cursor: targetColumnId ? 'pointer' : 'not-allowed' }}
-            >
-              <Text size="sm" fw={600}>
-                {item.label}
-              </Text>
-              <Text size="xs" c="dimmed">
-                Click to add
-              </Text>
-            </Card>
+              label={item.label}
+              type={item.type}
+              onClick={handleAddField}
+              canAdd={Boolean(targetColumnId)}
+            />
           ))}
         </SimpleGrid>
         <Group grow>
@@ -114,6 +107,46 @@ export const PalettePanel = () => {
           </Card>
         </Group>
       </Stack>
+    </Card>
+  );
+};
+
+interface PaletteItemProps {
+  label: string;
+  type: FieldType;
+  onClick: (type: FieldType) => void;
+  canAdd: boolean;
+}
+
+const PaletteItem = ({ label, type, onClick, canAdd }: PaletteItemProps) => {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: `palette-${type}`,
+    data: { type: 'palette-field', fieldType: type },
+  });
+
+  return (
+    <Card
+      ref={setNodeRef}
+      padding="sm"
+      withBorder
+      radius="md"
+      shadow="xs"
+      {...attributes}
+      {...listeners}
+      onClick={() => canAdd && onClick(type)}
+      style={{
+        cursor: canAdd ? 'grab' : 'not-allowed',
+        transform: transform ? CSS.Translate.toString(transform) : undefined,
+        opacity: isDragging ? 0.65 : 1,
+        userSelect: 'none',
+      }}
+    >
+      <Text size="sm" fw={600}>
+        {label}
+      </Text>
+      <Text size="xs" c="dimmed">
+        Drag or click
+      </Text>
     </Card>
   );
 };

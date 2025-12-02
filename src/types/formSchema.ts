@@ -25,6 +25,7 @@ export interface FieldSchema {
   type: FieldType;
   name: string;
   label: string;
+  bindingProperty?: string;
   placeholder?: string;
   helpText?: string;
   defaultValue?: string | number | boolean;
@@ -53,9 +54,12 @@ export interface FormSchema {
   id: string;
   name: string;
   description?: string;
+  actionCode?: ActionCode;
   version: number;
   sections: SectionSchema[];
 }
+
+export type ActionCode = 'CRE' | 'AMD' | 'CO' | 'CI' | 'DF' | 'SAS' | 'QRY' | 'REC' | 'CPY';
 
 export type Selection =
   | { type: 'form'; id: string }
