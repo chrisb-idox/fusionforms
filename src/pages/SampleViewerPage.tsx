@@ -70,7 +70,8 @@ export const SampleViewerPage = () => {
       styles={{
         main: {
           background: 'transparent',
-          paddingTop: 24,
+          paddingTop: 'calc(72px + 16px)',
+          paddingBottom: 32,
         },
       }}
     >
