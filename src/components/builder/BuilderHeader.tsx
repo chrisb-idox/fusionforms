@@ -22,21 +22,14 @@ export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
   };
 
   return (
-    <Group
-      justify="space-between"
-      align="center"
-      px="md"
-      py="sm"
-      style={{
-        backdropFilter: 'blur(6px)',
-      }}
-    >
-      <Stack gap={4} style={{ flex: 1 }}>
+    <Stack px="md" py="sm" gap="xs" style={{ backdropFilter: 'blur(6px)' }}>
+      <Group gap="md" align="flex-end" wrap="wrap">
         <TextInput
           label="Form name"
           placeholder="Untitled form"
           value={schema.name}
           onChange={(event) => updateForm({ name: event.currentTarget.value })}
+          w={260}
         />
         <Select
           label="Action code"
@@ -49,12 +42,10 @@ export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
           onChange={(value) => updateForm({ actionCode: (value as typeof schema.actionCode) || undefined })}
           searchable
           nothingFoundMessage="No actions"
+          w={320}
         />
-        <Text size="sm" c="dimmed">
-          Build your sections and fields, then preview before saving.
-        </Text>
-      </Stack>
-      <Group gap="sm">
+      </Group>
+      <Group gap="sm" wrap="wrap">
         <Button component={Link} to="/samples" variant="default">
           Samples
         </Button>
@@ -63,6 +54,9 @@ export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
         </Button>
         <Button onClick={onPreview}>Preview</Button>
       </Group>
-    </Group>
+      <Text size="sm" c="dimmed">
+        Build your sections and fields, then preview before saving.
+      </Text>
+    </Stack>
   );
 };
