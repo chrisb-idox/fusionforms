@@ -79,15 +79,16 @@ const mapElementToField = (doc: Document, element: Element): FieldSchema => {
     `field_${Math.random().toString(36).slice(2, 6)}`;
   const label = getLabelForElement(doc, element) || sanitizeLabel(name);
 
-  const bindingProperty =
-    element.tagName.toLowerCase() === 'textarea'
-      ? getBindingProperty(element.textContent)
-      : getBindingProperty((element as HTMLInputElement).value);
+  const isTextarea = element.tagName.toLowerCase() === 'textarea';
+  const rawValue = isTextarea
+    ? element.textContent
+    : element.getAttribute('value') ?? (element as HTMLInputElement).value;
 
-  const defaultValue =
-    element.tagName.toLowerCase() === 'textarea'
-      ? element.textContent?.trim() || undefined
-      : (element as HTMLInputElement).value || undefined;
+  const bindingProperty = getBindingProperty(rawValue);
+
+  const defaultValue = isTextarea
+    ? element.textContent?.trim() || undefined
+    : rawValue || undefined;
 
   const placeholder = (element as HTMLInputElement).placeholder || undefined;
 
