@@ -32,9 +32,9 @@ export const createEmptyRow = (): RowSchema => ({
   columns: [
     {
       id: createId(),
-      span: 4 as 4,
+      span: 4 as const,
       fields: [],
-      nestedTables: [] as TableSchema[],
+      nestedTables: [] as const as TableSchema[],
     },
   ],
 });
@@ -56,18 +56,18 @@ export const createTableSection = (title?: string): SectionSchema => ({
       columns: [
         {
           id: createId(),
-          span: 4 as 4,
+          span: 4 as const,
           fields: [createDefaultField('text')],
-          colSpan: 1 as 1,
-          rowSpan: 1 as 1,
+          colSpan: 1 as const,
+          rowSpan: 1 as const,
           nestedTables: [],
         },
         {
           id: createId(),
-          span: 4 as 4,
+          span: 4 as const,
           fields: [createDefaultField('text')],
-          colSpan: 1 as 1,
-          rowSpan: 1 as 1,
+          colSpan: 1 as const,
+          rowSpan: 1 as const,
           nestedTables: [],
         },
       ],
@@ -84,10 +84,10 @@ export const createNestedTable = (): TableSchema => ({
       columns: [
         {
           id: createId(),
-          span: 4 as 4,
+          span: 4 as const,
           fields: [createDefaultField('text')],
-          colSpan: 1 as 1,
-          rowSpan: 1 as 1,
+          colSpan: 1 as const,
+          rowSpan: 1 as const,
           nestedTables: [],
         },
       ],

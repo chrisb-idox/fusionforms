@@ -303,7 +303,12 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
   const submit = handleSubmit(onSubmit ?? ((values) => console.log(values)));
 
   const renderTable = (rows: RowSchema[]) => (
-    <Table withRowBorders withColumnBorders highlightOnHover>
+    <Table
+      withRowBorders
+      withColumnBorders
+      highlightOnHover
+      style={{ width: '100%', tableLayout: 'auto' }}
+    >
       <Table.Tbody>
         {rows.map((row) => (
           <Table.Tr key={row.id}>

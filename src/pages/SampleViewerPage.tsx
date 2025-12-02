@@ -175,7 +175,7 @@ export const SampleViewerPage = () => {
             )}
 
             {selectedSample && (
-              <Paper withBorder radius="md" shadow="sm" p="sm">
+              <Paper withBorder radius="md" shadow="sm" p="sm" style={{ overflowX: 'auto' }}>
                 <Box
                   component="iframe"
                   src={`/samples/${selectedSample.file}`}
