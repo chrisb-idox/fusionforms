@@ -213,10 +213,12 @@ const SectionEditor = ({ section }: SectionEditorProps) => {
                 rowSpan={column.rowSpan ?? 1}
                 style={{ verticalAlign: 'top' }}
               >
-                <Stack gap="xs">
+                <Group gap="xs" align="flex-start" wrap="wrap">
                   {column.fields.map((field) => (
                     <FieldItem key={field.id} field={field} columnId={column.id} />
                   ))}
+                </Group>
+                <Stack gap="xs" pt={column.fields.length ? 'xs' : 0}>
                   {column.nestedTables?.map((nested) => (
                     <Stack key={nested.id} gap="xs" pt="xs">
                       {renderTable(nested.rows, level + 1)}

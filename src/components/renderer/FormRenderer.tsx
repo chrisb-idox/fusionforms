@@ -306,10 +306,12 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                 rowSpan={column.rowSpan ?? 1}
                 style={{ verticalAlign: 'top' }}
               >
-                <Stack gap="sm">
+                <Group gap="sm" align="flex-start" wrap="wrap">
                   {column.fields.map((field) => (
                     <FieldRenderer key={field.id} field={field} control={control} />
                   ))}
+                </Group>
+                <Stack gap="xs" pt={column.fields.length ? 'xs' : 0}>
                   {column.nestedTables?.map((nested) => (
                     <Stack key={nested.id} gap="xs">
                       {renderTable(nested.rows)}
