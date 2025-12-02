@@ -66,13 +66,23 @@ export const SampleViewerPage = () => {
     <AppShell
       padding="md"
       header={{ height: 72 }}
+      style={{ background: 'var(--page-bg)' }}
       styles={{
         main: {
           background: 'transparent',
+          paddingTop: 24,
         },
       }}
     >
-      <AppShell.Header>
+      <AppShell.Header
+        style={{
+          background: 'var(--surface)',
+          borderBottom: '1px solid var(--border)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 5,
+        }}
+      >
         <Group justify="space-between" align="center" px="md" py="sm">
           <Group gap="sm">
             <Text fw={700}>📄</Text>

@@ -61,13 +61,23 @@ const BuilderContent = () => {
       <AppShell
         padding="md"
         header={{ height: 72 }}
+        style={{ background: 'var(--page-bg)' }}
         styles={{
           main: {
             background: 'transparent',
+            paddingTop: 24,
           },
         }}
       >
-        <AppShell.Header>
+        <AppShell.Header
+          style={{
+            background: 'var(--surface)',
+            borderBottom: '1px solid var(--border)',
+            position: 'sticky',
+            top: 0,
+            zIndex: 5,
+          }}
+        >
           <BuilderHeader onPreview={() => setPreviewOpen(true)} />
         </AppShell.Header>
         <AppShell.Main>

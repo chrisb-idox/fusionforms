@@ -1,5 +1,5 @@
 :root {
-  --page-bg: linear-gradient(180deg, #f9fbff 0%, #eef2f7 100%);
+  --page-bg: #f5f7fb;
   --text-color: #0f1d2f;
   --muted: #5b6b82;
   --border: #dfe6f2;
@@ -9,7 +9,7 @@
   line-height: 1.5;
   font-weight: 400;
   color: var(--text-color);
-  background-color: #eef2f7;
+  background-color: var(--page-bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
