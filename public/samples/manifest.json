@@ -3,5 +3,40 @@
     "name": "FusionP8 Info",
     "file": "info.html",
     "description": "Overview page for Fusion for IBM FileNet P8 with benefits and features."
+  },
+  {
+    "name": "Calculation Sample",
+    "file": "calculation.html",
+    "description": "Sample layout demonstrating calculated field handling."
+  },
+  {
+    "name": "Design Sample",
+    "file": "design.html",
+    "description": "General design example with multiple fields."
+  },
+  {
+    "name": "Design CRE Sample",
+    "file": "design_CRE.html",
+    "description": "Design template for CRE action code."
+  },
+  {
+    "name": "Design DF Sample",
+    "file": "design_DF.html",
+    "description": "Design template for DF action code."
+  },
+  {
+    "name": "Design LFC Sample",
+    "file": "design_LFC.html",
+    "description": "Design template for LFC action code."
+  },
+  {
+    "name": "Design MDC Sample",
+    "file": "design_MDC.html",
+    "description": "Design template for MDC action code."
+  },
+  {
+    "name": "Design QRY Sample",
+    "file": "design_QRY.html",
+    "description": "Design template for QRY action code."
   }
 ]
