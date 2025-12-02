@@ -86,21 +86,11 @@ const FieldRenderer = ({
 }) => {
   const rules = buildRules(field);
   const bindingToken = getBindingToken(field);
-  const description =
-    field.helpText || bindingToken ? (
-      <div>
-        {field.helpText && (
-          <Text size="sm" c="dimmed">
-            {field.helpText}
-          </Text>
-        )}
-        {bindingToken && (
-          <Text size="xs" c="dimmed" fs="italic">
-            {bindingToken}
-          </Text>
-        )}
-      </div>
-    ) : undefined;
+  const description = field.helpText ? (
+    <Text size="sm" c="dimmed">
+      {field.helpText}
+    </Text>
+  ) : undefined;
   switch (field.type) {
     case 'text':
       return (

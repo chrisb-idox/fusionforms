@@ -64,7 +64,7 @@ const FieldItem = ({ field, columnId }: FieldItemProps) => {
       <Group justify="space-between" align="center">
         <Group gap="xs">
           <DragHandle {...attributes} {...listeners} />
-          <Stack gap={2}>
+          <Group gap="xs">
             <Text size="sm" fw={600}>
               {field.label || field.name}
             </Text>
@@ -73,10 +73,7 @@ const FieldItem = ({ field, columnId }: FieldItemProps) => {
                 {bindingToken}
               </Text>
             )}
-            <Text size="xs" c="dimmed">
-              {field.type}
-            </Text>
-          </Stack>
+          </Group>
         </Group>
         <ActionIcon
           variant="subtle"
