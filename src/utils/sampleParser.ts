@@ -30,6 +30,9 @@ const getLabelForElement = (doc: Document, element: Element): string | undefined
   return undefined;
 };
 
+const sanitizeLabel = (raw: string) =>
+  raw.replace(/^_+/, '').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
+
 const inferFieldType = (element: Element): FieldType => {
   if (element.tagName.toLowerCase() === 'textarea') return 'textarea';
   if (element.tagName.toLowerCase() === 'select') return 'select';
@@ -55,7 +58,7 @@ const mapElementToField = (doc: Document, element: Element): FieldSchema => {
     element.getAttribute('name') ||
     element.getAttribute('id') ||
     `field_${Math.random().toString(36).slice(2, 6)}`;
-  const label = getLabelForElement(doc, element) || name;
+  const label = getLabelForElement(doc, element) || sanitizeLabel(name);
 
   const bindingProperty =
     element.tagName.toLowerCase() === 'textarea'
@@ -91,19 +94,19 @@ const mapElementToField = (doc: Document, element: Element): FieldSchema => {
   };
 };
 
-const groupFieldsIntoRows = (fieldGroups: FieldSchema[][]): RowSchema[] => {
+const groupFieldsIntoRows = (fieldGroups: FieldSchema[][][]): RowSchema[] => {
   const rows: RowSchema[] = [];
 
   fieldGroups.forEach((group) => {
     if (group.length === 0) return;
     const span: 1 | 2 | 3 | 4 =
-      group.length <= 1 ? 4 : group.length === 2 ? 2 : 1;
+      group.length === 1 ? 4 : group.length === 2 ? 2 : group.length === 3 ? 1 : 1;
     rows.push({
       id: createId(),
-      columns: group.map((field) => ({
+      columns: group.map((fieldsInColumn) => ({
         id: createId(),
         span,
-        fields: [field],
+        fields: fieldsInColumn,
       })),
     });
   });
@@ -120,25 +123,39 @@ export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormS
 
   const tableRows = Array.from(doc.querySelectorAll('tr'));
 
-  const rowFieldGroups: FieldSchema[][] = tableRows.map((tr) =>
-    Array.from(tr.querySelectorAll('input, textarea, select')).map((el) =>
-      mapElementToField(doc, el),
-    ),
-  );
+  const rowFieldGroups: FieldSchema[][][] = tableRows
+    .map((tr) => {
+      const cells = Array.from(tr.querySelectorAll('td,th'));
+      const cellFields = cells
+        .map((cell) =>
+          Array.from(cell.querySelectorAll('input, textarea, select')).map((el) =>
+            mapElementToField(doc, el),
+          ),
+        )
+        .filter((fields) => fields.length > 0);
 
-  const rows = groupFieldsIntoRows(
-    rowFieldGroups.filter((group) => group.length > 0),
-  );
+      if (cellFields.length > 0) {
+        return cellFields as FieldSchema[][];
+      }
+
+      const directFields = Array.from(tr.querySelectorAll('input, textarea, select')).map(
+        (el) => mapElementToField(doc, el),
+      );
+      return directFields.length ? [directFields] : [];
+    })
+    .filter((group) => group.length > 0);
+
+  let rows = groupFieldsIntoRows(rowFieldGroups);
 
   if (rows.length === 0) {
     const allFields = Array.from(doc.querySelectorAll('input, textarea, select')).map((el) =>
       mapElementToField(doc, el),
     );
-    const fallbackGroups: FieldSchema[][] = [];
+    const fallbackGroups: FieldSchema[][][] = [];
     for (let i = 0; i < allFields.length; i += 2) {
-      fallbackGroups.push(allFields.slice(i, i + 2));
+      fallbackGroups.push([allFields.slice(i, i + 2)]);
     }
-    rows.push(...groupFieldsIntoRows(fallbackGroups));
+    rows = groupFieldsIntoRows(fallbackGroups);
   }
 
   const section = {
