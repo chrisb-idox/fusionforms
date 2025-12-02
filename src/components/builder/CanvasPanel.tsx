@@ -32,6 +32,7 @@ interface FieldItemProps {
 
 const FieldItem = ({ field, columnId }: FieldItemProps) => {
   const { selection, selectElement, removeField } = useFormBuilder();
+  const bindingToken = field.bindingProperty ? `\${${field.bindingProperty}}` : null;
   const sortable = useSortable({
     id: field.id,
     data: { type: 'field', columnId },
@@ -67,6 +68,11 @@ const FieldItem = ({ field, columnId }: FieldItemProps) => {
             <Text size="sm" fw={600}>
               {field.label || field.name}
             </Text>
+            {bindingToken && (
+              <Text size="xs" c="dimmed" fs="italic">
+                {bindingToken}
+              </Text>
+            )}
             <Text size="xs" c="dimmed">
               {field.type}
             </Text>

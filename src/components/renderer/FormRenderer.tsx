@@ -19,15 +19,16 @@ interface FormRendererProps {
   onSubmit?: SubmitHandler<FieldValues>;
 }
 
+const getBindingToken = (field: FieldSchema) =>
+  field.bindingProperty ? `\${${field.bindingProperty}}` : null;
+
 const buildDefaultValues = (schema: FormSchema) => {
   const defaults: Record<string, unknown> = {};
   schema.sections.forEach((section) =>
     section.rows.forEach((row) =>
       row.columns.forEach((column) =>
         column.fields.forEach((field) => {
-          const boundValue = field.bindingProperty
-            ? `\${${field.bindingProperty}}`
-            : undefined;
+          const boundValue = getBindingToken(field) || undefined;
           const fallback =
             field.type === 'checkbox'
               ? false
@@ -84,6 +85,22 @@ const FieldRenderer = ({
   control: Control<FieldValues>;
 }) => {
   const rules = buildRules(field);
+  const bindingToken = getBindingToken(field);
+  const description =
+    field.helpText || bindingToken ? (
+      <div>
+        {field.helpText && (
+          <Text size="sm" c="dimmed">
+            {field.helpText}
+          </Text>
+        )}
+        {bindingToken && (
+          <Text size="xs" c="dimmed" fs="italic">
+            {bindingToken}
+          </Text>
+        )}
+      </div>
+    ) : undefined;
   switch (field.type) {
     case 'text':
       return (
@@ -96,8 +113,17 @@ const FieldRenderer = ({
               {...controllerField}
               label={field.label}
               placeholder={field.placeholder}
-              description={field.helpText}
+              description={description}
               error={fieldState.error?.message}
+              styles={
+                bindingToken
+                  ? {
+                      input: {
+                        fontStyle: 'italic',
+                      },
+                    }
+                  : undefined
+              }
             />
           )}
         />
@@ -113,10 +139,19 @@ const FieldRenderer = ({
               {...controllerField}
               label={field.label}
               placeholder={field.placeholder}
-              description={field.helpText}
+              description={description}
               error={fieldState.error?.message}
               autosize
               minRows={3}
+              styles={
+                bindingToken
+                  ? {
+                      input: {
+                        fontStyle: 'italic',
+                      },
+                    }
+                  : undefined
+              }
             />
           )}
         />
@@ -132,8 +167,17 @@ const FieldRenderer = ({
               {...controllerField}
               label={field.label}
               placeholder={field.placeholder}
-              description={field.helpText}
+              description={description}
               error={fieldState.error?.message}
+              styles={
+                bindingToken
+                  ? {
+                      input: {
+                        fontStyle: 'italic',
+                      },
+                    }
+                  : undefined
+              }
             />
           )}
         />
@@ -149,8 +193,17 @@ const FieldRenderer = ({
               {...controllerField}
               type="date"
               label={field.label}
-              description={field.helpText}
+              description={description}
               error={fieldState.error?.message}
+              styles={
+                bindingToken
+                  ? {
+                      input: {
+                        fontStyle: 'italic',
+                      },
+                    }
+                  : undefined
+              }
             />
           )}
         />
@@ -167,8 +220,17 @@ const FieldRenderer = ({
               data={field.options || []}
               label={field.label}
               placeholder={field.placeholder}
-              description={field.helpText}
+              description={description}
               error={fieldState.error?.message}
+              styles={
+                bindingToken
+                  ? {
+                      input: {
+                        fontStyle: 'italic',
+                      },
+                    }
+                  : undefined
+              }
             />
           )}
         />
@@ -184,8 +246,15 @@ const FieldRenderer = ({
               {...controllerField}
               checked={!!controllerField.value}
               label={field.label}
-              description={field.helpText}
+              description={description}
               error={fieldState.error?.message}
+              styles={
+                bindingToken
+                  ? {
+                      label: { fontStyle: 'italic' },
+                    }
+                  : undefined
+              }
             />
           )}
         />
@@ -200,8 +269,15 @@ const FieldRenderer = ({
             <Radio.Group
               {...controllerField}
               label={field.label}
-              description={field.helpText}
+              description={description}
               error={fieldState.error?.message}
+              styles={
+                bindingToken
+                  ? {
+                      label: { fontStyle: 'italic' },
+                    }
+                  : undefined
+              }
             >
               <Stack gap={4} mt="xs">
                 {(field.options || []).map((option) => (
