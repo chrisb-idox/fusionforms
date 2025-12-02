@@ -103,6 +103,7 @@ const FieldRenderer = ({
           render={({ field: controllerField, fieldState }) => (
             <TextInput
               {...controllerField}
+              value={controllerField.value ?? bindingToken ?? ''}
               label={field.label}
               placeholder={field.placeholder}
               description={description}
@@ -129,6 +130,7 @@ const FieldRenderer = ({
           render={({ field: controllerField, fieldState }) => (
             <Textarea
               {...controllerField}
+              value={controllerField.value ?? bindingToken ?? ''}
               label={field.label}
               placeholder={field.placeholder}
               description={description}
@@ -183,6 +185,7 @@ const FieldRenderer = ({
           render={({ field: controllerField, fieldState }) => (
             <TextInput
               {...controllerField}
+              value={controllerField.value ?? bindingToken ?? ''}
               type="date"
               label={field.label}
               description={description}
