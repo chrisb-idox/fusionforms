@@ -4,21 +4,21 @@ Context for future sessions about the FusionForms Form Builder MVP (renamed from
 
 ### Current state
 - Project scaffolded via Vite React TS. Mantine provider added globally (`src/main.tsx`), and base styling adjusted (`src/index.css`, `src/App.css`).
-- Schema types live in `src/types/formSchema.ts` with helper `createId`.
-- Central state via `FormBuilderProvider` (`src/context/FormBuilderContext.tsx`) using a reducer: schema state, selection state, add/update/remove helpers, and reorder rows/fields.
-- Main page `src/pages/FormBuilderPage.tsx` wires Mantine `AppShell`, preview modal, and initial schema (one section with sample fields).
+- Schema types in `src/types/formSchema.ts` with helper `createId`; now store table layout metadata, HTML attributes, original ids/names, nested tables, and static cell HTML.
+- Central state via `FormBuilderProvider` (`src/context/FormBuilderContext.tsx`) using a reducer: schema state, selection state, add/update/remove helpers, reorder rows/fields, plus helpers to add table sections and nested tables.
+- Main page `src/pages/FormBuilderPage.tsx` wires Mantine `AppShell`, preview modal (90% width, reset default values on schema change), and initial schema. Accepts imported schemas from samples.
 - Builder UI components in `src/components/builder/`:
-  - `BuilderHeader`: form name input, action code selector, Save to localStorage (filename includes action code), Samples link, Preview button.
-  - `BuilderBody`: three-column layout (palette, canvas, properties).
-  - `PalettePanel`: buttons to add fields (type-based), rows, sections; palette items are draggable into columns.
-  - `CanvasPanel`: renders form/sections/rows/columns/fields; click to select; dnd-kit to reorder rows within a section and fields within a column; add/remove row/section/field actions; form-level card for form selection; droppable columns accept palette items to create fields.
-  - `PropertiesPanel`: edits form/section/field properties based on selection; field binding to EDMS properties.
-- Form rendering stub implemented in `src/components/renderer/FormRenderer.tsx` using react-hook-form; used in preview modal.
+  - `BuilderHeader`: form name, action code selector, Samples link, Save to localStorage, Preview, and Export HTML (pretty-printed, keeps bindings/attrs) buttons.
+  - `BuilderBody`: palette left, properties right, canvas center with sticky side panels.
+  - `PalettePanel`: add fields (draggable), rows, sections, and table sections; palette items draggable into columns.
+  - `CanvasPanel`: renders table and stack sections; click to select; dnd-kit reorder rows/fields; add/remove actions; droppable columns accept palette items; nested tables supported; static cell HTML preserved.
+  - `PropertiesPanel`: edits form/section/field properties with EDMS binding support.
+- Form renderer (`src/components/renderer/FormRenderer.tsx`) mirrors table layouts and nested tables; shows bindings inside fields; uses react-hook-form; used in preview modal. Sample viewer can load samples into the builder via HTML parsing.
 
 ### Outstanding / risks
 - Node version warning: current Node 18.19.1 while Vite 7 expects >=20.19. Upgrade Node to avoid engine warnings.
 - Palette drag-to-canvas implemented but could be expanded (e.g., drop position within column).
-- No persistence beyond optional localStorage save (manual); save filename uses action code suffix.
+- No persistence beyond optional localStorage save (manual); save filename uses action code suffix; HTML export available but not auto-saved.
 - Validation rules beyond basic wiring not exposed in UI.
 
 ### How to run

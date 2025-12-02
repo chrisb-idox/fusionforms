@@ -1,12 +1,14 @@
 import { createContext, useContext, useMemo, useReducer } from 'react';
 import type { ReactNode } from 'react';
 import type {
+  ColumnSchema,
   FieldSchema,
   FieldType,
   FormSchema,
   RowSchema,
   SectionSchema,
   Selection,
+  TableSchema,
 } from '../types/formSchema';
 import {
   createDefaultField,
@@ -69,6 +71,31 @@ const reorder = <T,>(items: T[], from: number, to: number) => {
   return next;
 };
 
+function mapColumnsDeep(
+  columns: ColumnSchema[],
+  updater: (column: ColumnSchema) => ColumnSchema,
+): ColumnSchema[] {
+  return columns.map((column) => {
+    const updated = updater(column);
+    const nestedTables: TableSchema[] | undefined = column.nestedTables?.map((table) => ({
+      ...table,
+      rows: mapRowsDeep(table.rows, updater),
+    }));
+
+    return nestedTables ? { ...updated, nestedTables } : updated;
+  });
+}
+
+function mapRowsDeep(
+  rows: RowSchema[],
+  updater: (column: ColumnSchema) => ColumnSchema,
+): RowSchema[] {
+  return rows.map((row) => ({
+    ...row,
+    columns: mapColumnsDeep(row.columns, updater),
+  }));
+}
+
 const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
   switch (action.type) {
     case 'setSchema':
@@ -96,7 +123,7 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
           ...state.schema,
           sections: state.schema.sections.map((section) => ({
             ...section,
-            rows: section.rows.map((row) =>
+            rows: mapRowsDeep(section.rows, (column) => column).map((row) =>
               row.id === action.payload.id ? { ...row, ...action.payload.data } : row,
             ),
           })),
@@ -109,16 +136,11 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
           ...state.schema,
           sections: state.schema.sections.map((section) => ({
             ...section,
-            rows: section.rows.map((row) => ({
-              ...row,
-              columns: row.columns.map((column) => ({
-                ...column,
-                fields: column.fields.map((field) =>
-                  field.id === action.payload.id
-                    ? { ...field, ...action.payload.data }
-                    : field,
-                ),
-              })),
+            rows: mapRowsDeep(section.rows, (column) => ({
+              ...column,
+              fields: column.fields.map((field) =>
+                field.id === action.payload.id ? { ...field, ...action.payload.data } : field,
+              ),
             })),
           })),
         },
@@ -158,17 +180,14 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
           ...state.schema,
           sections: state.schema.sections.map((section) => ({
             ...section,
-            rows: section.rows.map((row) => ({
-              ...row,
-              columns: row.columns.map((column) =>
-                column.id === action.payload.columnId
-                  ? {
-                      ...column,
-                      nestedTables: [...(column.nestedTables || []), createNestedTable()],
-                    }
-                  : column,
-              ),
-            })),
+            rows: mapRowsDeep(section.rows, (column) =>
+              column.id === action.payload.columnId
+                ? {
+                    ...column,
+                    nestedTables: [...(column.nestedTables || []), createNestedTable()],
+                  }
+                : column,
+            ),
           })),
         },
       };
@@ -179,17 +198,14 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
           ...state.schema,
           sections: state.schema.sections.map((section) => ({
             ...section,
-            rows: section.rows.map((row) => ({
-              ...row,
-              columns: row.columns.map((column) =>
-                column.id === action.payload.columnId
-                  ? {
-                      ...column,
-                      fields: [...column.fields, createDefaultField(action.payload.type)],
-                    }
-                  : column,
-              ),
-            })),
+            rows: mapRowsDeep(section.rows, (column) =>
+              column.id === action.payload.columnId
+                ? {
+                    ...column,
+                    fields: [...column.fields, createDefaultField(action.payload.type)],
+                  }
+                : column,
+            ),
           })),
         },
       };
@@ -225,12 +241,9 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
           ...state.schema,
           sections: state.schema.sections.map((section) => ({
             ...section,
-            rows: section.rows.map((row) => ({
-              ...row,
-              columns: row.columns.map((column) => ({
-                ...column,
-                fields: column.fields.filter((field) => field.id !== action.payload.id),
-              })),
+            rows: mapRowsDeep(section.rows, (column) => ({
+              ...column,
+              fields: column.fields.filter((field) => field.id !== action.payload.id),
             })),
           })),
         },
@@ -259,21 +272,14 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
           ...state.schema,
           sections: state.schema.sections.map((section) => ({
             ...section,
-            rows: section.rows.map((row) => ({
-              ...row,
-              columns: row.columns.map((column) =>
-                column.id === action.payload.columnId
-                  ? {
-                      ...column,
-                      fields: reorder(
-                        column.fields,
-                        action.payload.from,
-                        action.payload.to,
-                      ),
-                    }
-                  : column,
-              ),
-            })),
+            rows: mapRowsDeep(section.rows, (column) =>
+              column.id === action.payload.columnId
+                ? {
+                    ...column,
+                    fields: reorder(column.fields, action.payload.from, action.payload.to),
+                  }
+                : column,
+            ),
           })),
         },
       };

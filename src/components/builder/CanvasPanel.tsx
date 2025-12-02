@@ -4,7 +4,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useFormBuilder } from '../../context/FormBuilderContext';
-import type { ColumnSchema, FieldSchema, RowSchema, SectionSchema } from '../../types/formSchema';
+import type { ColumnSchema, FieldSchema, RowSchema, SectionSchema, TableSchema } from '../../types/formSchema';
 
 const DragHandle = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
@@ -174,7 +174,10 @@ const ColumnEditor = ({ column }: ColumnEditorProps) => {
       withBorder
     >
       <Stack gap="xs">
-        <SortableContext items={column.fields.map((field) => field.id)} strategy={verticalListSortingStrategy}>
+        <SortableContext
+          items={column.fields.map((field) => field.id)}
+          strategy={verticalListSortingStrategy}
+        >
           {column.fields.map((field) => (
             <FieldItem key={field.id} field={field} columnId={column.id} />
           ))}
@@ -189,14 +192,12 @@ const ColumnEditor = ({ column }: ColumnEditorProps) => {
   );
 };
 
-interface SectionEditorProps {
-  section: SectionSchema;
+interface TableCellProps {
+  column: ColumnSchema;
 }
 
-const SectionEditor = ({ section }: SectionEditorProps) => {
-  const { selection, selectElement, addRow, removeSection, addNestedTable } = useFormBuilder();
-
-  const renderTable = (rows: RowSchema[], level = 0) => (
+function TableRenderer({ table }: { table: TableSchema }) {
+  return (
     <Table
       withRowBorders
       withColumnBorders
@@ -204,52 +205,83 @@ const SectionEditor = ({ section }: SectionEditorProps) => {
       style={{ background: 'white', borderRadius: 8, overflow: 'hidden' }}
     >
       <Table.Tbody>
-        {rows.map((row) => (
+        {table.rows.map((row) => (
           <Table.Tr key={row.id}>
             {row.columns.map((column) => (
-              <Table.Td
-                key={column.id}
-                colSpan={column.colSpan ?? 1}
-                rowSpan={column.rowSpan ?? 1}
-                style={{ verticalAlign: 'top' }}
-              >
-                <Group gap="xs" align="flex-start" wrap="wrap">
-                  {column.fields.map((field) => (
-                    <FieldItem key={field.id} field={field} columnId={column.id} />
-                  ))}
-                </Group>
-                {column.staticHtml && (
-                  <div
-                    style={{ fontSize: 13, color: '#475569' }}
-                    dangerouslySetInnerHTML={{ __html: column.staticHtml }}
-                  />
-                )}
-                <Stack gap="xs" pt={column.fields.length ? 'xs' : 0}>
-                  {column.nestedTables?.map((nested) => (
-                    <Stack key={nested.id} gap="xs" pt="xs">
-                      {renderTable(nested.rows, level + 1)}
-                    </Stack>
-                  ))}
-                </Stack>
-                <ActionIcon
-                  variant="subtle"
-                  color="blue"
-                  size="sm"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    addNestedTable(column.id);
-                  }}
-                  title="Add nested table"
-                >
-                  +
-                </ActionIcon>
-              </Table.Td>
+              <TableCell key={column.id} column={column} />
             ))}
           </Table.Tr>
         ))}
       </Table.Tbody>
     </Table>
   );
+}
+
+function TableCell({ column }: TableCellProps) {
+  const { addNestedTable } = useFormBuilder();
+  const { setNodeRef, isOver } = useDroppable({
+    id: `column-${column.id}`,
+    data: { type: 'column', columnId: column.id },
+  });
+
+  return (
+    <Table.Td
+      ref={setNodeRef}
+      colSpan={column.colSpan ?? 1}
+      rowSpan={column.rowSpan ?? 1}
+      style={{
+        verticalAlign: 'top',
+        backgroundColor: isOver ? '#edf2ff' : undefined,
+      }}
+    >
+      <SortableContext
+        items={column.fields.map((field) => field.id)}
+        strategy={verticalListSortingStrategy}
+      >
+        <Group gap="xs" align="flex-start" wrap="wrap">
+          {column.fields.map((field) => (
+            <FieldItem key={field.id} field={field} columnId={column.id} />
+          ))}
+        </Group>
+      </SortableContext>
+
+      {column.staticHtml && (
+        <div
+          style={{ fontSize: 13, color: '#475569' }}
+          dangerouslySetInnerHTML={{ __html: column.staticHtml }}
+        />
+      )}
+
+      <Stack gap="xs" pt={column.fields.length ? 'xs' : 0}>
+        {column.nestedTables?.map((nested) => (
+          <Stack key={nested.id} gap="xs" pt="xs">
+            <TableRenderer table={nested} />
+          </Stack>
+        ))}
+      </Stack>
+
+      <ActionIcon
+        variant="subtle"
+        color="blue"
+        size="sm"
+        onClick={(event) => {
+          event.stopPropagation();
+          addNestedTable(column.id);
+        }}
+        title="Add nested table"
+      >
+        +
+      </ActionIcon>
+    </Table.Td>
+  );
+}
+
+interface SectionEditorProps {
+  section: SectionSchema;
+}
+
+const SectionEditor = ({ section }: SectionEditorProps) => {
+  const { selection, selectElement, addRow, removeSection } = useFormBuilder();
 
   return (
     <Card
@@ -281,7 +313,13 @@ const SectionEditor = ({ section }: SectionEditorProps) => {
       </Group>
 
       {section.layout === 'table' ? (
-        renderTable(section.rows)
+        <TableRenderer
+          table={{
+            id: section.id,
+            rows: section.rows,
+            tableAttributes: section.tableAttributes,
+          }}
+        />
       ) : (
         <SortableContext
           items={section.rows.map((row) => row.id)}

@@ -1,7 +1,7 @@
 import { Card, Divider, Select, Stack, Text, TextInput, Textarea } from '@mantine/core';
 import { useMemo } from 'react';
 import { useFormBuilder } from '../../context/FormBuilderContext';
-import type { FieldSchema, SectionSchema } from '../../types/formSchema';
+import type { ColumnSchema, FieldSchema, SectionSchema } from '../../types/formSchema';
 import { edmsProperties } from '../../data/edmsProperties';
 
 export const PropertiesPanel = () => {
@@ -13,12 +13,34 @@ export const PropertiesPanel = () => {
   }, [schema.sections, selection]);
 
   const selectedField = useMemo<FieldSchema | undefined>(() => {
-    if (selection?.type !== 'field') return undefined;
-    return schema.sections
-      .flatMap((section) => section.rows)
-      .flatMap((row) => row.columns)
-      .flatMap((column) => column.fields)
-      .find((field) => field.id === selection.id);
+    if (!selection || selection.type !== 'field') return undefined;
+    const fieldId = selection.id;
+    function findFieldInColumns(columns: ColumnSchema[]): FieldSchema | undefined {
+      for (const column of columns) {
+        const direct = column.fields.find((field) => field.id === fieldId);
+        if (direct) return direct;
+        for (const nested of column.nestedTables || []) {
+          const nestedMatch = findFieldInRows(nested.rows);
+          if (nestedMatch) return nestedMatch;
+        }
+      }
+      return undefined;
+    }
+
+    function findFieldInRows(rows: SectionSchema['rows']): FieldSchema | undefined {
+      for (const row of rows) {
+        const match = findFieldInColumns(row.columns);
+        if (match) return match;
+      }
+      return undefined;
+    }
+
+    for (const section of schema.sections) {
+      const match = findFieldInRows(section.rows);
+      if (match) return match;
+    }
+
+    return undefined;
   }, [schema.sections, selection]);
 
   return (

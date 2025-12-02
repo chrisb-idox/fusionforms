@@ -8,6 +8,38 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { useFormBuilder } from '../../context/FormBuilderContext';
+import type { ColumnSchema, SectionSchema } from '../../types/formSchema';
+
+const findColumnById = (
+  sections: SectionSchema[],
+  columnId: string,
+): ColumnSchema | undefined => {
+  function searchColumns(columns: ColumnSchema[]): ColumnSchema | undefined {
+    for (const column of columns) {
+      if (column.id === columnId) return column;
+      for (const nested of column.nestedTables || []) {
+        const nestedMatch = searchRows(nested.rows);
+        if (nestedMatch) return nestedMatch;
+      }
+    }
+    return undefined;
+  }
+
+  function searchRows(rows: SectionSchema['rows']): ColumnSchema | undefined {
+    for (const row of rows) {
+      const match = searchColumns(row.columns);
+      if (match) return match;
+    }
+    return undefined;
+  }
+
+  for (const section of sections) {
+    const match = searchRows(section.rows);
+    if (match) return match;
+  }
+
+  return undefined;
+};
 import { CanvasPanel } from './CanvasPanel';
 import { PalettePanel } from './PalettePanel';
 import { PropertiesPanel } from './PropertiesPanel';
@@ -43,10 +75,7 @@ export const BuilderBody = () => {
       const columnId = active.data.current?.columnId;
       const overColumnId = over.data.current?.columnId;
       if (columnId && columnId === overColumnId) {
-        const column = schema.sections
-          .flatMap((section) => section.rows)
-          .flatMap((row) => row.columns)
-          .find((col) => col.id === columnId);
+        const column = findColumnById(schema.sections, columnId);
         if (!column) return;
         const oldIndex = column.fields.findIndex((field) => field.id === active.id);
         const newIndex = column.fields.findIndex((field) => field.id === over.id);
