@@ -283,12 +283,13 @@ export const PropertiesPanel = () => {
                   ref={editorRef}
                   contentEditable
                   suppressContentEditableWarning
+                  dir="ltr"
                   style={{
                     minHeight: 120,
                     outline: 'none',
                     lineHeight: 1.5,
                     direction: 'ltr',
-                    unicodeBidi: 'plaintext',
+                    unicodeBidi: 'normal',
                     whiteSpace: 'pre-wrap',
                     textAlign: 'left',
                   }}

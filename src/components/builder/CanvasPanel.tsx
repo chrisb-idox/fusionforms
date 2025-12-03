@@ -119,7 +119,7 @@ const StaticBlockItem = ({ block }: StaticBlockProps) => {
             fontSize: 13,
             color: '#475569',
             direction: 'ltr',
-            unicodeBidi: 'plaintext',
+            unicodeBidi: 'normal',
             whiteSpace: 'pre-wrap',
             textAlign: 'left',
           }}
