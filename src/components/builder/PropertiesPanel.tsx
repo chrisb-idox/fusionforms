@@ -289,7 +289,7 @@ export const PropertiesPanel = () => {
                     outline: 'none',
                     lineHeight: 1.5,
                     direction: 'ltr',
-                    unicodeBidi: 'normal',
+                    unicodeBidi: 'bidi-override',
                     whiteSpace: 'pre-wrap',
                     textAlign: 'left',
                   }}
