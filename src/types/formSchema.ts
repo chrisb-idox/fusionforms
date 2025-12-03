@@ -68,6 +68,9 @@ export interface FormSchema {
   actionCode?: ActionCode;
   version: number;
   sections: SectionSchema[];
+  originalHtml?: string;
+  originalHeadHtml?: string;
+  originalBodyHtml?: string;
 }
 
 export type ActionCode = 'CRE' | 'AMD' | 'CO' | 'CI' | 'DF' | 'SAS' | 'QRY' | 'REC' | 'CPY';

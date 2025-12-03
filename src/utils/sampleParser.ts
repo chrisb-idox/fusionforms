@@ -168,12 +168,20 @@ export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormS
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
 
+  const originalHeadHtml = doc.head?.innerHTML?.trim() || undefined;
+  const originalBodyHtml = doc.body?.innerHTML?.trim() || undefined;
+  const titleText = doc.querySelector('title')?.textContent?.trim();
   const headingText =
-    doc.querySelector('h1,h2,h3')?.textContent?.trim() || sampleName || 'Imported sample';
+    doc.querySelector('h1,h2,h3')?.textContent?.trim() ||
+    titleText ||
+    sampleName ||
+    'Imported sample';
 
   const tables = Array.from(doc.querySelectorAll('table')).filter(
     (table) => !table.parentElement?.closest('table'),
   );
+
+  const allFields = Array.from(doc.querySelectorAll('input, textarea, select'));
 
   const sections: SectionSchema[] =
     tables.length > 0
@@ -189,15 +197,13 @@ export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormS
         })
       : [];
 
-  if (sections.length === 0) {
-    const allFields = Array.from(doc.querySelectorAll('input, textarea, select')).map((el) =>
-      mapElementToField(doc, el),
-    );
+  if (sections.length === 0 && allFields.length > 0) {
+    const parsedFields = allFields.map((el) => mapElementToField(doc, el));
     const fallbackRows: RowSchema[] = [];
-    for (let i = 0; i < allFields.length; i += 2) {
+    for (let i = 0; i < parsedFields.length; i += 2) {
       fallbackRows.push({
         id: createId(),
-        columns: allFields.slice(i, i + 2).map((field) => ({
+        columns: parsedFields.slice(i, i + 2).map((field) => ({
           id: createId(),
           span: 2,
           fields: [field],
@@ -218,5 +224,8 @@ export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormS
     description: `Imported from sample: ${sampleName}`,
     version: 1,
     sections,
+    originalHtml: html.trim() || undefined,
+    originalHeadHtml,
+    originalBodyHtml,
   };
 };

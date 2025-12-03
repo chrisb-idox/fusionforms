@@ -181,6 +181,24 @@ const renderSectionLines = (section: SectionSchema, level: number): string[] => 
 };
 
 export const schemaToHtml = (schema: FormSchema) => {
+  if (schema.sections.length === 0 && schema.originalHtml) {
+    return schema.originalHtml;
+  }
+
+  if (schema.sections.length === 0 && schema.originalBodyHtml) {
+    const headContent = schema.originalHeadHtml ? `\n    ${schema.originalHeadHtml.trim()}` : '';
+    return `<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />${headContent}
+    <title>${encodeHtml(schema.name)}</title>
+  </head>
+  <body>
+${schema.originalBodyHtml}
+  </body>
+</html>`;
+  }
+
   const bodyLines = schema.sections
     .flatMap((section) => renderSectionLines(section, 1))
     .join('\n');

@@ -302,6 +302,11 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
   }, [schema, reset]);
   const submit = handleSubmit(onSubmit ?? ((values) => console.log(values)));
 
+  const hasStaticDocument = Boolean(schema.originalBodyHtml && schema.sections.length === 0);
+  const hasAnyFields = schema.sections.some((section) =>
+    section.rows.some((row) => row.columns.some((column) => column.fields.length > 0)),
+  );
+
   const renderTable = (rows: RowSchema[]) => (
     <Table
       withRowBorders
@@ -348,27 +353,42 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
   return (
     <form onSubmit={submit}>
       <Stack gap="lg">
-        {schema.sections.map((section) => (
-          <Stack key={section.id} gap="md">
-            <Text fw={700}>{section.title}</Text>
-            {section.layout === 'table'
-              ? renderTable(section.rows)
-              : section.rows.map((row) => (
-                  <Group key={row.id} align="flex-start" gap="md">
-                    {row.columns.map((column) => (
-                      <Stack key={column.id} gap="md" style={{ flex: column.span / 4 }}>
-                        {column.fields.map((field) => (
-                          <FieldRenderer key={field.id} field={field} control={control} />
-                        ))}
-                      </Stack>
-                    ))}
-                  </Group>
-                ))}
-          </Stack>
-        ))}
-        <Group justify="flex-end">
-          <Button type="submit">Submit</Button>
-        </Group>
+        {hasStaticDocument ? (
+          <>
+            {schema.originalHeadHtml && (
+              <div
+                aria-hidden
+                style={{ display: 'contents' }}
+                dangerouslySetInnerHTML={{ __html: schema.originalHeadHtml }}
+              />
+            )}
+            <div dangerouslySetInnerHTML={{ __html: schema.originalBodyHtml || '' }} />
+          </>
+        ) : (
+          schema.sections.map((section) => (
+            <Stack key={section.id} gap="md">
+              <Text fw={700}>{section.title}</Text>
+              {section.layout === 'table'
+                ? renderTable(section.rows)
+                : section.rows.map((row) => (
+                    <Group key={row.id} align="flex-start" gap="md">
+                      {row.columns.map((column) => (
+                        <Stack key={column.id} gap="md" style={{ flex: column.span / 4 }}>
+                          {column.fields.map((field) => (
+                            <FieldRenderer key={field.id} field={field} control={control} />
+                          ))}
+                        </Stack>
+                      ))}
+                    </Group>
+                  ))}
+            </Stack>
+          ))
+        )}
+        {hasAnyFields && (
+          <Group justify="flex-end">
+            <Button type="submit">Submit</Button>
+          </Group>
+        )}
       </Stack>
     </form>
   );

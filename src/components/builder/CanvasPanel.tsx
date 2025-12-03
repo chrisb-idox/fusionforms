@@ -356,6 +356,7 @@ const SectionEditor = ({ section }: SectionEditorProps) => {
 
 export const CanvasPanel = () => {
   const { schema, selectElement, selection } = useFormBuilder();
+  const hasStaticDocument = Boolean(schema.originalBodyHtml && schema.sections.length === 0);
 
   return (
     <Stack gap="md">
@@ -375,7 +376,25 @@ export const CanvasPanel = () => {
       {schema.sections.map((section) => (
         <SectionEditor key={section.id} section={section} />
       ))}
-      {schema.sections.length === 0 && (
+      {hasStaticDocument && (
+        <Card withBorder padding="md" radius="md">
+          <Stack gap="sm">
+            <Text fw={600}>Imported static content</Text>
+            {schema.originalHeadHtml && (
+              <div
+                aria-hidden
+                style={{ display: 'contents' }}
+                dangerouslySetInnerHTML={{ __html: schema.originalHeadHtml }}
+              />
+            )}
+            <div dangerouslySetInnerHTML={{ __html: schema.originalBodyHtml || '' }} />
+            <Text size="sm" c="dimmed">
+              This sample only contains static HTML. Export will return the original markup unless you add sections.
+            </Text>
+          </Stack>
+        </Card>
+      )}
+      {!hasStaticDocument && schema.sections.length === 0 && (
         <Card withBorder>
           <Text c="dimmed">No sections yet. Add one from the palette.</Text>
         </Card>
