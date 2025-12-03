@@ -19,6 +19,12 @@ const bindingToken = (field: FieldSchema) =>
 
 const indentLine = (line: string, level: number) => `${'  '.repeat(level)}${line}`;
 
+const indentBlock = (block: string, level: number) =>
+  block
+    .split('\n')
+    .map((line) => indentLine(line.trimEnd(), level))
+    .join('\n');
+
 const renderFieldLines = (field: FieldSchema, level: number) => {
   const attrs = { ...(field.htmlAttributes || {}) };
   attrs.id = field.originalId || attrs.id || field.name;
@@ -185,23 +191,34 @@ export const schemaToHtml = (schema: FormSchema) => {
     return schema.originalHtml;
   }
 
-  if (schema.sections.length === 0 && schema.originalBodyHtml) {
-    const headContent = schema.originalHeadHtml ? `\n    ${schema.originalHeadHtml.trim()}` : '';
+  const generatedBody = schema.sections
+    .flatMap((section) => renderSectionLines(section, 1))
+    .join('\n');
+
+  if (schema.originalBodyHtml) {
+    const headContent = schema.originalHeadHtml
+      ? indentBlock(schema.originalHeadHtml.trim(), 2)
+      : indentBlock(
+          `<meta charset="UTF-8" />\n<title>${encodeHtml(schema.name)}</title>`,
+          2,
+        );
+
+    const bodyContent = [schema.originalBodyHtml.trim(), generatedBody]
+      .filter(Boolean)
+      .join('\n');
+
     return `<!doctype html>
 <html>
   <head>
-    <meta charset="UTF-8" />${headContent}
-    <title>${encodeHtml(schema.name)}</title>
+${headContent}
   </head>
   <body>
-${schema.originalBodyHtml}
+${bodyContent}
   </body>
 </html>`;
   }
 
-  const bodyLines = schema.sections
-    .flatMap((section) => renderSectionLines(section, 1))
-    .join('\n');
+  const bodyLines = generatedBody;
 
   return `<!doctype html>
 <html>

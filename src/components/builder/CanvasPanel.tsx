@@ -356,7 +356,7 @@ const SectionEditor = ({ section }: SectionEditorProps) => {
 
 export const CanvasPanel = () => {
   const { schema, selectElement, selection } = useFormBuilder();
-  const hasStaticDocument = Boolean(schema.originalBodyHtml && schema.sections.length === 0);
+  const hasStaticDocument = Boolean(schema.originalBodyHtml);
 
   return (
     <Stack gap="md">
@@ -389,7 +389,7 @@ export const CanvasPanel = () => {
             )}
             <div dangerouslySetInnerHTML={{ __html: schema.originalBodyHtml || '' }} />
             <Text size="sm" c="dimmed">
-              This sample only contains static HTML. Export will return the original markup unless you add sections.
+              This sample includes static HTML from the original file. Export will include it alongside any sections you add.
             </Text>
           </Stack>
         </Card>
