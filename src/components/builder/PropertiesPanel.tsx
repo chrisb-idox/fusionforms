@@ -105,14 +105,30 @@ export const PropertiesPanel = () => {
     const node = textAreaRef.current;
     if (!node) return;
     const { selectionStart, selectionEnd, value } = node;
-    const selected = value.slice(selectionStart, selectionEnd) || 'Text';
-    const nextValue =
-      value.slice(0, selectionStart) + before + selected + after + value.slice(selectionEnd);
+
+    let start = selectionStart;
+    let end = selectionEnd;
+
+    if (start === end) {
+      const prevSpace = value.lastIndexOf(' ', Math.max(0, start - 1));
+      const nextSpace = value.indexOf(' ', start);
+      start = prevSpace === -1 ? 0 : prevSpace + 1;
+      end = nextSpace === -1 ? value.length : nextSpace;
+    }
+
+    if (start === end) {
+      start = 0;
+      end = value.length;
+    }
+
+    const selected = value.slice(start, end);
+    const nextValue = value.slice(0, start) + before + selected + after + value.slice(end);
     commitStatic(nextValue);
+
     setTimeout(() => {
       const offset = before.length;
       node.focus();
-      node.setSelectionRange(selectionStart + offset, selectionStart + offset + selected.length);
+      node.setSelectionRange(start + offset, start + offset + selected.length);
     }, 0);
   };
 
