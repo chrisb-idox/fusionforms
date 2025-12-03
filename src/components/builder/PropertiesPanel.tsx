@@ -300,6 +300,15 @@ export const PropertiesPanel = () => {
                 onChange={(event) => commitStatic(event.currentTarget.value)}
                 styles={{ input: { fontFamily: 'monospace' } }}
               />
+              <Card withBorder padding="sm" radius="md">
+                <Text size="xs" c="dimmed" mb={4}>
+                  Preview
+                </Text>
+                <div
+                  style={{ lineHeight: 1.6 }}
+                  dangerouslySetInnerHTML={{ __html: staticHtml }}
+                />
+              </Card>
               <Text size="xs" c="dimmed">
                 Static blocks render as HTML in exports, similar to imported sample text.
               </Text>
