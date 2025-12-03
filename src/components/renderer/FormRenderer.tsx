@@ -302,7 +302,7 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
   }, [schema, reset]);
   const submit = handleSubmit(onSubmit ?? ((values) => console.log(values)));
 
-  const hasStaticDocument = Boolean(schema.originalBodyHtml);
+  const hasStaticDocument = Boolean(schema.originalBodyHtml && schema.sections.length === 0);
   const hasAnyFields = schema.sections.some((section) =>
     section.rows.some((row) => row.columns.some((column) => column.fields.length > 0)),
   );

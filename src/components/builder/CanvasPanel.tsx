@@ -412,7 +412,7 @@ const SectionEditor = ({ section }: SectionEditorProps) => {
 
 export const CanvasPanel = () => {
   const { schema, selectElement, selection } = useFormBuilder();
-  const hasStaticDocument = Boolean(schema.originalBodyHtml);
+  const hasStaticDocument = Boolean(schema.originalBodyHtml && schema.sections.length === 0);
 
   return (
     <Stack gap="md">

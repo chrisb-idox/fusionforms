@@ -214,7 +214,7 @@ export const schemaToHtml = (schema: FormSchema) => {
     .flatMap((section) => renderSectionLines(section, 1))
     .join('\n');
 
-  if (schema.originalBodyHtml) {
+  if (schema.sections.length === 0 && schema.originalBodyHtml) {
     const headContent = schema.originalHeadHtml
       ? indentBlock(schema.originalHeadHtml.trim(), 2)
       : indentBlock(
