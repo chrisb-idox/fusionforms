@@ -332,7 +332,6 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                       color: '#475569',
                       marginBottom: 4,
                       direction: 'ltr',
-                      unicodeBidi: 'bidi-override',
                       whiteSpace: 'pre-wrap',
                       textAlign: 'left',
                     }}
@@ -396,7 +395,6 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                                 fontSize: 13,
                                 color: '#475569',
                                 direction: 'ltr',
-                                unicodeBidi: 'bidi-override',
                                 whiteSpace: 'pre-wrap',
                                 textAlign: 'left',
                               }}
