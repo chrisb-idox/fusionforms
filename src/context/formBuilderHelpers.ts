@@ -3,6 +3,7 @@ import type {
   FieldType,
   RowSchema,
   SectionSchema,
+  StaticBlockSchema,
   TableSchema,
 } from '../types/formSchema';
 import { createId } from '../types/formSchema';
@@ -27,6 +28,12 @@ export const createDefaultField = (type: FieldType = 'text'): FieldSchema => {
   };
 };
 
+export const createStaticBlock = (html?: string): StaticBlockSchema => ({
+  id: createId(),
+  html: html || '<p>New text</p>',
+  label: 'Static text',
+});
+
 export const createEmptyRow = (): RowSchema => ({
   id: createId(),
   columns: [
@@ -34,6 +41,7 @@ export const createEmptyRow = (): RowSchema => ({
       id: createId(),
       span: 4 as const,
       fields: [],
+      staticBlocks: [],
       nestedTables: [] as const as TableSchema[],
     },
   ],
@@ -58,6 +66,7 @@ export const createTableSection = (title?: string): SectionSchema => ({
           id: createId(),
           span: 4 as const,
           fields: [createDefaultField('text')],
+          staticBlocks: [],
           colSpan: 1 as const,
           rowSpan: 1 as const,
           nestedTables: [],
@@ -66,6 +75,7 @@ export const createTableSection = (title?: string): SectionSchema => ({
           id: createId(),
           span: 4 as const,
           fields: [createDefaultField('text')],
+          staticBlocks: [],
           colSpan: 1 as const,
           rowSpan: 1 as const,
           nestedTables: [],
@@ -86,6 +96,7 @@ export const createNestedTable = (): TableSchema => ({
           id: createId(),
           span: 4 as const,
           fields: [createDefaultField('text')],
+          staticBlocks: [],
           colSpan: 1 as const,
           rowSpan: 1 as const,
           nestedTables: [],

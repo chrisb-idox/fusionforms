@@ -20,6 +20,12 @@ export interface FieldOption {
   value: string;
 }
 
+export interface StaticBlockSchema {
+  id: string;
+  html: string;
+  label?: string;
+}
+
 export interface FieldSchema {
   id: string;
   type: FieldType;
@@ -40,6 +46,7 @@ export interface ColumnSchema {
   id: string;
   span: 1 | 2 | 3 | 4;
   fields: FieldSchema[];
+  staticBlocks?: StaticBlockSchema[];
   colSpan?: number;
   rowSpan?: number;
   htmlAttributes?: Record<string, string>;
@@ -79,7 +86,8 @@ export type Selection =
   | { type: 'form'; id: string }
   | { type: 'section'; id: string }
   | { type: 'row'; id: string }
-  | { type: 'field'; id: string };
+  | { type: 'field'; id: string }
+  | { type: 'static'; id: string };
 
 export interface TableSchema {
   id: string;

@@ -147,6 +147,7 @@ const parseTable = (doc: Document, tableEl: HTMLTableElement): TableSchema => {
         fields,
         nestedTables,
         staticHtml,
+        staticBlocks: staticHtml ? [{ id: createId(), html: staticHtml }] : undefined,
       };
     });
 

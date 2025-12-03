@@ -4,7 +4,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useFormBuilder } from '../../context/FormBuilderContext';
-import type { ColumnSchema, FieldSchema, RowSchema, SectionSchema, TableSchema } from '../../types/formSchema';
+import type { ColumnSchema, FieldSchema, RowSchema, SectionSchema, StaticBlockSchema, TableSchema } from '../../types/formSchema';
 
 const DragHandle = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
@@ -28,6 +28,10 @@ const DragHandle = (props: React.HTMLAttributes<HTMLDivElement>) => {
 interface FieldItemProps {
   field: FieldSchema;
   columnId: string;
+}
+
+interface StaticBlockProps {
+  block: StaticBlockSchema;
 }
 
 const FieldItem = ({ field, columnId }: FieldItemProps) => {
@@ -82,6 +86,45 @@ const FieldItem = ({ field, columnId }: FieldItemProps) => {
           onClick={(event) => {
             event.stopPropagation();
             removeField(field.id);
+          }}
+        >
+          ✕
+        </ActionIcon>
+      </Group>
+    </Card>
+  );
+};
+
+const StaticBlockItem = ({ block }: StaticBlockProps) => {
+  const { selection, selectElement, removeStaticBlock } = useFormBuilder();
+  const isSelected = selection?.type === 'static' && selection.id === block.id;
+
+  return (
+    <Card
+      padding="sm"
+      radius="md"
+      withBorder
+      style={{
+        border: isSelected ? '1px solid #228be6' : '1px solid #e2e8f0',
+        backgroundColor: isSelected ? '#eef2ff' : '#fff',
+      }}
+      onClick={(event) => {
+        event.stopPropagation();
+        selectElement({ type: 'static', id: block.id });
+      }}
+    >
+      <Group justify="space-between" align="flex-start">
+        <div
+          style={{ fontSize: 13, color: '#475569' }}
+          dangerouslySetInnerHTML={{ __html: block.html }}
+        />
+        <ActionIcon
+          variant="subtle"
+          color="red"
+          aria-label="Remove static text"
+          onClick={(event) => {
+            event.stopPropagation();
+            removeStaticBlock(block.id);
           }}
         >
           ✕
@@ -187,6 +230,9 @@ const ColumnEditor = ({ column }: ColumnEditorProps) => {
             Drag fields here
           </Text>
         )}
+        {(column.staticBlocks || []).map((block) => (
+          <StaticBlockItem key={block.id} block={block} />
+        ))}
       </Stack>
     </Paper>
   );
@@ -245,7 +291,11 @@ function TableCell({ column }: TableCellProps) {
         </Group>
       </SortableContext>
 
-      {column.staticHtml && (
+      {(column.staticBlocks || []).map((block) => (
+        <StaticBlockItem key={block.id} block={block} />
+      ))}
+
+      {!column.staticBlocks?.length && column.staticHtml && (
         <div
           style={{ fontSize: 13, color: '#475569' }}
           dangerouslySetInnerHTML={{ __html: column.staticHtml }}

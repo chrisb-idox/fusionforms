@@ -45,7 +45,7 @@ import { PalettePanel } from './PalettePanel';
 import { PropertiesPanel } from './PropertiesPanel';
 
 export const BuilderBody = () => {
-  const { schema, reorderRows, reorderFields, addField } = useFormBuilder();
+  const { schema, reorderRows, reorderFields, addField, addStaticBlock } = useFormBuilder();
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
   );
@@ -92,6 +92,16 @@ export const BuilderBody = () => {
 
       if (targetColumnId) {
         addField(targetColumnId, active.data.current?.fieldType);
+      }
+    }
+
+    if (activeType === 'palette-static') {
+      const targetColumnId =
+        (overType === 'column' && over.data.current?.columnId) ||
+        (overType === 'field' && over.data.current?.columnId);
+
+      if (targetColumnId) {
+        addStaticBlock(targetColumnId);
       }
     }
   };

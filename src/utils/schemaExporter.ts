@@ -137,13 +137,19 @@ const renderTableLines = (
       };
       lines.push(indentLine(`<td ${attrsToString(cellAttrs)}>`, level + 3));
 
-      if (column.staticHtml) {
-        column.staticHtml
+      const staticSources =
+        column.staticBlocks && column.staticBlocks.length > 0
+          ? column.staticBlocks.map((block) => block.html)
+          : column.staticHtml
+            ? [column.staticHtml]
+            : [];
+      staticSources.forEach((source) =>
+        source
           .split('\n')
           .map((line) => line.trim())
           .filter(Boolean)
-          .forEach((line) => lines.push(indentLine(line, level + 4)));
-      }
+          .forEach((line) => lines.push(indentLine(line, level + 4))),
+      );
 
       column.fields.forEach((field) => {
         lines.push(...renderFieldLines(field, level + 4));
@@ -174,6 +180,19 @@ const renderSectionLines = (section: SectionSchema, level: number): string[] => 
     row.columns.forEach((col) => {
       lines.push(
         indentLine(`<div style="flex:${col.span / 4}; padding:4px;">`, level + 2),
+      );
+      const staticSources =
+        col.staticBlocks && col.staticBlocks.length > 0
+          ? col.staticBlocks.map((block) => block.html)
+          : col.staticHtml
+            ? [col.staticHtml]
+            : [];
+      staticSources.forEach((source) =>
+        source
+          .split('\n')
+          .map((line) => line.trim())
+          .filter(Boolean)
+          .forEach((line) => lines.push(indentLine(line, level + 3))),
       );
       col.fields.forEach((field) => {
         lines.push(...renderFieldLines(field, level + 3));

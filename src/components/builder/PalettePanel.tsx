@@ -15,7 +15,7 @@ const fieldTypes: { label: string; type: FieldType }[] = [
 ];
 
 export const PalettePanel = () => {
-  const { schema, selection, addField, addRow, addSection, addTableSection } = useFormBuilder();
+  const { schema, selection, addField, addRow, addSection, addTableSection, addStaticBlock } = useFormBuilder();
 
   const targetSectionId =
     selection?.type === 'section'
@@ -24,7 +24,21 @@ export const PalettePanel = () => {
         ? schema.sections.find((section) =>
             section.rows.some((row) => row.id === selection.id),
           )?.id
-        : schema.sections[0]?.id;
+        : selection?.type === 'field'
+          ? schema.sections.find((section) =>
+              section.rows.some((row) =>
+                row.columns.some((col) => col.fields.some((f) => f.id === selection.id)),
+              ),
+            )?.id
+          : selection?.type === 'static'
+            ? schema.sections.find((section) =>
+                section.rows.some((row) =>
+                  row.columns.some((col) =>
+                    (col.staticBlocks || []).some((block) => block.id === selection.id),
+                  ),
+                ),
+              )?.id
+            : schema.sections[0]?.id;
 
   const targetColumnId = (() => {
     if (selection?.type === 'field') {
@@ -32,6 +46,14 @@ export const PalettePanel = () => {
         .flatMap((section) => section.rows)
         .flatMap((row) => row.columns)
         .find((column) => column.fields.some((field) => field.id === selection.id))
+        ?.id;
+    }
+
+    if (selection?.type === 'static') {
+      return schema.sections
+        .flatMap((section) => section.rows)
+        .flatMap((row) => row.columns)
+        .find((column) => (column.staticBlocks || []).some((block) => block.id === selection.id))
         ?.id;
     }
 
@@ -53,6 +75,12 @@ export const PalettePanel = () => {
   const handleAddField = (type: FieldType) => {
     if (targetColumnId) {
       addField(targetColumnId, type);
+    }
+  };
+
+  const handleAddStatic = () => {
+    if (targetColumnId) {
+      addStaticBlock(targetColumnId);
     }
   };
 
@@ -80,6 +108,7 @@ export const PalettePanel = () => {
             />
           ))}
         </SimpleGrid>
+        <StaticPaletteItem onClick={handleAddStatic} canAdd={Boolean(targetColumnId)} />
         <Group grow>
           <Card
             padding="sm"
@@ -160,6 +189,45 @@ const PaletteItem = ({ label, type, onClick, canAdd }: PaletteItemProps) => {
       </Text>
       <Text size="xs" c="dimmed">
         Drag or click
+      </Text>
+    </Card>
+  );
+};
+
+const StaticPaletteItem = ({
+  onClick,
+  canAdd,
+}: {
+  onClick: () => void;
+  canAdd: boolean;
+}) => {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: 'palette-static',
+    data: { type: 'palette-static' },
+  });
+
+  return (
+    <Card
+      ref={setNodeRef}
+      padding="sm"
+      withBorder
+      radius="md"
+      shadow="xs"
+      {...attributes}
+      {...listeners}
+      onClick={() => canAdd && onClick()}
+      style={{
+        cursor: canAdd ? 'grab' : 'not-allowed',
+        transform: transform ? CSS.Translate.toString(transform) : undefined,
+        opacity: isDragging ? 0.65 : 1,
+        userSelect: 'none',
+      }}
+    >
+      <Text size="sm" fw={600}>
+        Static text
+      </Text>
+      <Text size="xs" c="dimmed">
+        Add rich text block
       </Text>
     </Card>
   );

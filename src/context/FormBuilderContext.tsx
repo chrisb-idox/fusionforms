@@ -16,6 +16,7 @@ import {
   createEmptySection,
   createNestedTable,
   createTableSection,
+  createStaticBlock,
 } from './formBuilderHelpers';
 
 interface FormBuilderState {
@@ -35,11 +36,14 @@ type Action =
   | { type: 'addRow'; payload: { sectionId: string } }
   | { type: 'addField'; payload: { columnId: string; type?: FieldType } }
   | { type: 'addNestedTable'; payload: { columnId: string } }
+  | { type: 'addStaticBlock'; payload: { columnId: string } }
   | { type: 'removeSection'; payload: { id: string } }
   | { type: 'removeRow'; payload: { id: string } }
   | { type: 'removeField'; payload: { id: string } }
+  | { type: 'removeStaticBlock'; payload: { id: string } }
   | { type: 'reorderRows'; payload: { sectionId: string; from: number; to: number } }
-  | { type: 'reorderFields'; payload: { columnId: string; from: number; to: number } };
+  | { type: 'reorderFields'; payload: { columnId: string; from: number; to: number } }
+  | { type: 'updateStaticBlock'; payload: { id: string; html: string } };
 
 interface FormBuilderContextValue extends FormBuilderState {
   setSchema: (schema: FormSchema) => void;
@@ -53,11 +57,14 @@ interface FormBuilderContextValue extends FormBuilderState {
   addRow: (sectionId: string) => void;
   addField: (columnId: string, type?: FieldType) => void;
   addNestedTable: (columnId: string) => void;
+  addStaticBlock: (columnId: string) => void;
   removeSection: (id: string) => void;
   removeRow: (id: string) => void;
   removeField: (id: string) => void;
+  removeStaticBlock: (id: string) => void;
   reorderRows: (sectionId: string, from: number, to: number) => void;
   reorderFields: (columnId: string, from: number, to: number) => void;
+  updateStaticBlock: (id: string, html: string) => void;
 }
 
 const FormBuilderContext = createContext<FormBuilderContextValue | undefined>(
@@ -191,6 +198,24 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
           })),
         },
       };
+    case 'addStaticBlock':
+      return {
+        ...state,
+        schema: {
+          ...state.schema,
+          sections: state.schema.sections.map((section) => ({
+            ...section,
+            rows: mapRowsDeep(section.rows, (column) =>
+              column.id === action.payload.columnId
+                ? {
+                    ...column,
+                    staticBlocks: [...(column.staticBlocks || []), createStaticBlock()],
+                  }
+                : column,
+            ),
+          })),
+        },
+      };
     case 'addField':
       return {
         ...state,
@@ -250,6 +275,24 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
         selection:
           state.selection?.id === action.payload.id ? { type: 'form', id: state.schema.id } : state.selection,
       };
+    case 'removeStaticBlock':
+      return {
+        ...state,
+        schema: {
+          ...state.schema,
+          sections: state.schema.sections.map((section) => ({
+            ...section,
+            rows: mapRowsDeep(section.rows, (column) => ({
+              ...column,
+              staticBlocks: (column.staticBlocks || []).filter(
+                (block) => block.id !== action.payload.id,
+              ),
+            })),
+          })),
+        },
+        selection:
+          state.selection?.id === action.payload.id ? { type: 'form', id: state.schema.id } : state.selection,
+      };
     case 'reorderRows':
       return {
         ...state,
@@ -280,6 +323,22 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
                   }
                 : column,
             ),
+          })),
+        },
+      };
+    case 'updateStaticBlock':
+      return {
+        ...state,
+        schema: {
+          ...state.schema,
+          sections: state.schema.sections.map((section) => ({
+            ...section,
+            rows: mapRowsDeep(section.rows, (column) => ({
+              ...column,
+              staticBlocks: (column.staticBlocks || []).map((block) =>
+                block.id === action.payload.id ? { ...block, html: action.payload.html } : block,
+              ),
+            })),
           })),
         },
       };
@@ -322,13 +381,19 @@ export const FormBuilderProvider = ({
         dispatch({ type: 'addField', payload: { columnId, type } }),
       addNestedTable: (columnId) =>
         dispatch({ type: 'addNestedTable', payload: { columnId } }),
+      addStaticBlock: (columnId) =>
+        dispatch({ type: 'addStaticBlock', payload: { columnId } }),
       removeSection: (id) => dispatch({ type: 'removeSection', payload: { id } }),
       removeRow: (id) => dispatch({ type: 'removeRow', payload: { id } }),
       removeField: (id) => dispatch({ type: 'removeField', payload: { id } }),
+      removeStaticBlock: (id) =>
+        dispatch({ type: 'removeStaticBlock', payload: { id } }),
       reorderRows: (sectionId, from, to) =>
         dispatch({ type: 'reorderRows', payload: { sectionId, from, to } }),
       reorderFields: (columnId, from, to) =>
         dispatch({ type: 'reorderFields', payload: { columnId, from, to } }),
+      updateStaticBlock: (id, html) =>
+        dispatch({ type: 'updateStaticBlock', payload: { id, html } }),
     }),
     [state],
   );
