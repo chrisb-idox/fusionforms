@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calculation</title>
+  </head>
+  <body>
+  <table cellspacing="1" cellpadding="10" border="2" class="HtmlDialog_ContextTableClass">
+    <tbody>
+      <tr >
+        <td nowrap="">
+          <hr>
+          <hr>
+          <hr>
+          <table cellpadding="2">
+            <tbody>
+              <tr valign="center" align="center">
+                <td nowrap="">
+                  <h2>Calculation</h2>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table >
+            <tbody>
+              <tr >
+                <td nowrap="">
+                  <table >
+                    <tbody>
+                      <tr valign="top" align="left">
+                        <td nowrap="">
+                          <label class="HTMLDialog_PrimaryKeyLabel">Document No</label>
+                        </td>
+                        <td nowrap="">
+                          <label for="__DocumentNumber">DocumentNumber</label>
+                          <input type="text" type="text" size="30" maxlength="40" id="__DocumentNumber" name="__DocumentNumber" value="${DocumentNumber}" value="${DocumentNumber}" />
+                        </td>
+                        <td nowrap="">
+                          <label for="__Revision" class="HTMLDialog_PrimaryKeyLabel">Rev No</label>
+                        </td>
+                        <td nowrap="">
+                          <label for="__Revision">Rev No</label>
+                          <input type="text" type="text" size="5" maxlength="10" id="__Revision" name="__Revision" value="${Revision}" value="${Revision}" />
+                        </td>
+                        <td nowrap="">
+                          <label for="__CalculationType" class="HTMLDialog_PrimaryKeyLabel">Calculation Type</label>
+                        </td>
+                        <td nowrap="">
+                          <label for="__CalculationType">Calculation Type</label>
+                          <input type="text" type="text" size="5" maxlength="10" id="__CalculationType" name="__CalculationType" value="${CalculationType}" readonly="" value="${CalculationType}" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table >
+            <tbody>
+              <tr valign="top" align="left">
+                <td nowrap="">
+                  <label for="__RegionCode" class="HTMLDialog_Required">Region</label>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <label for="__LocationCode" class="HTMLDialog_Required">Location</label>
+                  &nbsp;&nbsp;&nbsp;
+                  <label for="__DisciplineCode" class="HTMLDialog_Required">Discipline</label>
+                </td>
+              </tr>
+              <tr valign="top" align="left">
+                <td nowrap="">
+                  <label>&nbsp;&nbsp;</label>
+                  <label>&nbsp;&nbsp;</label>
+                  <label>&nbsp;&nbsp;</label>
+                  <label for="__RegionCode">Region</label>
+                  <input type="text" type="text" size="5" maxlength="5" id="__RegionCode" name="__RegionCode" value="${RegionCode}" class="HtmlDialog_LookupClass" value="${RegionCode}" />
+                  <label for="__LocationCode">Location</label>
+                  <input type="text" type="text" size="5" maxlength="5" id="__LocationCode" name="__LocationCode" value="${LocationCode}" class="HtmlDialog_LookupClass" value="${LocationCode}" />
+                  <label for="__DisciplineCode">Discipline</label>
+                  <input type="text" type="text" size="5" maxlength="5" id="__DisciplineCode" name="__DisciplineCode" value="${DisciplineCode}" class="HtmlDialog_LookupClass" value="${DisciplineCode}" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table >
+            <tbody>
+              <tr >
+                <td nowrap="">
+                  <table >
+                    <tbody>
+                      <tr valign="top" align="left">
+                        <td nowrap="">
+                          Document Title
+                        </td>
+                        <td nowrap="">
+                          <label for="__DocumentTitle">DocumentTitle</label>
+                          <textarea id="__DocumentTitle" name="__DocumentTitle" rows="5" cols="108">${DocumentTitle}</textarea>
+                        </td>
+                      </tr>
+                      <tr valign="top" align="left">
+                        <td nowrap="">
+                          Volumes
+                        </td>
+                        <td nowrap="">
+                          <label for="__Volumes">Volumes</label>
+                          <input type="text" type="text" size="30" maxlength="40" id="__Volumes" name="__Volumes" value="${Volumes}" value="${Volumes}" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table cellpadding="2" columns="3">
+            <tbody>
+              <tr >
+                <td nowrap="">
+                  &nbsp;
+                </td>
+                <td nowrap="">
+                  &nbsp;
+                </td>
+                <td nowrap="">
+                  <font size="2">
+                  <font color="blue"><b>Blue</b></font> fields are required and must be unique, <b>Bold</b> fields are required entry<br>
+                  <font color="pink"><b>Pink</b></font> textboxes have lookups available, <font color="lightgreen"><b>Light green</b></font> textboxes have date lookup available
+                  </font>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </body>
+</html>

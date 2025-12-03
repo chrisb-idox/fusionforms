@@ -25,8 +25,10 @@ const indentBlock = (block: string, level: number) =>
     .map((line) => indentLine(line.trimEnd(), level))
     .join('\n');
 
-const renderFieldLines = (field: FieldSchema, level: number) => {
+const renderFieldLines = (field: FieldSchema, level: number, includeLabel = true) => {
   const attrs = { ...(field.htmlAttributes || {}) };
+  delete attrs.value;
+
   attrs.id = field.originalId || attrs.id || field.name;
   attrs.name = field.originalName || attrs.name || field.name;
 
@@ -42,16 +44,16 @@ const renderFieldLines = (field: FieldSchema, level: number) => {
 
   switch (field.type) {
     case 'textarea':
-      lines.push(
-        indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level),
-        indentLine(`<textarea ${attrString}>${encodeHtml(value)}</textarea>`, level),
-      );
+      if (includeLabel) {
+        lines.push(indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level));
+      }
+      lines.push(indentLine(`<textarea ${attrString}>${encodeHtml(value)}</textarea>`, level));
       break;
     case 'select':
-      lines.push(
-        indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level),
-        indentLine(`<select ${attrString}>`, level),
-      );
+      if (includeLabel) {
+        lines.push(indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level));
+      }
+      lines.push(indentLine(`<select ${attrString}>`, level));
       (field.options || []).forEach((opt) => {
         lines.push(
           indentLine(
@@ -74,7 +76,9 @@ const renderFieldLines = (field: FieldSchema, level: number) => {
       break;
     case 'radio':
       lines.push(indentLine(`<div>`, level));
-      lines.push(indentLine(encodeHtml(field.label), level + 1));
+      if (includeLabel) {
+        lines.push(indentLine(encodeHtml(field.label), level + 1));
+      }
       (field.options || []).forEach((opt) => {
         lines.push(
           indentLine(
@@ -88,30 +92,27 @@ const renderFieldLines = (field: FieldSchema, level: number) => {
       lines.push(indentLine(`</div>`, level));
       break;
     case 'date':
+      if (includeLabel) {
+        lines.push(indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level));
+      }
       lines.push(
-        indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level),
-        indentLine(
-          `<input type="date" ${attrString} value="${encodeHtml(value)}" />`,
-          level,
-        ),
+        indentLine(`<input type="date" ${attrString} value="${encodeHtml(value)}" />`, level),
       );
       break;
     case 'number':
+      if (includeLabel) {
+        lines.push(indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level));
+      }
       lines.push(
-        indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level),
-        indentLine(
-          `<input type="number" ${attrString} value="${encodeHtml(value)}" />`,
-          level,
-        ),
+        indentLine(`<input type="number" ${attrString} value="${encodeHtml(value)}" />`, level),
       );
       break;
     default:
+      if (includeLabel) {
+        lines.push(indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level));
+      }
       lines.push(
-        indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level),
-        indentLine(
-          `<input type="text" ${attrString} value="${encodeHtml(value)}" />`,
-          level,
-        ),
+        indentLine(`<input type="text" ${attrString} value="${encodeHtml(value)}" />`, level),
       );
       break;
   }
@@ -152,7 +153,7 @@ const renderTableLines = (
       );
 
       column.fields.forEach((field) => {
-        lines.push(...renderFieldLines(field, level + 4));
+        lines.push(...renderFieldLines(field, level + 4, staticSources.length === 0));
       });
 
       (column.nestedTables || []).forEach((nested) => {
@@ -195,7 +196,7 @@ const renderSectionLines = (section: SectionSchema, level: number): string[] => 
           .forEach((line) => lines.push(indentLine(line, level + 3))),
       );
       col.fields.forEach((field) => {
-        lines.push(...renderFieldLines(field, level + 3));
+        lines.push(...renderFieldLines(field, level + 3, staticSources.length === 0));
       });
       lines.push(indentLine(`</div>`, level + 2));
     });
@@ -242,8 +243,9 @@ ${bodyContent}
   return `<!doctype html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>${encodeHtml(schema.name)}</title>
+${indentLine('<meta charset="UTF-8" />', 2)}
+${schema.originalHeadHtml ? indentBlock(schema.originalHeadHtml.trim(), 2) : ''}
+${indentLine(`<title>${encodeHtml(schema.name)}</title>`, 2)}
   </head>
   <body>
 ${bodyLines}
