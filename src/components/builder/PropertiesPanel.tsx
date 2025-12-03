@@ -287,6 +287,10 @@ export const PropertiesPanel = () => {
                     minHeight: 120,
                     outline: 'none',
                     lineHeight: 1.5,
+                    direction: 'ltr',
+                    unicodeBidi: 'plaintext',
+                    whiteSpace: 'pre-wrap',
+                    textAlign: 'left',
                   }}
                   dangerouslySetInnerHTML={{ __html: staticHtml }}
                   onInput={handleStaticChange}

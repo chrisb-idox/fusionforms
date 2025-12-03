@@ -327,7 +327,15 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                 {(column.staticBlocks || []).map((block) => (
                   <div
                     key={block.id}
-                    style={{ fontSize: 13, color: '#475569', marginBottom: 4 }}
+                    style={{
+                      fontSize: 13,
+                      color: '#475569',
+                      marginBottom: 4,
+                      direction: 'ltr',
+                      unicodeBidi: 'plaintext',
+                      whiteSpace: 'pre-wrap',
+                      textAlign: 'left',
+                    }}
                     dangerouslySetInnerHTML={{ __html: block.html }}
                   />
                 ))}
@@ -380,14 +388,21 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
               : section.rows.map((row) => (
                   <Group key={row.id} align="flex-start" gap="md">
                     {row.columns.map((column) => (
-                      <Stack key={column.id} gap="md" style={{ flex: column.span / 4 }}>
-                        {(column.staticBlocks || []).map((block) => (
-                          <div
-                            key={block.id}
-                            style={{ fontSize: 13, color: '#475569' }}
-                            dangerouslySetInnerHTML={{ __html: block.html }}
-                          />
-                        ))}
+                        <Stack key={column.id} gap="md" style={{ flex: column.span / 4 }}>
+                          {(column.staticBlocks || []).map((block) => (
+                            <div
+                              key={block.id}
+                              style={{
+                                fontSize: 13,
+                                color: '#475569',
+                                direction: 'ltr',
+                                unicodeBidi: 'plaintext',
+                                whiteSpace: 'pre-wrap',
+                                textAlign: 'left',
+                              }}
+                              dangerouslySetInnerHTML={{ __html: block.html }}
+                            />
+                          ))}
                         {!column.staticBlocks?.length && column.staticHtml && (
                           <div
                             style={{ fontSize: 13, color: '#475569' }}

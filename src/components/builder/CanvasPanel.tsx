@@ -115,7 +115,14 @@ const StaticBlockItem = ({ block }: StaticBlockProps) => {
     >
       <Group justify="space-between" align="flex-start">
         <div
-          style={{ fontSize: 13, color: '#475569' }}
+          style={{
+            fontSize: 13,
+            color: '#475569',
+            direction: 'ltr',
+            unicodeBidi: 'plaintext',
+            whiteSpace: 'pre-wrap',
+            textAlign: 'left',
+          }}
           dangerouslySetInnerHTML={{ __html: block.html }}
         />
         <ActionIcon
