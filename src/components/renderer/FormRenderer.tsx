@@ -82,12 +82,11 @@ const buildRules = (field: FieldSchema) => {
 const FieldRenderer = ({
   field,
   control,
-  hideLabel,
 }: {
   field: FieldSchema;
   control: Control<FieldValues>;
-  hideLabel?: boolean;
 }) => {
+  const showLabel = !field.originalName;
   const rules = buildRules(field);
   const bindingToken = getBindingToken(field);
   const description = field.helpText ? (
@@ -106,7 +105,7 @@ const FieldRenderer = ({
             <TextInput
               {...controllerField}
               value={controllerField.value ?? bindingToken ?? ''}
-              label={field.label}
+              label={showLabel ? field.label : null}
               placeholder={field.placeholder}
               description={description}
               error={fieldState.error?.message}
@@ -133,7 +132,7 @@ const FieldRenderer = ({
             <Textarea
               {...controllerField}
               value={controllerField.value ?? bindingToken ?? ''}
-              label={field.label}
+              label={showLabel ? field.label : null}
               placeholder={field.placeholder}
               description={description}
               error={fieldState.error?.message}
@@ -161,7 +160,7 @@ const FieldRenderer = ({
           render={({ field: controllerField, fieldState }) => (
             <NumberInput
               {...controllerField}
-              label={hideLabel ? null : field.label}
+              label={showLabel ? field.label : null}
               placeholder={field.placeholder}
               description={description}
               error={fieldState.error?.message}
@@ -189,7 +188,7 @@ const FieldRenderer = ({
               {...controllerField}
               value={controllerField.value ?? bindingToken ?? ''}
               type="date"
-              label={hideLabel ? null : field.label}
+              label={showLabel ? field.label : null}
               description={description}
               error={fieldState.error?.message}
               styles={
@@ -215,7 +214,7 @@ const FieldRenderer = ({
             <Select
               {...controllerField}
               data={field.options || []}
-              label={hideLabel ? null : field.label}
+              label={showLabel ? field.label : null}
               placeholder={field.placeholder}
               description={description}
               error={fieldState.error?.message}
@@ -242,7 +241,7 @@ const FieldRenderer = ({
             <Checkbox
               {...controllerField}
               checked={!!controllerField.value}
-              label={hideLabel ? null : field.label}
+              label={showLabel ? field.label : null}
               description={description}
               error={fieldState.error?.message}
               styles={
@@ -265,7 +264,7 @@ const FieldRenderer = ({
           render={({ field: controllerField, fieldState }) => (
             <Radio.Group
               {...controllerField}
-              label={hideLabel ? null : field.label}
+              label={showLabel ? field.label : null}
               description={description}
               error={fieldState.error?.message}
               styles={
@@ -356,7 +355,6 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                       key={field.id}
                       field={field}
                       control={control}
-                      hideLabel={!!field.originalName}
                     />
                   ))}
                 </Group>
@@ -422,7 +420,6 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                           key={field.id}
                           field={field}
                           control={control}
-                          hideLabel={!!field.originalName}
                         />
                       ))}
                     </Stack>
