@@ -122,6 +122,89 @@ const parseTable = (doc: Document, tableEl: HTMLTableElement): TableSchema => {
     tableEl.querySelectorAll(':scope > tr, :scope > tbody > tr, :scope > thead > tr'),
   );
 
+  // Helper to process a cell's content and split it into multiple rows if it contains multiple tables
+  // This preserves the order of "Table -> HR -> Table" which would otherwise be scrambled
+  const explodeCell = (cell: Element): RowSchema[] => {
+    const children = Array.from(cell.childNodes);
+    const newRows: RowSchema[] = [];
+    let currentBuffer: Node[] = [];
+
+    const flushBuffer = () => {
+      if (currentBuffer.length === 0) return;
+
+      // Create a temporary container to parse fields and static HTML
+      const tempDiv = doc.createElement('div');
+      currentBuffer.forEach(node => tempDiv.appendChild(node.cloneNode(true)));
+
+      const fields = Array.from(tempDiv.querySelectorAll('input, textarea, select'))
+        .map((el) => mapElementToField(doc, el));
+
+      // Remove fields from tempDiv to get static HTML
+      tempDiv.querySelectorAll('input, textarea, select').forEach((el) => el.remove());
+      const staticHtml = tempDiv.innerHTML.trim() || undefined;
+
+      if (fields.length > 0 || staticHtml) {
+        newRows.push({
+          id: createId(),
+          columns: [{
+            id: createId(),
+            span: 4,
+            colSpan: 1,
+            rowSpan: 1,
+            fields,
+            staticHtml,
+            staticBlocks: staticHtml ? [{ id: createId(), html: staticHtml }] : undefined,
+          }],
+          htmlAttributes: collectAttributes(cell), // Inherit attributes?
+        });
+      }
+      currentBuffer = [];
+    };
+
+    children.forEach((node) => {
+      if (node.nodeName.toLowerCase() === 'table') {
+        flushBuffer();
+        // Parse the nested table
+        const nestedTable = parseTable(doc, node as HTMLTableElement);
+        newRows.push({
+          id: createId(),
+          columns: [{
+            id: createId(),
+            span: 4,
+            colSpan: 1,
+            rowSpan: 1,
+            fields: [],
+            nestedTables: [nestedTable],
+          }],
+          htmlAttributes: collectAttributes(cell),
+        });
+      } else {
+        currentBuffer.push(node);
+      }
+    });
+    flushBuffer();
+
+    return newRows;
+  };
+
+  // Check if this is a "wrapper" table (1 row, 1 col) that needs exploding
+  // We only do this if there are actually nested tables to preserve order against
+  if (rowEls.length === 1) {
+    const cells = rowEls[0].querySelectorAll(':scope > td, :scope > th');
+    if (cells.length === 1) {
+      const cell = cells[0];
+      const hasNestedTables = cell.querySelectorAll(':scope > table').length > 0;
+      if (hasNestedTables) {
+        return {
+          id: createId(),
+          rows: explodeCell(cell),
+          tableAttributes: collectAttributes(tableEl),
+        };
+      }
+    }
+  }
+
+  // Standard parsing for normal tables
   const rows: RowSchema[] = rowEls.map((tr) => {
     const cellEls = Array.from(tr.querySelectorAll(':scope > td, :scope > th'));
 

@@ -307,11 +307,17 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
     section.rows.some((row) => row.columns.some((column) => column.fields.length > 0)),
   );
 
-  const renderTable = (rows: RowSchema[]) => (
+  const renderTable = (rows: RowSchema[], tableAttributes?: Record<string, string>) => (
     <Table
       withRowBorders={false}
       withColumnBorders={false}
-      style={{ width: '100%', tableLayout: 'auto' }}
+      style={{
+        width: '100%',
+        tableLayout: 'auto',
+        border: tableAttributes?.border
+          ? `${tableAttributes.border}px ${Number(tableAttributes.border) > 1 ? 'double' : 'solid'} black`
+          : undefined,
+      }}
     >
       <Table.Tbody>
         {rows.map((row) => (
@@ -350,7 +356,7 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                 <Stack gap={0} pt={0}>
                   {column.nestedTables?.map((nested) => (
                     <Stack key={nested.id} gap={0}>
-                      {renderTable(nested.rows)}
+                      {renderTable(nested.rows, nested.tableAttributes)}
                     </Stack>
                   ))}
                 </Stack>
@@ -381,7 +387,7 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
           <Stack key={section.id} gap="md">
             <Text fw={700}>{section.title}</Text>
             {section.layout === 'table'
-              ? renderTable(section.rows)
+              ? renderTable(section.rows, section.tableAttributes)
               : section.rows.map((row) => (
                 <Group key={row.id} align="flex-start" gap="md">
                   {row.columns.map((column) => (

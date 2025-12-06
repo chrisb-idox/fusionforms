@@ -254,7 +254,9 @@ function TableRenderer({ table }: { table: TableSchema }) {
       withColumnBorders={false}
       style={{
         background: 'white',
-        border: table.tableAttributes?.border ? `${table.tableAttributes.border}px solid black` : undefined,
+        border: table.tableAttributes?.border
+          ? `${table.tableAttributes.border}px ${Number(table.tableAttributes.border) > 1 ? 'double' : 'solid'} black`
+          : undefined,
       }}
     >
       <Table.Tbody>
