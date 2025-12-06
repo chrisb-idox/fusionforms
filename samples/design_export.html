@@ -1,0 +1,464 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css"
+        href="$[APP_PATH]/Customization/Default/Profiles/OGDemo/FusionForms/DocumentFormStyles.css">
+    <title>Design Documents</title>
+</head>
+
+<body>
+    <table cellspacing="1" cellpadding="10" border="2" class="HtmlDialog_ContextTableClass">
+        <tbody>
+            <tr nowrap="">
+                <td>
+                    <table cellpadding="2">
+                        <tbody>
+                            <tr valign="center" align="center">
+                                <td nowrap="nowrap">
+                                    <h2>Design Documents</h2>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr nowrap="">
+                <td>
+                    <hr>
+                </td>
+            </tr>
+            <tr nowrap="">
+                <td>
+                    <table>
+                        <tbody>
+                            <tr nowrap="">
+                                <td>
+                                    <table>
+                                        <tbody>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="nowrap">
+                                                    <label class="HTMLDialog_PrimaryKeyLabel">Document No</label>
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__DocumentNumber">DocumentNumber</label>
+                                                    <input type="text" type="text" readonly="" size="30" maxlength="40"
+                                                        id="__DocumentNumber" name="__DocumentNumber"
+                                                        value="${DocumentNumber}" />
+                                                </td>
+                                                <td nowrap="nowrap">
+                                                    <label for="__Revision" class="HTMLDialog_PrimaryKeyLabel">Rev
+                                                        No</label>
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__Revision">Rev No</label>
+                                                    <input type="text" type="text" size="5" maxlength="10"
+                                                        id="__Revision" name="__Revision" value="${Revision}" />
+                                                </td>
+                                                <td nowrap="nowrap">
+                                                    <label for="__SheetNumber" class="HTMLDialog_PrimaryKeyLabel">Sheet
+                                                        No</label>
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__SheetNumber">Sheet No</label>
+                                                    <input type="text" type="text" size="5" maxlength="10"
+                                                        id="__SheetNumber" name="__SheetNumber" readonly=""
+                                                        value="${SheetNumber}" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr nowrap="">
+                <td>
+                    <hr>
+                </td>
+            </tr>
+            <tr nowrap="">
+                <td>
+                    <table>
+                        <tbody>
+                            <tr valign="top" align="left">
+                                <td nowrap="nowrap">
+                                    <label for="__RegionCode" class="HTMLDialog_Required">Region</label>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label for="__LocationCode" class="HTMLDialog_Required">Location</label>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label for="__DisciplineCode" class="HTMLDialog_Required">Discipline</label>
+                                    &nbsp;&nbsp;
+                                </td>
+                            </tr>
+                            <tr valign="top" align="left">
+                                <td nowrap="nowrap">
+                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <input type="text" type="text" size="5" maxlength="5" id="__RegionCode"
+                                        name="__RegionCode" class="HtmlDialog_LookupClass" readonly=""
+                                        value="${RegionCode}" />
+                                    <input type="text" type="text" size="5" maxlength="5" id="__LocationCode"
+                                        name="__LocationCode" class="HtmlDialog_LookupClass" readonly=""
+                                        value="${LocationCode}" />
+                                    <input type="text" type="text" size="5" maxlength="5" id="__DisciplineCode"
+                                        name="__DisciplineCode" class="HtmlDialog_LookupClass" readonly=""
+                                        value="${DisciplineCode}" />
+                                </td>
+                            </tr>
+                            <tr valign="top" align="left">
+                                <td nowrap="nowrap">
+                                    <label for="__SystemCode" class="HTMLDialog_Required">System</label>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label for="__SubsystemCode" class="HTMLDialog_Required">Subsystem</label>
+                                    &nbsp;&nbsp;
+                                </td>
+                            </tr>
+                            <tr valign="top" align="left">
+                                <td nowrap="nowrap">
+                                    <label>&nbsp;&nbsp;</label>
+                                    <label>&nbsp;&nbsp;</label>
+                                    <input type="text" type="text" size="5" maxlength="5" id="__SystemCode"
+                                        name="__SystemCode" class="HtmlDialog_LookupClass" value="${SystemCode}" />
+                                    <input type="text" type="text" size="5" maxlength="5" id="__SubsystemCode"
+                                        name="__SubsystemCode" class="HtmlDialog_LookupClass"
+                                        value="${SubsystemCode}" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr nowrap="">
+                <td>
+                    <table>
+                        <tbody>
+                            <tr nowrap="">
+                                <td>
+                                    <table>
+                                        <tbody>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Document Title
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__DocumentTitle">DocumentTitle</label>
+                                                    <textarea id="__DocumentTitle" name="__DocumentTitle" rows="5"
+                                                        cols="108">${DocumentTitle}</textarea>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr nowrap="">
+                <td>
+                    <table columns="2">
+                        <tbody>
+                            <tr>
+                                <td nowrap="">
+                                    <table>
+                                        <tbody>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Vendor Document No
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__VendorDocumentNumber">VendorDocumentNumber</label>
+                                                    <input type="text" type="text" size="30" maxlength="80"
+                                                        id="__VendorDocumentNumber" name="__VendorDocumentNumber"
+                                                        value="${VendorDocumentNumber}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Effectivity Status
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__EffectivityStatus">EffectivityStatus</label>
+                                                    <input type="text" type="text" size="10" maxlength="10"
+                                                        id="__EffectivityStatus" name="__EffectivityStatus"
+                                                        class="HtmlDialog_LookupClass" value="${EffectivityStatus}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Issuer
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__Issuer">Issuer</label>
+                                                    <input type="text" type="text" size="30" maxlength="30"
+                                                        id="__Issuer" name="__Issuer"
+                                                        class="HtmlDialog_ReadonlyUserPickerClass"
+                                                        data-picker-mode="User" value="${Issuer}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Reviewer
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__Reviewer">Reviewer</label>
+                                                    <input type="text" type="text" size="30" maxlength="30"
+                                                        id="__Reviewer" name="__Reviewer"
+                                                        class="HtmlDialog_ReadonlyUserPickerClass"
+                                                        data-picker-mode="User" value="${Reviewer}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Approver
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__Approver">Approver</label>
+                                                    <input type="text" type="text" size="30" maxlength="30"
+                                                        id="__Approver" name="__Approver"
+                                                        class="HtmlDialog_ReadonlyUserPickerClass"
+                                                        data-picker-mode="User" value="${Approver}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Originated By
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__OriginatedBy">OriginatedBy</label>
+                                                    <input type="text" type="text" size="30" maxlength="30"
+                                                        id="__OriginatedBy" name="__OriginatedBy"
+                                                        class="HtmlDialog_ReadonlyUserPickerClass"
+                                                        data-picker-mode="User" value="${OriginatedBy}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Outstanding DCR
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__OutstandingChanges">OutstandingChanges</label>
+                                                    <input type="text" type="text" size="10" maxlength="10"
+                                                        id="__OutstandingChanges" name="__OutstandingChanges"
+                                                        value="${OutstandingChanges}" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td nowrap="">
+                                    <table>
+                                        <tbody>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Vendor Code
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__VendorCode">VendorCode</label>
+                                                    <input type="text" type="text" size="10" maxlength="5"
+                                                        id="__VendorCode" name="__VendorCode"
+                                                        class="HtmlDialog_LookupClass" value="${VendorCode}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Effective From
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__EffectiveDate">EffectiveDate</label>
+                                                    <input type="text" type="text" size="10" maxlength="10"
+                                                        id="__EffectiveDate" name="__EffectiveDate"
+                                                        class="HtmlDialog_DateClass" value="${EffectiveDate}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Issue Date
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__IssueDate">IssueDate</label>
+                                                    <input type="text" type="text" size="10" maxlength="10"
+                                                        id="__IssueDate" name="__IssueDate" class="HtmlDialog_DateClass"
+                                                        value="${IssueDate}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Review Date
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__ReviewDate">ReviewDate</label>
+                                                    <input type="text" type="text" size="10" maxlength="10"
+                                                        id="__ReviewDate" name="__ReviewDate"
+                                                        class="HtmlDialog_DateClass" value="${ReviewDate}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Approval Date
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__ApprovalDate">ApprovalDate</label>
+                                                    <input type="text" type="text" size="10" maxlength="10"
+                                                        id="__ApprovalDate" name="__ApprovalDate"
+                                                        class="HtmlDialog_DateClass" value="${ApprovalDate}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    <label for="__ProjectCode"
+                                                        class="HTMLDialog_Required">Project</label>
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__ProjectCode">Project</label>
+                                                    <input type="text" type="text" size="10" maxlength="20"
+                                                        id="__ProjectCode" name="__ProjectCode"
+                                                        class="HtmlDialog_LookupClass" value="${ProjectCode}" />
+                                                </td>
+                                            </tr>
+                                            <tr valign="top" align="left">
+                                                <td nowrap="">
+                                                    Pending DCR
+                                                </td>
+                                                <td nowrap="">
+                                                    <label for="__PendingChanges">PendingChanges</label>
+                                                    <input type="text" type="text" size="10" maxlength="10"
+                                                        id="__PendingChanges" name="__PendingChanges"
+                                                        value="${PendingChanges}" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr nowrap="">
+                <td>
+                    <p>
+                    </p>
+                    <hr>
+                </td>
+            </tr>
+            <tr nowrap="">
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td nowrap="nowrap">
+                                    <label for="__DocumentType" class="HTMLDialog_Required">Doc. Type</label>
+                                </td>
+                                <td nowrap="">
+                                    <label for="__DocumentType">Doc. Type</label>
+                                    <input type="text" type="text" size="5" maxlength="5" id="__DocumentType"
+                                        name="__DocumentType" class="HtmlDialog_LookupClass" readonly=""
+                                        value="${DocumentType}" />
+                                </td>
+                                <td nowrap="">
+                                    &nbsp;Doc. Status
+                                </td>
+                                <td nowrap="">
+                                    <label for="__DocumentStatus">DocumentStatus</label>
+                                    <input type="text" type="text" size="5" maxlength="5" id="__DocumentStatus"
+                                        name="__DocumentStatus" class="HtmlDialog_LookupClass"
+                                        value="${DocumentStatus}" />
+                                </td>
+                                <td nowrap="">
+                                    &nbsp;Media Code
+                                </td>
+                                <td nowrap="">
+                                    <label for="__MediaCode">MediaCode</label>
+                                    <input type="text" type="text" size="5" maxlength="5" id="__MediaCode"
+                                        name="__MediaCode" class="HtmlDialog_LookupClass" value="${MediaCode}" />
+                                </td>
+                                <td nowrap="">
+                                    &nbsp;Doc. Format
+                                </td>
+                                <td nowrap="">
+                                    <label for="__DocumentFormat">DocumentFormat</label>
+                                    <input type="text" type="text" size="5" maxlength="5" id="__DocumentFormat"
+                                        name="__DocumentFormat" class="HtmlDialog_LookupClass"
+                                        value="${DocumentFormat}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td nowrap="">
+                                    <label for="__StorageContainer" class="HTMLDialog_Required">Container</label>
+                                </td>
+                                <td nowrap="">
+                                    <label for="__StorageContainer">Container</label>
+                                    <input type="text" type="text" size="5" maxlength="5" id="__StorageContainer"
+                                        name="__StorageContainer" class="HtmlDialog_LookupClass"
+                                        value="${StorageContainer}" />
+                                </td>
+                                <td nowrap="">
+                                    &nbsp;Container BC
+                                </td>
+                                <td nowrap="">
+                                    <label for="__ContainerBarcode">ContainerBarcode</label>
+                                    <input type="text" type="text" size="15" maxlength="20" id="__ContainerBarcode"
+                                        name="__ContainerBarcode" value="${ContainerBarcode}" />
+                                </td>
+                                <td nowrap="">
+                                    &nbsp;Item BC
+                                </td>
+                                <td nowrap="">
+                                    <label for="__ItemBarcode">ItemBarcode</label>
+                                    <input type="text" type="text" size="15" maxlength="20" id="__ItemBarcode"
+                                        name="__ItemBarcode" value="${ItemBarcode}" />
+                                </td>
+                                <td nowrap="">
+                                    <label for="__Facility" class="HTMLDialog_Required">Facility</label>
+                                </td>
+                                <td nowrap="">
+                                    <label for="__Facility">Facility</label>
+                                    <input type="text" type="text" size="5" maxlength="5" id="__Facility"
+                                        name="__Facility" class="HtmlDialog_LookupClass" value="${Facility}" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr nowrap="">
+                <td>
+                    <hr>
+                </td>
+            </tr>
+            <tr nowrap="">
+                <td>
+                    <table cellpadding="2" columns="3">
+                        <tbody>
+                            <tr>
+                                <td nowrap="nowrap">
+                                    &nbsp;
+                                </td>
+                                <td nowrap="">
+                                    &nbsp;
+                                </td>
+                                <td nowrap="nowrap">
+                                    <font size="2">
+                                        <font color="blue"><b>Blue</b></font> fields are required and must be unique,
+                                        <b>Bold</b> fields are required entry<br>
+                                        <font color="pink"><b>Pink</b></font> textboxes have lookups available, <font
+                                            color="lightgreen"><b>Light green</b></font> textboxes have date lookup
+                                        available
+                                    </font>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
