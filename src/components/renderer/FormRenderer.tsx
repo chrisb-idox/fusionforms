@@ -94,6 +94,19 @@ const FieldRenderer = ({
       {field.helpText}
     </Text>
   ) : undefined;
+
+  // Extract and sanitize HTML attributes
+  const { htmlAttributes = {} } = field;
+  const safeAttributes = { ...htmlAttributes };
+  // Remove attributes that are handled by the component props or React Hook Form
+  delete safeAttributes.name;
+  delete safeAttributes.value;
+  delete safeAttributes.defaultValue;
+  delete safeAttributes.type;
+  delete safeAttributes.checked;
+  // Remove id to avoid conflicts with Mantine's internal ID generation or duplicate IDs
+  delete safeAttributes.id;
+
   switch (field.type) {
     case 'text':
       return (
@@ -103,6 +116,7 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <TextInput
+              {...safeAttributes}
               {...controllerField}
               value={controllerField.value ?? bindingToken ?? ''}
               label={showLabel ? field.label : null}
@@ -130,6 +144,7 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <Textarea
+              {...safeAttributes}
               {...controllerField}
               value={controllerField.value ?? bindingToken ?? ''}
               label={showLabel ? field.label : null}
@@ -159,6 +174,7 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <NumberInput
+              {...safeAttributes}
               {...controllerField}
               label={showLabel ? field.label : null}
               placeholder={field.placeholder}
@@ -185,6 +201,7 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <TextInput
+              {...safeAttributes}
               {...controllerField}
               value={controllerField.value ?? bindingToken ?? ''}
               type="date"
@@ -212,6 +229,7 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <Select
+              {...safeAttributes}
               {...controllerField}
               data={field.options || []}
               label={showLabel ? field.label : null}
@@ -239,6 +257,7 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <Checkbox
+              {...safeAttributes}
               {...controllerField}
               checked={!!controllerField.value}
               label={showLabel ? field.label : null}
@@ -263,6 +282,7 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <Radio.Group
+              {...safeAttributes}
               {...controllerField}
               label={showLabel ? field.label : null}
               description={description}
