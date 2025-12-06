@@ -331,7 +331,6 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                       color: '#475569',
                       marginBottom: 4,
                       direction: 'ltr',
-                      whiteSpace: 'pre-wrap',
                       textAlign: 'left',
                     }}
                     dangerouslySetInnerHTML={{ __html: block.html }}
@@ -394,7 +393,6 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                             fontSize: 13,
                             color: '#475569',
                             direction: 'ltr',
-                            whiteSpace: 'pre-wrap',
                             textAlign: 'left',
                           }}
                           dangerouslySetInnerHTML={{ __html: block.html }}

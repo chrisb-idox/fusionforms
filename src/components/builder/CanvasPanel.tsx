@@ -119,7 +119,6 @@ const StaticBlockItem = ({ block }: StaticBlockProps) => {
             fontSize: 13,
             color: '#475569',
             direction: 'ltr',
-            whiteSpace: 'pre-wrap',
             textAlign: 'left',
           }}
           dangerouslySetInnerHTML={{ __html: block.html }}
