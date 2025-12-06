@@ -82,9 +82,11 @@ const buildRules = (field: FieldSchema) => {
 const FieldRenderer = ({
   field,
   control,
+  hideLabel,
 }: {
   field: FieldSchema;
   control: Control<FieldValues>;
+  hideLabel?: boolean;
 }) => {
   const rules = buildRules(field);
   const bindingToken = getBindingToken(field);
@@ -159,7 +161,7 @@ const FieldRenderer = ({
           render={({ field: controllerField, fieldState }) => (
             <NumberInput
               {...controllerField}
-              label={field.label}
+              label={hideLabel ? null : field.label}
               placeholder={field.placeholder}
               description={description}
               error={fieldState.error?.message}
@@ -187,7 +189,7 @@ const FieldRenderer = ({
               {...controllerField}
               value={controllerField.value ?? bindingToken ?? ''}
               type="date"
-              label={field.label}
+              label={hideLabel ? null : field.label}
               description={description}
               error={fieldState.error?.message}
               styles={
@@ -213,7 +215,7 @@ const FieldRenderer = ({
             <Select
               {...controllerField}
               data={field.options || []}
-              label={field.label}
+              label={hideLabel ? null : field.label}
               placeholder={field.placeholder}
               description={description}
               error={fieldState.error?.message}
@@ -240,7 +242,7 @@ const FieldRenderer = ({
             <Checkbox
               {...controllerField}
               checked={!!controllerField.value}
-              label={field.label}
+              label={hideLabel ? null : field.label}
               description={description}
               error={fieldState.error?.message}
               styles={
@@ -263,7 +265,7 @@ const FieldRenderer = ({
           render={({ field: controllerField, fieldState }) => (
             <Radio.Group
               {...controllerField}
-              label={field.label}
+              label={hideLabel ? null : field.label}
               description={description}
               error={fieldState.error?.message}
               styles={
@@ -342,7 +344,7 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                     dangerouslySetInnerHTML={{ __html: block.html }}
                   />
                 ))}
-                {!column.staticBlocks?.length && column.staticHtml && (
+                {column.staticBlocks === undefined && column.staticHtml && (
                   <div
                     style={{ fontSize: 13, color: '#475569', marginBottom: 4 }}
                     dangerouslySetInnerHTML={{ __html: column.staticHtml }}
@@ -350,7 +352,12 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                 )}
                 <Group gap="sm" align="flex-start" wrap="wrap">
                   {column.fields.map((field) => (
-                    <FieldRenderer key={field.id} field={field} control={control} />
+                    <FieldRenderer
+                      key={field.id}
+                      field={field}
+                      control={control}
+                      hideLabel={!!field.originalName}
+                    />
                   ))}
                 </Group>
                 <Stack gap={0} pt={0}>
@@ -411,14 +418,19 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                         />
                       )}
                       {column.fields.map((field) => (
-                        <FieldRenderer key={field.id} field={field} control={control} />
+                        <FieldRenderer
+                          key={field.id}
+                          field={field}
+                          control={control}
+                          hideLabel={!!field.originalName}
+                        />
                       ))}
                     </Stack>
                   ))}
                 </Group>
               ))}
           </Stack>
-        ))}
+        )}
         {hasAnyFields && (
           <Group justify="flex-end">
             <Button type="submit">Submit</Button>
