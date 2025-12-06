@@ -95,9 +95,9 @@ const mapElementToField = (doc: Document, element: Element): FieldSchema => {
   const options =
     element.tagName.toLowerCase() === 'select'
       ? Array.from(element.querySelectorAll('option')).map((option) => ({
-          label: option.textContent?.trim() || option.value || 'Option',
-          value: option.value || option.textContent?.trim() || 'option',
-        }))
+        label: option.textContent?.trim() || option.value || 'Option',
+        value: option.value || option.textContent?.trim() || 'option',
+      }))
       : undefined;
 
   return {
@@ -167,7 +167,21 @@ const parseTable = (doc: Document, tableEl: HTMLTableElement): TableSchema => {
 
 export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormSchema => {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+
+  // Pre-process HTML to fix malformed tables (missing <tr> tags)
+  // 1. Replace <tbody><td... with <tbody><tr><td...
+  // 2. Replace <table><td... with <table><tr><td...
+  // 3. Close the </tr> before </tbody> or </table> if we added one.
+  // Note: This is a simple heuristic for this specific sample issue.
+  let cleanHtml = html
+    .replace(/(<tbody[^>]*>)\s*(<td)/gi, '$1<tr>$2')
+    .replace(/(<table[^>]*>)\s*(<td)/gi, '$1<tr>$2');
+
+  // If we added a <tr>, the browser's parser might auto-close it, but let's be safer
+  // by letting the DOMParser handle the closing tags which it usually does well
+  // if the opening tags are at least present.
+
+  const doc = parser.parseFromString(cleanHtml, 'text/html');
 
   const originalHeadHtml = doc.head?.innerHTML?.trim() || undefined;
   const originalBodyHtml = doc.body?.innerHTML?.trim() || undefined;
@@ -187,15 +201,15 @@ export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormS
   const sections: SectionSchema[] =
     tables.length > 0
       ? tables.map((table, index) => {
-          const parsed = parseTable(doc, table as HTMLTableElement);
-          return {
-            id: createId(),
-            title: headingText + (tables.length > 1 ? ` — Table ${index + 1}` : ''),
-            rows: parsed.rows,
-            layout: 'table',
-            tableAttributes: parsed.tableAttributes,
-          };
-        })
+        const parsed = parseTable(doc, table as HTMLTableElement);
+        return {
+          id: createId(),
+          title: headingText + (tables.length > 1 ? ` — Table ${index + 1}` : ''),
+          rows: parsed.rows,
+          layout: 'table',
+          tableAttributes: parsed.tableAttributes,
+        };
+      })
       : [];
 
   if (sections.length === 0 && allFields.length > 0) {

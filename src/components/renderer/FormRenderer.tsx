@@ -111,10 +111,10 @@ const FieldRenderer = ({
               styles={
                 bindingToken
                   ? {
-                      input: {
-                        fontStyle: 'italic',
-                      },
-                    }
+                    input: {
+                      fontStyle: 'italic',
+                    },
+                  }
                   : undefined
               }
             />
@@ -140,10 +140,10 @@ const FieldRenderer = ({
               styles={
                 bindingToken
                   ? {
-                      input: {
-                        fontStyle: 'italic',
-                      },
-                    }
+                    input: {
+                      fontStyle: 'italic',
+                    },
+                  }
                   : undefined
               }
             />
@@ -166,10 +166,10 @@ const FieldRenderer = ({
               styles={
                 bindingToken
                   ? {
-                      input: {
-                        fontStyle: 'italic',
-                      },
-                    }
+                    input: {
+                      fontStyle: 'italic',
+                    },
+                  }
                   : undefined
               }
             />
@@ -193,10 +193,10 @@ const FieldRenderer = ({
               styles={
                 bindingToken
                   ? {
-                      input: {
-                        fontStyle: 'italic',
-                      },
-                    }
+                    input: {
+                      fontStyle: 'italic',
+                    },
+                  }
                   : undefined
               }
             />
@@ -220,10 +220,10 @@ const FieldRenderer = ({
               styles={
                 bindingToken
                   ? {
-                      input: {
-                        fontStyle: 'italic',
-                      },
-                    }
+                    input: {
+                      fontStyle: 'italic',
+                    },
+                  }
                   : undefined
               }
             />
@@ -246,8 +246,8 @@ const FieldRenderer = ({
               styles={
                 bindingToken
                   ? {
-                      label: { fontStyle: 'italic' },
-                    }
+                    label: { fontStyle: 'italic' },
+                  }
                   : undefined
               }
             />
@@ -269,8 +269,8 @@ const FieldRenderer = ({
               styles={
                 bindingToken
                   ? {
-                      label: { fontStyle: 'italic' },
-                    }
+                    label: { fontStyle: 'italic' },
+                  }
                   : undefined
               }
             >
@@ -309,9 +309,8 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
 
   const renderTable = (rows: RowSchema[]) => (
     <Table
-      withRowBorders
-      withColumnBorders
-      highlightOnHover
+      withRowBorders={false}
+      withColumnBorders={false}
       style={{ width: '100%', tableLayout: 'auto' }}
     >
       <Table.Tbody>
@@ -349,9 +348,9 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                     <FieldRenderer key={field.id} field={field} control={control} />
                   ))}
                 </Group>
-                <Stack gap="xs" pt={column.fields.length ? 'xs' : 0}>
+                <Stack gap={0} pt={0}>
                   {column.nestedTables?.map((nested) => (
-                    <Stack key={nested.id} gap="xs">
+                    <Stack key={nested.id} gap={0}>
                       {renderTable(nested.rows)}
                     </Stack>
                   ))}
@@ -385,35 +384,35 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
             {section.layout === 'table'
               ? renderTable(section.rows)
               : section.rows.map((row) => (
-                  <Group key={row.id} align="flex-start" gap="md">
-                    {row.columns.map((column) => (
-                        <Stack key={column.id} gap="md" style={{ flex: column.span / 4 }}>
-                          {(column.staticBlocks || []).map((block) => (
-                            <div
-                              key={block.id}
-                              style={{
-                                fontSize: 13,
-                                color: '#475569',
-                                direction: 'ltr',
-                                whiteSpace: 'pre-wrap',
-                                textAlign: 'left',
-                              }}
-                              dangerouslySetInnerHTML={{ __html: block.html }}
-                            />
-                          ))}
-                        {!column.staticBlocks?.length && column.staticHtml && (
-                          <div
-                            style={{ fontSize: 13, color: '#475569' }}
-                            dangerouslySetInnerHTML={{ __html: column.staticHtml }}
-                          />
-                        )}
-                        {column.fields.map((field) => (
-                          <FieldRenderer key={field.id} field={field} control={control} />
-                        ))}
-                      </Stack>
-                    ))}
-                  </Group>
-                ))}
+                <Group key={row.id} align="flex-start" gap="md">
+                  {row.columns.map((column) => (
+                    <Stack key={column.id} gap="md" style={{ flex: column.span / 4 }}>
+                      {(column.staticBlocks || []).map((block) => (
+                        <div
+                          key={block.id}
+                          style={{
+                            fontSize: 13,
+                            color: '#475569',
+                            direction: 'ltr',
+                            whiteSpace: 'pre-wrap',
+                            textAlign: 'left',
+                          }}
+                          dangerouslySetInnerHTML={{ __html: block.html }}
+                        />
+                      ))}
+                      {!column.staticBlocks?.length && column.staticHtml && (
+                        <div
+                          style={{ fontSize: 13, color: '#475569' }}
+                          dangerouslySetInnerHTML={{ __html: column.staticHtml }}
+                        />
+                      )}
+                      {column.fields.map((field) => (
+                        <FieldRenderer key={field.id} field={field} control={control} />
+                      ))}
+                    </Stack>
+                  ))}
+                </Group>
+              ))}
           </Stack>
         ))}
         {hasAnyFields && (

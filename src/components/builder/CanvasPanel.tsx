@@ -251,10 +251,12 @@ interface TableCellProps {
 function TableRenderer({ table }: { table: TableSchema }) {
   return (
     <Table
-      withRowBorders
-      withColumnBorders
-      highlightOnHover
-      style={{ background: 'white', borderRadius: 8, overflow: 'hidden' }}
+      withRowBorders={false}
+      withColumnBorders={false}
+      style={{
+        background: 'white',
+        border: table.tableAttributes?.border ? `${table.tableAttributes.border}px solid black` : undefined,
+      }}
     >
       <Table.Tbody>
         {table.rows.map((row) => (
@@ -308,9 +310,9 @@ function TableCell({ column }: TableCellProps) {
         />
       )}
 
-      <Stack gap="xs" pt={column.fields.length ? 'xs' : 0}>
+      <Stack gap={0} pt={0}>
         {column.nestedTables?.map((nested) => (
-          <Stack key={nested.id} gap="xs" pt="xs">
+          <Stack key={nested.id} gap={0} pt={0}>
             <TableRenderer table={nested} />
           </Stack>
         ))}
