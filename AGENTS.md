@@ -14,6 +14,10 @@ Context for future sessions about the FusionForms Form Builder MVP (renamed from
   - `CanvasPanel`: renders table and stack sections; click to select; dnd-kit reorder rows/fields; add/remove actions; droppable columns accept palette items; nested tables supported with sortable/droppable table cells; static cell HTML preserved.
   - `PropertiesPanel`: edits form/section/field properties with EDMS binding support; field lookup works inside nested tables for imported samples.
 - Form renderer (`src/components/renderer/FormRenderer.tsx`) mirrors table layouts and nested tables; shows bindings inside fields; uses react-hook-form; used in preview modal. Sample viewer can load samples into the builder via HTML parsing.
+  - **Renderer Improvements**: Respects original HTML attributes (e.g., `cols` for textarea width). Maps HTML `size` attribute to CSS `width` (using `ch` units) to ensure correct field width without affecting font size.
+- **Export Fidelity**: Exported HTML now preserves content outside tables (e.g., hidden divs), suppresses duplicate labels for imported fields, and filters duplicate attributes.
+- **UI/UX**: Added application logo to the header (resizable).
+- **Build Optimization**: Configured `manualChunks` in `vite.config.ts` to split vendor libraries, resolving large chunk warnings.
 
 ### Outstanding / risks
 - Node version warning: current Node 18.19.1 while Vite 7 expects >=20.19. Upgrade Node to avoid engine warnings.
