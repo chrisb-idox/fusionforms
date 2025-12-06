@@ -295,6 +295,18 @@ export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormS
       })
       : [];
 
+  // Capture remaining content that wasn't part of the tables
+  const bodyClone = doc.body.cloneNode(true) as HTMLElement;
+  // Remove the tables we parsed
+  bodyClone.querySelectorAll('table').forEach((table) => {
+    if (!table.parentElement?.closest('table')) {
+      table.remove();
+    }
+  });
+  // Also remove script tags if any, to be safe? Or keep them?
+  // For now, let's keep everything else.
+  const remainingBodyHtml = bodyClone.innerHTML.trim() || undefined;
+
   if (sections.length === 0 && allFields.length > 0) {
     const parsedFields = allFields.map((el) => mapElementToField(doc, el));
     const fallbackRows: RowSchema[] = [];
@@ -325,5 +337,6 @@ export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormS
     originalHtml: html.trim() || undefined,
     originalHeadHtml,
     originalBodyHtml,
+    remainingBodyHtml,
   };
 };

@@ -3,8 +3,8 @@ import type { FieldSchema, FormSchema, RowSchema, SectionSchema } from '../types
 const attrsToString = (attrs?: Record<string, string>) =>
   attrs
     ? Object.entries(attrs)
-        .map(([key, value]) => `${key}="${value}"`)
-        .join(' ')
+      .map(([key, value]) => `${key}="${value}"`)
+      .join(' ')
     : '';
 
 const encodeHtml = (value: string) =>
@@ -41,16 +41,23 @@ const renderFieldLines = (field: FieldSchema, level: number, includeLabel = true
 
   const lines: string[] = [];
   const labelFor = attrs.id || attrs.name;
+  const showLabel = includeLabel && !field.originalName;
+
+  // Helper to remove 'type' from attributes to avoid duplication
+  const getAttrsWithoutType = () => {
+    const { type, ...rest } = attrs;
+    return attrsToString(rest);
+  };
 
   switch (field.type) {
     case 'textarea':
-      if (includeLabel) {
+      if (showLabel) {
         lines.push(indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level));
       }
       lines.push(indentLine(`<textarea ${attrString}>${encodeHtml(value)}</textarea>`, level));
       break;
     case 'select':
-      if (includeLabel) {
+      if (showLabel) {
         lines.push(indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level));
       }
       lines.push(indentLine(`<select ${attrString}>`, level));
@@ -76,7 +83,7 @@ const renderFieldLines = (field: FieldSchema, level: number, includeLabel = true
       break;
     case 'radio':
       lines.push(indentLine(`<div>`, level));
-      if (includeLabel) {
+      if (showLabel) {
         lines.push(indentLine(encodeHtml(field.label), level + 1));
       }
       (field.options || []).forEach((opt) => {
@@ -92,27 +99,27 @@ const renderFieldLines = (field: FieldSchema, level: number, includeLabel = true
       lines.push(indentLine(`</div>`, level));
       break;
     case 'date':
-      if (includeLabel) {
+      if (showLabel) {
         lines.push(indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level));
       }
       lines.push(
-        indentLine(`<input type="date" ${attrString} value="${encodeHtml(value)}" />`, level),
+        indentLine(`<input type="date" ${getAttrsWithoutType()} value="${encodeHtml(value)}" />`, level),
       );
       break;
     case 'number':
-      if (includeLabel) {
+      if (showLabel) {
         lines.push(indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level));
       }
       lines.push(
-        indentLine(`<input type="number" ${attrString} value="${encodeHtml(value)}" />`, level),
+        indentLine(`<input type="number" ${getAttrsWithoutType()} value="${encodeHtml(value)}" />`, level),
       );
       break;
     default:
-      if (includeLabel) {
+      if (showLabel) {
         lines.push(indentLine(`<label for="${labelFor}">${encodeHtml(field.label)}</label>`, level));
       }
       lines.push(
-        indentLine(`<input type="text" ${attrString} value="${encodeHtml(value)}" />`, level),
+        indentLine(`<input type="text" ${getAttrsWithoutType()} value="${encodeHtml(value)}" />`, level),
       );
       break;
   }
@@ -219,9 +226,9 @@ export const schemaToHtml = (schema: FormSchema) => {
     const headContent = schema.originalHeadHtml
       ? indentBlock(schema.originalHeadHtml.trim(), 2)
       : indentBlock(
-          `<meta charset="UTF-8" />\n<title>${encodeHtml(schema.name)}</title>`,
-          2,
-        );
+        `<meta charset="UTF-8" />\n<title>${encodeHtml(schema.name)}</title>`,
+        2,
+      );
 
     const bodyContent = [schema.originalBodyHtml.trim(), generatedBody]
       .filter(Boolean)
@@ -238,7 +245,9 @@ ${bodyContent}
 </html>`;
   }
 
-  const bodyLines = generatedBody;
+  const bodyLines = [generatedBody, schema.remainingBodyHtml]
+    .filter(Boolean)
+    .join('\n');
 
   return `<!doctype html>
 <html>
