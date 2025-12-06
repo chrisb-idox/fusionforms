@@ -82,7 +82,7 @@ export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
           Build your sections and fields, then preview before saving.
         </Text>
       </Stack>
-      <Image src={logo} w={64} h={64} radius="md" />
+      <Image src={logo} w={128} h={128} radius="md" />
     </Group>
   );
 };
