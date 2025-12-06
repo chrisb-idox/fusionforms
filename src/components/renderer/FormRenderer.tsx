@@ -107,6 +107,11 @@ const FieldRenderer = ({
   // Remove id to avoid conflicts with Mantine's internal ID generation or duplicate IDs
   delete safeAttributes.id;
 
+  // Handle 'size' attribute separately to avoid conflict with Mantine's 'size' prop
+  const { size, ...restAttributes } = safeAttributes;
+  const htmlSize = size ? Number(size) : undefined;
+  const widthStyle = htmlSize ? { width: `${htmlSize}ch` } : undefined;
+
   switch (field.type) {
     case 'text':
       return (
@@ -116,22 +121,19 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <TextInput
-              {...safeAttributes}
+              {...restAttributes}
               {...controllerField}
               value={controllerField.value ?? bindingToken ?? ''}
               label={showLabel ? field.label : null}
               placeholder={field.placeholder}
               description={description}
               error={fieldState.error?.message}
-              styles={
-                bindingToken
-                  ? {
-                    input: {
-                      fontStyle: 'italic',
-                    },
-                  }
-                  : undefined
-              }
+              styles={{
+                input: {
+                  ...(bindingToken ? { fontStyle: 'italic' } : {}),
+                  ...widthStyle,
+                },
+              }}
             />
           )}
         />
@@ -144,7 +146,7 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <Textarea
-              {...safeAttributes}
+              {...restAttributes}
               {...controllerField}
               value={controllerField.value ?? bindingToken ?? ''}
               label={showLabel ? field.label : null}
@@ -153,15 +155,11 @@ const FieldRenderer = ({
               error={fieldState.error?.message}
               autosize
               minRows={3}
-              styles={
-                bindingToken
-                  ? {
-                    input: {
-                      fontStyle: 'italic',
-                    },
-                  }
-                  : undefined
-              }
+              styles={{
+                input: {
+                  ...(bindingToken ? { fontStyle: 'italic' } : {}),
+                },
+              }}
             />
           )}
         />
@@ -174,21 +172,18 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <NumberInput
-              {...safeAttributes}
+              {...restAttributes}
               {...controllerField}
               label={showLabel ? field.label : null}
               placeholder={field.placeholder}
               description={description}
               error={fieldState.error?.message}
-              styles={
-                bindingToken
-                  ? {
-                    input: {
-                      fontStyle: 'italic',
-                    },
-                  }
-                  : undefined
-              }
+              styles={{
+                input: {
+                  ...(bindingToken ? { fontStyle: 'italic' } : {}),
+                  ...widthStyle,
+                },
+              }}
             />
           )}
         />
@@ -201,22 +196,19 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <TextInput
-              {...safeAttributes}
+              {...restAttributes}
               {...controllerField}
               value={controllerField.value ?? bindingToken ?? ''}
               type="date"
               label={showLabel ? field.label : null}
               description={description}
               error={fieldState.error?.message}
-              styles={
-                bindingToken
-                  ? {
-                    input: {
-                      fontStyle: 'italic',
-                    },
-                  }
-                  : undefined
-              }
+              styles={{
+                input: {
+                  ...(bindingToken ? { fontStyle: 'italic' } : {}),
+                  ...widthStyle,
+                },
+              }}
             />
           )}
         />
@@ -229,22 +221,19 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <Select
-              {...safeAttributes}
+              {...restAttributes}
               {...controllerField}
               data={field.options || []}
               label={showLabel ? field.label : null}
               placeholder={field.placeholder}
               description={description}
               error={fieldState.error?.message}
-              styles={
-                bindingToken
-                  ? {
-                    input: {
-                      fontStyle: 'italic',
-                    },
-                  }
-                  : undefined
-              }
+              styles={{
+                input: {
+                  ...(bindingToken ? { fontStyle: 'italic' } : {}),
+                  ...widthStyle,
+                },
+              }}
             />
           )}
         />
@@ -257,7 +246,7 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <Checkbox
-              {...safeAttributes}
+              {...restAttributes}
               {...controllerField}
               checked={!!controllerField.value}
               label={showLabel ? field.label : null}
@@ -282,7 +271,7 @@ const FieldRenderer = ({
           rules={rules}
           render={({ field: controllerField, fieldState }) => (
             <Radio.Group
-              {...safeAttributes}
+              {...restAttributes}
               {...controllerField}
               label={showLabel ? field.label : null}
               description={description}
