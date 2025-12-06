@@ -304,7 +304,7 @@ function TableCell({ column }: TableCellProps) {
         <StaticBlockItem key={block.id} block={block} />
       ))}
 
-      {!column.staticBlocks?.length && column.staticHtml && (
+      {column.staticBlocks === undefined && column.staticHtml && (
         <div
           style={{ fontSize: 13, color: '#475569' }}
           dangerouslySetInnerHTML={{ __html: column.staticHtml }}

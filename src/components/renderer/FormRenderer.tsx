@@ -411,7 +411,7 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                           dangerouslySetInnerHTML={{ __html: block.html }}
                         />
                       ))}
-                      {!column.staticBlocks?.length && column.staticHtml && (
+                      {column.staticBlocks === undefined && column.staticHtml && (
                         <div
                           style={{ fontSize: 13, color: '#475569' }}
                           dangerouslySetInnerHTML={{ __html: column.staticHtml }}
@@ -430,7 +430,7 @@ export const FormRenderer = ({ schema, onSubmit }: FormRendererProps) => {
                 </Group>
               ))}
           </Stack>
-        )}
+        ))}
         {hasAnyFields && (
           <Group justify="flex-end">
             <Button type="submit">Submit</Button>
