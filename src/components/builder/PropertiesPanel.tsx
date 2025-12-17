@@ -3,7 +3,6 @@ import {
   Card,
   Divider,
   Group,
-  Select,
   Stack,
   Text,
   TextInput,
@@ -425,77 +424,61 @@ export const PropertiesPanel = () => {
           </Card>
 
           {schema.formClass && formClassProperties.length > 0 && (
-            <>
-              <Select
-                label="Property"
-                placeholder="Select a property"
-                searchable
-                clearable
-                data={formClassProperties.map((prop) => ({
-                  value: prop.name,
-                  label: `${prop.label} (${prop.name})`,
-                }))}
-                value={tempProperty}
-                onChange={(value) => setTempProperty(value)}
-                description="Select a property from the form's class"
-              />
-
-              <Card withBorder padding="sm" radius="md">
-                <Stack gap="xs">
-                  <Group justify="space-between">
-                    <Text size="sm" fw={500}>
-                      Available Properties
-                    </Text>
-                    <Badge size="sm" variant="light">
-                      {formClassProperties.length} properties
-                    </Badge>
-                  </Group>
-                  <ScrollArea h={300} type="auto">
-                    <Stack gap={4}>
-                      {formClassProperties.map((prop) => (
-                        <Card
-                          key={prop.name}
-                          padding="xs"
-                          radius="sm"
-                          withBorder
-                          style={{
-                            cursor: 'pointer',
-                            backgroundColor:
-                              tempProperty === prop.name
-                                ? 'var(--mantine-color-blue-0)'
-                                : undefined,
-                            borderColor:
-                              tempProperty === prop.name
-                                ? 'var(--mantine-color-blue-5)'
-                                : undefined,
-                          }}
-                          onClick={() => setTempProperty(prop.name)}
-                        >
-                          <Group justify="space-between" gap="xs" wrap="nowrap">
-                            <div>
-                              <Text size="xs" fw={500}>
-                                {prop.label}
-                              </Text>
-                              <Text size="xs" c="dimmed">
-                                {prop.name}
-                              </Text>
-                            </div>
-                            {tempProperty === prop.name && (
-                              <Text size="xs" c="blue" fw={500}>
-                                ✓
-                              </Text>
-                            )}
-                          </Group>
-                        </Card>
-                      ))}
-                    </Stack>
-                  </ScrollArea>
-                  <Text size="xs" c="dimmed">
-                    Click a property to select it
+            <Card withBorder padding="sm" radius="md">
+              <Stack gap="xs">
+                <Group justify="space-between">
+                  <Text size="sm" fw={500}>
+                    Available Properties
                   </Text>
-                </Stack>
-              </Card>
-            </>
+                  <Badge size="sm" variant="light">
+                    {formClassProperties.length} properties
+                  </Badge>
+                </Group>
+                <ScrollArea h={300} type="auto">
+                  <Stack gap={4}>
+                    {formClassProperties.map((prop) => (
+                      <Card
+                        key={prop.name}
+                        padding="xs"
+                        radius="sm"
+                        withBorder
+                        style={{
+                          cursor: 'pointer',
+                          backgroundColor:
+                            tempProperty === prop.name
+                              ? 'var(--mantine-color-blue-0)'
+                              : undefined,
+                          borderColor:
+                            tempProperty === prop.name
+                              ? 'var(--mantine-color-blue-5)'
+                              : undefined,
+                        }}
+                        onClick={() => setTempProperty(prop.name)}
+                      >
+                        <Group justify="space-between" gap="xs" wrap="nowrap">
+                          <div>
+                            <Text size="xs" fw={500}>
+                              {prop.label}
+                            </Text>
+                            <Text size="xs" c="dimmed">
+                              {prop.name}
+                            </Text>
+                          </div>
+                          {tempProperty === prop.name && (
+                            <Text size="xs" c="blue" fw={500}>
+                              ✓
+                            </Text>
+                          )}
+                        </Group>
+                      </Card>
+                    ))}
+                  </Stack>
+                </ScrollArea>
+                <Text size="xs" c="dimmed">
+                  Click a property to select it
+                </Text>
+              </Stack>
+            </Card>
           )}
 
           {!schema.formClass && (
