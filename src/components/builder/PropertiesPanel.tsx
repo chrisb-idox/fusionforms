@@ -11,6 +11,8 @@ import {
   Tooltip,
   Badge,
   ScrollArea,
+  Modal,
+  Button,
 } from '@mantine/core';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFormBuilder } from '../../context/FormBuilderContext';
@@ -94,6 +96,11 @@ export const PropertiesPanel = () => {
   const [staticHtml, setStaticHtml] = useState<string>('<p>New text</p>');
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  // Class selector modal state
+  const [classModalOpen, setClassModalOpen] = useState(false);
+  const [tempClass, setTempClass] = useState<string | null>(null);
+  const [tempProperty, setTempProperty] = useState<string | null>(null);
+
   useEffect(() => {
     const next = selectedStatic?.html || '<p>New text</p>';
     setStaticHtml(next);
@@ -150,6 +157,39 @@ export const PropertiesPanel = () => {
     const doc = parser.parseFromString(staticHtml, 'text/html');
     const textContent = doc.body.textContent || '';
     commitStatic(textContent);
+  };
+
+  const handleOpenClassModal = () => {
+    setTempClass(selectedField?.bindingClass || null);
+    setTempProperty(selectedField?.bindingProperty || null);
+    setClassModalOpen(true);
+  };
+
+  const handleApplyClassBinding = () => {
+    if (!selectedField) return;
+    const updates: Partial<FieldSchema> = {
+      bindingClass: tempClass || undefined,
+      bindingProperty: tempProperty || undefined,
+    };
+    if (tempProperty) {
+      if (selectedField.name.startsWith('field_')) {
+        updates.name = tempProperty;
+      }
+      updates.defaultValue = `\${${tempProperty}}`;
+    } else {
+      updates.defaultValue = undefined;
+    }
+    updateField(selectedField.id, updates);
+    setClassModalOpen(false);
+  };
+
+  const handleClearClassBinding = () => {
+    if (!selectedField) return;
+    updateField(selectedField.id, {
+      bindingClass: undefined,
+      bindingProperty: undefined,
+      defaultValue: undefined,
+    });
   };
 
   return (
@@ -231,130 +271,57 @@ export const PropertiesPanel = () => {
               autosize
               minRows={2}
             />
-            <Divider label="EDMS Binding (Class/Property)" labelPosition="left" />
-            <Select
-              label="Class"
-              placeholder="Select a class"
-              searchable
-              clearable
-              data={propertiesLibrary.map((cls) => ({ value: cls.name, label: cls.name }))}
-              value={selectedField.bindingClass || null}
-              onChange={(value) => {
-                const updates: Partial<FieldSchema> = {
-                  bindingClass: value || undefined,
-                  bindingProperty: undefined, // Clear property when class changes
-                };
-                if (!value) {
-                  updates.defaultValue = undefined;
-                }
-                updateField(selectedField.id, updates);
-              }}
-              description="Select the EDMS class for this field"
-            />
-            {selectedField.bindingClass && (
-              <Select
-                label="Property"
-                placeholder="Select a property"
-                searchable
-                clearable
-                data={
-                  propertiesLibrary
-                    .find((cls) => cls.name === selectedField.bindingClass)
-                    ?.properties.map((prop) => ({
-                      value: prop.name,
-                      label: `${prop.label} (${prop.name})`,
-                    })) || []
-                }
-                value={selectedField.bindingProperty || null}
-                onChange={(value) => {
-                  const updates: Partial<FieldSchema> = {
-                    bindingProperty: value || undefined,
-                  };
-                  if (value) {
-                    if (selectedField.name.startsWith('field_')) {
-                      updates.name = value;
-                    }
-                    updates.defaultValue = `\${${value}}`;
-                  } else {
-                    updates.defaultValue = undefined;
-                  }
-                  updateField(selectedField.id, updates);
-                }}
-                description="Select a property from the chosen class"
-              />
-            )}
-            {selectedField.bindingClass && (
-              <Card withBorder padding="sm" radius="md">
-                <Stack gap="xs">
-                  <Group justify="space-between">
-                    <Text size="sm" fw={500}>
-                      Available Properties
-                    </Text>
-                    <Badge size="sm" variant="light">
-                      {
-                        propertiesLibrary.find((cls) => cls.name === selectedField.bindingClass)
-                          ?.properties.length
-                      }{' '}
-                      properties
-                    </Badge>
-                  </Group>
-                  <ScrollArea h={200} type="auto">
-                    <Stack gap={4}>
-                      {propertiesLibrary
-                        .find((cls) => cls.name === selectedField.bindingClass)
-                        ?.properties.map((prop) => (
-                          <Card
-                            key={prop.name}
-                            padding="xs"
-                            radius="sm"
-                            withBorder
-                            style={{
-                              cursor: 'pointer',
-                              backgroundColor:
-                                selectedField.bindingProperty === prop.name
-                                  ? 'var(--mantine-color-blue-0)'
-                                  : undefined,
-                              borderColor:
-                                selectedField.bindingProperty === prop.name
-                                  ? 'var(--mantine-color-blue-5)'
-                                  : undefined,
-                            }}
-                            onClick={() => {
-                              const updates: Partial<FieldSchema> = {
-                                bindingProperty: prop.name,
-                              };
-                              if (selectedField.name.startsWith('field_')) {
-                                updates.name = prop.name;
-                              }
-                              updates.defaultValue = `\${${prop.name}}`;
-                              updateField(selectedField.id, updates);
-                            }}
-                          >
-                            <Group justify="space-between" gap="xs" wrap="nowrap">
-                              <div>
-                                <Text size="xs" fw={500}>
-                                  {prop.label}
-                                </Text>
-                                <Text size="xs" c="dimmed">
-                                  {prop.name}
-                                </Text>
-                              </div>
-                              {selectedField.bindingProperty === prop.name && (
-                                <Text size="xs" c="blue" fw={500}>
-                                  ✓
-                                </Text>
-                              )}
-                            </Group>
-                          </Card>
-                        ))}
-                    </Stack>
-                  </ScrollArea>
-                  <Text size="xs" c="dimmed">
-                    Click a property to bind it to this field
+            <Divider label="EDMS Binding" labelPosition="left" />
+            <Stack gap="xs">
+              <Group justify="space-between" align="flex-start">
+                <div style={{ flex: 1 }}>
+                  <Text size="sm" fw={500} mb={4}>
+                    Class/Property Binding
                   </Text>
-                </Stack>
-              </Card>
-            )}
+                  {selectedField.bindingClass && selectedField.bindingProperty ? (
+                    <Card withBorder padding="xs" radius="sm">
+                      <Stack gap={4}>
+                        <Group gap="xs">
+                          <Badge size="sm" variant="light" color="blue">
+                            {selectedField.bindingClass}
+                          </Badge>
+                          <Text size="sm" fw={500}>
+                            {
+                              propertiesLibrary
+                                .find((cls) => cls.name === selectedField.bindingClass)
+                                ?.properties.find((p) => p.name === selectedField.bindingProperty)
+                                ?.label || selectedField.bindingProperty
+                            }
+                          </Text>
+                        </Group>
+                        <Text size="xs" c="dimmed">
+                          {selectedField.bindingProperty}
+                        </Text>
+                      </Stack>
+                    </Card>
+                  ) : (
+                    <Text size="sm" c="dimmed">
+                      No binding set
+                    </Text>
+                  )}
+                </div>
+                <Group gap="xs">
+                  <Button size="xs" variant="light" onClick={handleOpenClassModal}>
+                    Edit
+                  </Button>
+                  {(selectedField.bindingClass || selectedField.bindingProperty) && (
+                    <Button
+                      size="xs"
+                      variant="light"
+                      color="red"
+                      onClick={handleClearClassBinding}
+                    >
+                      Clear
+                    </Button>
+                  )}
+                </Group>
+              </Group>
+            </Stack>
             <Divider label="Legacy EDMS Binding" labelPosition="left" />
             <Select
               label="Bind to EDMS property (legacy)"
@@ -467,6 +434,120 @@ export const PropertiesPanel = () => {
           </>
         )}
       </Stack>
+      
+      {/* Class Selector Modal */}
+      <Modal
+        opened={classModalOpen}
+        onClose={() => setClassModalOpen(false)}
+        title="Edit Class/Property Binding"
+        size="lg"
+      >
+        <Stack gap="md">
+          <Select
+            label="Class"
+            placeholder="Select a class"
+            searchable
+            clearable
+            data={propertiesLibrary.map((cls) => ({ value: cls.name, label: cls.name }))}
+            value={tempClass}
+            onChange={(value) => {
+              setTempClass(value);
+              setTempProperty(null); // Clear property when class changes
+            }}
+            description="Select the EDMS class for this field"
+          />
+          
+          {tempClass && (
+            <Select
+              label="Property"
+              placeholder="Select a property"
+              searchable
+              clearable
+              data={
+                propertiesLibrary
+                  .find((cls) => cls.name === tempClass)
+                  ?.properties.map((prop) => ({
+                    value: prop.name,
+                    label: `${prop.label} (${prop.name})`,
+                  })) || []
+              }
+              value={tempProperty}
+              onChange={(value) => setTempProperty(value)}
+              description="Select a property from the chosen class"
+            />
+          )}
+          
+          {tempClass && (
+            <Card withBorder padding="sm" radius="md">
+              <Stack gap="xs">
+                <Group justify="space-between">
+                  <Text size="sm" fw={500}>
+                    Available Properties
+                  </Text>
+                  <Badge size="sm" variant="light">
+                    {propertiesLibrary.find((cls) => cls.name === tempClass)?.properties.length}{' '}
+                    properties
+                  </Badge>
+                </Group>
+                <ScrollArea h={300} type="auto">
+                  <Stack gap={4}>
+                    {propertiesLibrary
+                      .find((cls) => cls.name === tempClass)
+                      ?.properties.map((prop) => (
+                        <Card
+                          key={prop.name}
+                          padding="xs"
+                          radius="sm"
+                          withBorder
+                          style={{
+                            cursor: 'pointer',
+                            backgroundColor:
+                              tempProperty === prop.name
+                                ? 'var(--mantine-color-blue-0)'
+                                : undefined,
+                            borderColor:
+                              tempProperty === prop.name
+                                ? 'var(--mantine-color-blue-5)'
+                                : undefined,
+                          }}
+                          onClick={() => setTempProperty(prop.name)}
+                        >
+                          <Group justify="space-between" gap="xs" wrap="nowrap">
+                            <div>
+                              <Text size="xs" fw={500}>
+                                {prop.label}
+                              </Text>
+                              <Text size="xs" c="dimmed">
+                                {prop.name}
+                              </Text>
+                            </div>
+                            {tempProperty === prop.name && (
+                              <Text size="xs" c="blue" fw={500}>
+                                ✓
+                              </Text>
+                            )}
+                          </Group>
+                        </Card>
+                      ))}
+                  </Stack>
+                </ScrollArea>
+                <Text size="xs" c="dimmed">
+                  Click a property to select it
+                </Text>
+              </Stack>
+            </Card>
+          )}
+          
+          <Group justify="flex-end" gap="xs">
+            <Button variant="default" onClick={() => setClassModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleApplyClassBinding} disabled={!tempClass || !tempProperty}>
+              Apply
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </Card>
   );
 };
