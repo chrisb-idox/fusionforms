@@ -1,9 +1,12 @@
-import { Button, Group, Select, Stack, Text, TextInput, Image } from '@mantine/core';
+import { Button, Group, Select, Stack, Text, Badge } from '@mantine/core';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormBuilder } from '../../context/FormBuilderContext';
 import { actionCodes } from '../../data/actionCodes';
 import { schemaToHtml } from '../../utils/schemaExporter';
 import logo from '../../assets/logo.png';
+import { FormEditor } from './FormEditor';
+import { getPropertiesLibrary } from '../../utils/propertiesLibrary';
 
 interface BuilderHeaderProps {
   onPreview: () => void;
@@ -11,6 +14,39 @@ interface BuilderHeaderProps {
 
 export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
   const { schema, updateForm } = useFormBuilder();
+  const [formEditorOpen, setFormEditorOpen] = useState(false);
+  const propertiesLibrary = getPropertiesLibrary();
+
+  const handleSaveFormDetails = (name: string, formClass: string) => {
+    // Clear field bindings that don't exist in the new class
+    const newClassProperties = propertiesLibrary.find((cls) => cls.name === formClass);
+    const validPropertyNames = new Set(newClassProperties?.properties.map((p) => p.name) || []);
+    
+    // Deep clone and clean bindings
+    const cleanedSections = schema.sections.map((section) => ({
+      ...section,
+      rows: section.rows.map((row) => ({
+        ...row,
+        columns: row.columns.map((column) => ({
+          ...column,
+          fields: column.fields.map((field) => {
+            if (field.bindingProperty && !validPropertyNames.has(field.bindingProperty)) {
+              // Remove invalid binding
+              const { bindingProperty, defaultValue, ...rest } = field;
+              return rest;
+            }
+            return field;
+          }),
+        })),
+      })),
+    }));
+
+    updateForm({ 
+      name,
+      formClass,
+      sections: cleanedSections
+    });
+  };
 
   const handleSave = () => {
     try {
@@ -42,47 +78,68 @@ export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
   };
 
   return (
-    <Group justify="space-between" align="flex-start" px="md" py="sm" style={{ backdropFilter: 'blur(6px)' }}>
-      <Stack gap="xs">
-        <Group gap="md" align="flex-end" wrap="wrap">
-          <TextInput
-            label="Form name"
-            placeholder="Untitled form"
-            value={schema.name}
-            onChange={(event) => updateForm({ name: event.currentTarget.value })}
-            w={260}
-          />
-          <Select
-            label="Action code"
-            placeholder="Select action"
-            data={actionCodes.map((item) => ({
-              value: item.value,
-              label: `${item.label} — ${item.description}`,
-            }))}
-            value={schema.actionCode || null}
-            onChange={(value) => updateForm({ actionCode: (value as typeof schema.actionCode) || undefined })}
-            searchable
-            nothingFoundMessage="No actions"
-            w={320}
-          />
-        </Group>
-        <Group gap="sm" wrap="wrap">
-          <Button component={Link} to="/samples" variant="default">
-            Samples
-          </Button>
-          <Button variant="default" onClick={handleSave}>
-            Save
-          </Button>
-          <Button variant="default" onClick={handleExportHtml}>
-            Export HTML
-          </Button>
-          <Button onClick={onPreview}>Preview</Button>
-        </Group>
-        <Text size="sm" c="dimmed">
-          Build your sections and fields, then preview before saving.
-        </Text>
-      </Stack>
-      <Image src={logo} w={128} h={128} radius="md" />
-    </Group>
+    <>
+      <Group justify="space-between" align="flex-start" px="md" py="sm" style={{ backdropFilter: 'blur(6px)' }}>
+        <Stack gap="xs">
+          <Group gap="md" align="center" wrap="wrap">
+            <div>
+              <Text size="xs" c="dimmed" mb={2}>
+                Form name
+              </Text>
+              <Group gap="xs" align="center">
+                <Text size="lg" fw={600}>
+                  {schema.name}
+                </Text>
+                {schema.formClass && (
+                  <Badge size="md" variant="light" color="blue">
+                    {schema.formClass}
+                  </Badge>
+                )}
+                <Button size="xs" variant="light" onClick={() => setFormEditorOpen(true)}>
+                  Edit
+                </Button>
+              </Group>
+            </div>
+            <Select
+              label="Action code"
+              placeholder="Select action"
+              data={actionCodes.map((item) => ({
+                value: item.value,
+                label: `${item.label} — ${item.description}`,
+              }))}
+              value={schema.actionCode || null}
+              onChange={(value) => updateForm({ actionCode: (value as typeof schema.actionCode) || undefined })}
+              searchable
+              nothingFoundMessage="No actions"
+              w={320}
+            />
+          </Group>
+          <Group gap="sm" wrap="wrap">
+            <Button component={Link} to="/samples" variant="default">
+              Samples
+            </Button>
+            <Button variant="default" onClick={handleSave}>
+              Save
+            </Button>
+            <Button variant="default" onClick={handleExportHtml}>
+              Export HTML
+            </Button>
+            <Button onClick={onPreview}>Preview</Button>
+          </Group>
+          <Text size="sm" c="dimmed">
+            Build your sections and fields, then preview before saving.
+          </Text>
+        </Stack>
+        <img src={logo} style={{ width: 128, height: 128, borderRadius: 8 }} alt="Logo" />
+      </Group>
+
+      <FormEditor
+        opened={formEditorOpen}
+        onClose={() => setFormEditorOpen(false)}
+        formName={schema.name}
+        formClass={schema.formClass}
+        onSave={handleSaveFormDetails}
+      />
+    </>
   );
 };

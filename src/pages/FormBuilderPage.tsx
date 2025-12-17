@@ -47,6 +47,7 @@ const createInitialSchema = (): FormSchema => {
     id: createId(),
     name: 'Untitled form',
     description: 'Start describing your form purpose here.',
+    formClass: 'FusionDocument', // Default to first class
     version: 1,
     sections: [section],
   };

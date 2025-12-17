@@ -37,7 +37,6 @@ interface StaticBlockProps {
 const FieldItem = ({ field, columnId }: FieldItemProps) => {
   const { selection, selectElement, removeField } = useFormBuilder();
   const bindingToken = field.bindingProperty ? `\${${field.bindingProperty}}` : null;
-  const classInfo = field.bindingClass ? `[${field.bindingClass}]` : null;
   const sortable = useSortable({
     id: field.id,
     data: { type: 'field', columnId },
@@ -73,11 +72,6 @@ const FieldItem = ({ field, columnId }: FieldItemProps) => {
             <Text size="sm" fw={600}>
               {field.label || field.name}
             </Text>
-            {classInfo && (
-              <Text size="xs" c="blue" fw={500}>
-                {classInfo}
-              </Text>
-            )}
             {bindingToken && (
               <Text size="xs" c="dimmed" fs="italic">
                 {bindingToken}

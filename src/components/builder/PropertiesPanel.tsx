@@ -17,7 +17,6 @@ import {
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFormBuilder } from '../../context/FormBuilderContext';
 import type { ColumnSchema, FieldSchema, SectionSchema, StaticBlockSchema } from '../../types/formSchema';
-import { edmsProperties } from '../../data/edmsProperties';
 import { getPropertiesLibrary } from '../../utils/propertiesLibrary';
 
 export const PropertiesPanel = () => {
@@ -25,6 +24,12 @@ export const PropertiesPanel = () => {
     useFormBuilder();
 
   const propertiesLibrary = useMemo(() => getPropertiesLibrary(), []);
+  
+  // Get properties for the form's class
+  const formClassProperties = useMemo(() => {
+    if (!schema.formClass) return [];
+    return propertiesLibrary.find((cls) => cls.name === schema.formClass)?.properties || [];
+  }, [schema.formClass, propertiesLibrary]);
 
   const selectedSection = useMemo<SectionSchema | undefined>(() => {
     if (selection?.type !== 'section') return undefined;
@@ -96,9 +101,8 @@ export const PropertiesPanel = () => {
   const [staticHtml, setStaticHtml] = useState<string>('<p>New text</p>');
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  // Class selector modal state
-  const [classModalOpen, setClassModalOpen] = useState(false);
-  const [tempClass, setTempClass] = useState<string | null>(null);
+  // Property selector modal state
+  const [propertyModalOpen, setPropertyModalOpen] = useState(false);
   const [tempProperty, setTempProperty] = useState<string | null>(null);
 
   useEffect(() => {
@@ -159,16 +163,14 @@ export const PropertiesPanel = () => {
     commitStatic(textContent);
   };
 
-  const handleOpenClassModal = () => {
-    setTempClass(selectedField?.bindingClass || null);
+  const handleOpenPropertyModal = () => {
     setTempProperty(selectedField?.bindingProperty || null);
-    setClassModalOpen(true);
+    setPropertyModalOpen(true);
   };
 
-  const handleApplyClassBinding = () => {
+  const handleApplyPropertyBinding = () => {
     if (!selectedField) return;
     const updates: Partial<FieldSchema> = {
-      bindingClass: tempClass || undefined,
       bindingProperty: tempProperty || undefined,
     };
     if (tempProperty) {
@@ -180,13 +182,12 @@ export const PropertiesPanel = () => {
       updates.defaultValue = undefined;
     }
     updateField(selectedField.id, updates);
-    setClassModalOpen(false);
+    setPropertyModalOpen(false);
   };
 
-  const handleClearClassBinding = () => {
+  const handleClearPropertyBinding = () => {
     if (!selectedField) return;
     updateField(selectedField.id, {
-      bindingClass: undefined,
       bindingProperty: undefined,
       defaultValue: undefined,
     });
@@ -276,20 +277,18 @@ export const PropertiesPanel = () => {
               <Group justify="space-between" align="flex-start">
                 <div style={{ flex: 1 }}>
                   <Text size="sm" fw={500} mb={4}>
-                    Class/Property Binding
+                    Property Binding
                   </Text>
-                  {selectedField.bindingClass && selectedField.bindingProperty ? (
+                  {selectedField.bindingProperty ? (
                     <Card withBorder padding="xs" radius="sm">
                       <Stack gap={4}>
                         <Group gap="xs">
                           <Badge size="sm" variant="light" color="blue">
-                            {selectedField.bindingClass}
+                            {schema.formClass || 'No class'}
                           </Badge>
                           <Text size="sm" fw={500}>
                             {
-                              propertiesLibrary
-                                .find((cls) => cls.name === selectedField.bindingClass)
-                                ?.properties.find((p) => p.name === selectedField.bindingProperty)
+                              formClassProperties.find((p) => p.name === selectedField.bindingProperty)
                                 ?.label || selectedField.bindingProperty
                             }
                           </Text>
@@ -306,15 +305,15 @@ export const PropertiesPanel = () => {
                   )}
                 </div>
                 <Group gap="xs">
-                  <Button size="xs" variant="light" onClick={handleOpenClassModal}>
+                  <Button size="xs" variant="light" onClick={handleOpenPropertyModal}>
                     Edit
                   </Button>
-                  {(selectedField.bindingClass || selectedField.bindingProperty) && (
+                  {selectedField.bindingProperty && (
                     <Button
                       size="xs"
                       variant="light"
                       color="red"
-                      onClick={handleClearClassBinding}
+                      onClick={handleClearPropertyBinding}
                     >
                       Clear
                     </Button>
@@ -322,33 +321,6 @@ export const PropertiesPanel = () => {
                 </Group>
               </Group>
             </Stack>
-            <Divider label="Legacy EDMS Binding" labelPosition="left" />
-            <Select
-              label="Bind to EDMS property (legacy)"
-              placeholder="Choose a property"
-              searchable
-              clearable
-              data={edmsProperties.map((prop) => ({ value: prop, label: prop }))}
-              value={
-                !selectedField.bindingClass && selectedField.bindingProperty
-                  ? selectedField.bindingProperty
-                  : null
-              }
-              onChange={(value) => {
-                const updates: Partial<FieldSchema> = {
-                  bindingProperty: value || undefined,
-                  bindingClass: undefined, // Clear class when using legacy
-                };
-                if (value) {
-                  if (selectedField.name.startsWith('field_')) {
-                    updates.name = value;
-                  }
-                  updates.defaultValue = `\${${value}}`;
-                }
-                updateField(selectedField.id, updates);
-              }}
-              description="Direct property binding (without class)"
-            />
           </>
         )}
 
@@ -435,65 +407,52 @@ export const PropertiesPanel = () => {
         )}
       </Stack>
       
-      {/* Class Selector Modal */}
+      {/* Property Selector Modal */}
       <Modal
-        opened={classModalOpen}
-        onClose={() => setClassModalOpen(false)}
-        title="Edit Class/Property Binding"
+        opened={propertyModalOpen}
+        onClose={() => setPropertyModalOpen(false)}
+        title="Select Property Binding"
         size="lg"
       >
         <Stack gap="md">
-          <Select
-            label="Class"
-            placeholder="Select a class"
-            searchable
-            clearable
-            data={propertiesLibrary.map((cls) => ({ value: cls.name, label: cls.name }))}
-            value={tempClass}
-            onChange={(value) => {
-              setTempClass(value);
-              setTempProperty(null); // Clear property when class changes
-            }}
-            description="Select the EDMS class for this field"
-          />
-          
-          {tempClass && (
-            <Select
-              label="Property"
-              placeholder="Select a property"
-              searchable
-              clearable
-              data={
-                propertiesLibrary
-                  .find((cls) => cls.name === tempClass)
-                  ?.properties.map((prop) => ({
-                    value: prop.name,
-                    label: `${prop.label} (${prop.name})`,
-                  })) || []
-              }
-              value={tempProperty}
-              onChange={(value) => setTempProperty(value)}
-              description="Select a property from the chosen class"
-            />
-          )}
-          
-          {tempClass && (
-            <Card withBorder padding="sm" radius="md">
-              <Stack gap="xs">
-                <Group justify="space-between">
-                  <Text size="sm" fw={500}>
-                    Available Properties
-                  </Text>
-                  <Badge size="sm" variant="light">
-                    {propertiesLibrary.find((cls) => cls.name === tempClass)?.properties.length}{' '}
-                    properties
-                  </Badge>
-                </Group>
-                <ScrollArea h={300} type="auto">
-                  <Stack gap={4}>
-                    {propertiesLibrary
-                      .find((cls) => cls.name === tempClass)
-                      ?.properties.map((prop) => (
+          <Card withBorder padding="xs" radius="sm">
+            <Group gap="xs">
+              <Text size="sm" fw={500}>Form Class:</Text>
+              <Badge size="sm" variant="light" color="blue">
+                {schema.formClass || 'No class selected'}
+              </Badge>
+            </Group>
+          </Card>
+
+          {schema.formClass && formClassProperties.length > 0 && (
+            <>
+              <Select
+                label="Property"
+                placeholder="Select a property"
+                searchable
+                clearable
+                data={formClassProperties.map((prop) => ({
+                  value: prop.name,
+                  label: `${prop.label} (${prop.name})`,
+                }))}
+                value={tempProperty}
+                onChange={(value) => setTempProperty(value)}
+                description="Select a property from the form's class"
+              />
+
+              <Card withBorder padding="sm" radius="md">
+                <Stack gap="xs">
+                  <Group justify="space-between">
+                    <Text size="sm" fw={500}>
+                      Available Properties
+                    </Text>
+                    <Badge size="sm" variant="light">
+                      {formClassProperties.length} properties
+                    </Badge>
+                  </Group>
+                  <ScrollArea h={300} type="auto">
+                    <Stack gap={4}>
+                      {formClassProperties.map((prop) => (
                         <Card
                           key={prop.name}
                           padding="xs"
@@ -529,20 +488,27 @@ export const PropertiesPanel = () => {
                           </Group>
                         </Card>
                       ))}
-                  </Stack>
-                </ScrollArea>
-                <Text size="xs" c="dimmed">
-                  Click a property to select it
-                </Text>
-              </Stack>
-            </Card>
+                    </Stack>
+                  </ScrollArea>
+                  <Text size="xs" c="dimmed">
+                    Click a property to select it
+                  </Text>
+                </Stack>
+              </Card>
+            </>
           )}
-          
+
+          {!schema.formClass && (
+            <Text size="sm" c="dimmed">
+              Please select a form class in the form editor before binding properties.
+            </Text>
+          )}
+
           <Group justify="flex-end" gap="xs">
-            <Button variant="default" onClick={() => setClassModalOpen(false)}>
+            <Button variant="default" onClick={() => setPropertyModalOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleApplyClassBinding} disabled={!tempClass || !tempProperty}>
+            <Button onClick={handleApplyPropertyBinding} disabled={!tempProperty}>
               Apply
             </Button>
           </Group>

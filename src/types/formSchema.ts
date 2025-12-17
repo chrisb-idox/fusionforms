@@ -32,7 +32,6 @@ export interface FieldSchema {
   name: string;
   label: string;
   bindingProperty?: string;
-  bindingClass?: string;
   originalId?: string;
   originalName?: string;
   htmlAttributes?: Record<string, string>;
@@ -74,6 +73,7 @@ export interface FormSchema {
   name: string;
   description?: string;
   actionCode?: ActionCode;
+  formClass?: string;
   version: number;
   sections: SectionSchema[];
   originalHtml?: string;
