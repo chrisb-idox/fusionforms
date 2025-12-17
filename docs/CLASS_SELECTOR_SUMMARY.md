@@ -23,26 +23,33 @@
 
 ### 4. Properties Panel Enhancement
 - **File**: `src/components/builder/PropertiesPanel.tsx`
-- **New UI Elements**:
-  1. **Class Selector Dropdown**
-     - Searchable list of available classes
-     - Clear button to remove selection
+- **New UI Pattern**: Read-only display with Edit button (similar to GraphCycle)
   
-  2. **Property Selector Dropdown** (appears when class selected)
-     - Filtered to show only properties from selected class
-     - Shows both label and property name
+  1. **Read-only Display**
+     - Shows current class as a blue badge
+     - Shows property label and name in a card
+     - "No binding set" when empty
   
-  3. **Visual Property Browser** (NEW!)
-     - Scrollable card view of all properties
-     - Click-to-select interaction
-     - Highlights currently selected property
-     - Shows property count badge
-     - 200px height with auto-scroll
+  2. **Edit Button**
+     - Opens a modal dialog
+     - Modal contains the full class/property selector
   
-  4. **Legacy Binding Support**
-     - Original direct property binding still available
-     - Clearly separated with divider
-     - Automatically clears when using class-based binding
+  3. **Clear Button** (when binding exists)
+     - Removes the binding entirely
+  
+  4. **Class Selector Modal**:
+     - **Class Selector Dropdown**: Searchable list of available classes
+     - **Property Selector Dropdown**: Filtered to selected class
+     - **Visual Property Browser**: 
+       - Scrollable card view (300px height)
+       - Click-to-select interaction
+       - Highlights currently selected property
+       - Shows property count badge
+     - **Apply/Cancel buttons**: Save or discard changes
+  
+  5. **Legacy Binding Support** (REMOVED)
+     - Simplified to single class-based approach
+     - Old direct property binding no longer shown
 
 ### 5. Canvas Display Updates
 - **File**: `src/components/builder/CanvasPanel.tsx`
@@ -65,35 +72,48 @@
 ## How to Use
 
 1. **Select a field** in the form builder canvas
-2. **In Properties Panel**, scroll to "EDMS Binding (Class/Property)"
-3. **Select a class** from the dropdown (e.g., "FusionDocument")
-4. **Property browser appears** showing all 41 available properties
-5. **Either**:
-   - Use the property dropdown to search/select
-   - **OR** click directly on a property in the visual browser
-6. **Selected property** is:
-   - Highlighted with blue background in browser
-   - Shows checkmark (✓)
-   - Bound to field with `${PropertyName}` syntax
-   - Displayed as class badge on canvas card
+2. **In Properties Panel**, scroll to "EDMS Binding"
+3. **Current binding is displayed** as read-only:
+   - Blue badge showing class name
+   - Property label and name in a card
+   - Or "No binding set" if empty
+4. **Click "Edit" button** to open the class selector modal
+5. **In the modal**:
+   - Select a class from the dropdown
+   - Property browser appears showing all available properties
+   - Either use the dropdown to search or click directly on a property
+6. **Click "Apply"** to save the binding
+7. **Alternatively**, click "Clear" to remove the binding
 
 ## Visual Design
 
 ```
 Properties Panel
 ├── Field Properties (Label, Name, etc.)
-├── EDMS Binding (Class/Property)
-│   ├── Class Selector [Dropdown]
-│   ├── Property Selector [Dropdown] (conditional)
-│   └── Property Browser [Visual List] (conditional)
-│       ├── Badge: "41 properties"
-│       ├── Scrollable List (200px)
-│       │   ├── Property Card (clickable)
-│       │   │   ├── Label: "Approval Date"
-│       │   │   └── Name: "ApprovalDate"
-│       │   └── ... (40 more)
-│       └── Help Text
-└── Legacy EDMS Binding (for backward compatibility)
+└── EDMS Binding
+    ├── Read-only Display
+    │   ├── [Class Badge]
+    │   ├── Property Label
+    │   └── Property Name
+    └── Buttons
+        ├── [Edit] ← Opens modal
+        └── [Clear] (conditional)
+
+Class Selector Modal
+├── Title: "Edit Class/Property Binding"
+├── Class Selector [Dropdown]
+├── Property Selector [Dropdown] (conditional)
+├── Property Browser [Visual List] (conditional)
+│   ├── Badge: "41 properties"
+│   ├── Scrollable List (300px)
+│   │   ├── Property Card (clickable)
+│   │   │   ├── Label: "Approval Date"
+│   │   │   └── Name: "ApprovalDate"
+│   │   └── ... (40 more)
+│   └── Help Text
+└── Actions
+    ├── [Cancel]
+    └── [Apply] (disabled until class+property selected)
 ```
 
 ## Technical Implementation

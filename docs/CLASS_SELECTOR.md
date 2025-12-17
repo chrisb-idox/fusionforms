@@ -17,7 +17,7 @@ This feature is similar to the GraphCycle application's property selector.
 2. **`src/utils/propertiesLibrary.ts`** - TypeScript parser for the XML library
 3. **`src/vite-env.d.ts`** - Type declarations for importing XML as raw text
 4. **`src/types/formSchema.ts`** - Added `bindingClass` field to FieldSchema
-5. **`src/components/builder/PropertiesPanel.tsx`** - Added class/property selectors
+5. **`src/components/builder/PropertiesPanel.tsx`** - Read-only display with Edit button and modal
 6. **`src/components/builder/CanvasPanel.tsx`** - Display class info on field cards
 
 ### How It Works
@@ -32,12 +32,18 @@ This feature is similar to the GraphCycle application's property selector.
 ### Usage in the Builder
 
 1. **Select a field** in the canvas
-2. **In the Properties Panel**, you'll see three sections:
-   - **EDMS Binding (Class/Property)**: New class-based selector
-   - **Legacy EDMS Binding**: Original direct property binding
-3. **Select a Class**: Choose from FusionDocument or VendorDocument
-4. **Select a Property**: Once a class is selected, choose from its available properties
-5. **Property Information**: Each property shows its label and internal name
+2. **In the Properties Panel**, scroll to the "EDMS Binding" section
+3. **View current binding**: 
+   - If a class/property is bound, it displays as a read-only badge and label
+   - If no binding is set, shows "No binding set"
+4. **Click "Edit" button** to open the class selector modal
+5. **In the modal**:
+   - **Select a Class**: Choose from FusionDocument or VendorDocument
+   - **Select a Property**: Either use the dropdown or click directly in the property browser
+   - The property browser shows all available properties with labels and names
+   - Selected property is highlighted with a blue background and checkmark
+6. **Click "Apply"** to save the binding
+7. **Optional**: Click "Clear" to remove the binding entirely
 
 ### Data Structure
 
