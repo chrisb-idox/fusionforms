@@ -32,6 +32,7 @@ export interface FieldSchema {
   name: string;
   label: string;
   bindingProperty?: string;
+  bindingClass?: string;
   originalId?: string;
   originalName?: string;
   htmlAttributes?: Record<string, string>;

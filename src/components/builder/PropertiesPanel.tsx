@@ -9,15 +9,20 @@ import {
   TextInput,
   Textarea,
   Tooltip,
+  Badge,
+  ScrollArea,
 } from '@mantine/core';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFormBuilder } from '../../context/FormBuilderContext';
 import type { ColumnSchema, FieldSchema, SectionSchema, StaticBlockSchema } from '../../types/formSchema';
 import { edmsProperties } from '../../data/edmsProperties';
+import { getPropertiesLibrary } from '../../utils/propertiesLibrary';
 
 export const PropertiesPanel = () => {
   const { schema, selection, updateForm, updateSection, updateField, updateStaticBlock } =
     useFormBuilder();
+
+  const propertiesLibrary = useMemo(() => getPropertiesLibrary(), []);
 
   const selectedSection = useMemo<SectionSchema | undefined>(() => {
     if (selection?.type !== 'section') return undefined;
@@ -226,16 +231,146 @@ export const PropertiesPanel = () => {
               autosize
               minRows={2}
             />
+            <Divider label="EDMS Binding (Class/Property)" labelPosition="left" />
             <Select
-              label="Bind to EDMS property"
+              label="Class"
+              placeholder="Select a class"
+              searchable
+              clearable
+              data={propertiesLibrary.map((cls) => ({ value: cls.name, label: cls.name }))}
+              value={selectedField.bindingClass || null}
+              onChange={(value) => {
+                const updates: Partial<FieldSchema> = {
+                  bindingClass: value || undefined,
+                  bindingProperty: undefined, // Clear property when class changes
+                };
+                if (!value) {
+                  updates.defaultValue = undefined;
+                }
+                updateField(selectedField.id, updates);
+              }}
+              description="Select the EDMS class for this field"
+            />
+            {selectedField.bindingClass && (
+              <Select
+                label="Property"
+                placeholder="Select a property"
+                searchable
+                clearable
+                data={
+                  propertiesLibrary
+                    .find((cls) => cls.name === selectedField.bindingClass)
+                    ?.properties.map((prop) => ({
+                      value: prop.name,
+                      label: `${prop.label} (${prop.name})`,
+                    })) || []
+                }
+                value={selectedField.bindingProperty || null}
+                onChange={(value) => {
+                  const updates: Partial<FieldSchema> = {
+                    bindingProperty: value || undefined,
+                  };
+                  if (value) {
+                    if (selectedField.name.startsWith('field_')) {
+                      updates.name = value;
+                    }
+                    updates.defaultValue = `\${${value}}`;
+                  } else {
+                    updates.defaultValue = undefined;
+                  }
+                  updateField(selectedField.id, updates);
+                }}
+                description="Select a property from the chosen class"
+              />
+            )}
+            {selectedField.bindingClass && (
+              <Card withBorder padding="sm" radius="md">
+                <Stack gap="xs">
+                  <Group justify="space-between">
+                    <Text size="sm" fw={500}>
+                      Available Properties
+                    </Text>
+                    <Badge size="sm" variant="light">
+                      {
+                        propertiesLibrary.find((cls) => cls.name === selectedField.bindingClass)
+                          ?.properties.length
+                      }{' '}
+                      properties
+                    </Badge>
+                  </Group>
+                  <ScrollArea h={200} type="auto">
+                    <Stack gap={4}>
+                      {propertiesLibrary
+                        .find((cls) => cls.name === selectedField.bindingClass)
+                        ?.properties.map((prop) => (
+                          <Card
+                            key={prop.name}
+                            padding="xs"
+                            radius="sm"
+                            withBorder
+                            style={{
+                              cursor: 'pointer',
+                              backgroundColor:
+                                selectedField.bindingProperty === prop.name
+                                  ? 'var(--mantine-color-blue-0)'
+                                  : undefined,
+                              borderColor:
+                                selectedField.bindingProperty === prop.name
+                                  ? 'var(--mantine-color-blue-5)'
+                                  : undefined,
+                            }}
+                            onClick={() => {
+                              const updates: Partial<FieldSchema> = {
+                                bindingProperty: prop.name,
+                              };
+                              if (selectedField.name.startsWith('field_')) {
+                                updates.name = prop.name;
+                              }
+                              updates.defaultValue = `\${${prop.name}}`;
+                              updateField(selectedField.id, updates);
+                            }}
+                          >
+                            <Group justify="space-between" gap="xs" wrap="nowrap">
+                              <div>
+                                <Text size="xs" fw={500}>
+                                  {prop.label}
+                                </Text>
+                                <Text size="xs" c="dimmed">
+                                  {prop.name}
+                                </Text>
+                              </div>
+                              {selectedField.bindingProperty === prop.name && (
+                                <Text size="xs" c="blue" fw={500}>
+                                  ✓
+                                </Text>
+                              )}
+                            </Group>
+                          </Card>
+                        ))}
+                    </Stack>
+                  </ScrollArea>
+                  <Text size="xs" c="dimmed">
+                    Click a property to bind it to this field
+                  </Text>
+                </Stack>
+              </Card>
+            )}
+            <Divider label="Legacy EDMS Binding" labelPosition="left" />
+            <Select
+              label="Bind to EDMS property (legacy)"
               placeholder="Choose a property"
               searchable
               clearable
               data={edmsProperties.map((prop) => ({ value: prop, label: prop }))}
-              value={selectedField.bindingProperty || null}
+              value={
+                !selectedField.bindingClass && selectedField.bindingProperty
+                  ? selectedField.bindingProperty
+                  : null
+              }
               onChange={(value) => {
                 const updates: Partial<FieldSchema> = {
                   bindingProperty: value || undefined,
+                  bindingClass: undefined, // Clear class when using legacy
                 };
                 if (value) {
                   if (selectedField.name.startsWith('field_')) {
@@ -245,7 +380,7 @@ export const PropertiesPanel = () => {
                 }
                 updateField(selectedField.id, updates);
               }}
-              description="Select a system property to link this field."
+              description="Direct property binding (without class)"
             />
           </>
         )}

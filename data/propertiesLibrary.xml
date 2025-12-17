@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<propertiesLibrary>
+  <Class name="FusionDocument">
+    <property name="ApprovalDate" label="Approval Date" />
+    <property name="ApprovedBy" label="Approved By" />
+    <property name="ClientDocumentNumber" label="Client Document Number" />
+    <property name="CommentsCount" label="Comments Count" />
+    <property name="County" label="County" />
+    <property name="DocumentTitle" label="Document Title" />
+    <property name="ECMDocumentNumber" label="ECM Document Number" />
+    <property name="EngineerAssigned" label="Engineer Assigned" />
+    <property name="EngineerRevisionDate" label="Engineer Revision Date" />
+    <property name="EngineeredBy" label="Engineered By" />
+    <property name="ExpirationDate" label="Expiration Date" />
+    <property name="Facility" label="Facility" />
+    <property name="FusionDocType" label="Fusion Doc Type" />
+    <property name="IsCadtopDrawing" label="Is Cadtop Drawing" />
+    <property name="IsVersioningEnabled" label="Is Versioning Enabled" />
+    <property name="LifecycleState" label="Lifecycle State" />
+    <property name="LifecycleTemplate" label="Lifecycle Template" />
+    <property name="MFIDiscipline" label="MFI Discipline" />
+    <property name="MFIDisciplineCode" label="MFI Discipline Code" />
+    <property name="MFIDocumentType" label="MFI Document Type" />
+    <property name="MFIDocumentTypeCode" label="MFI Document Type Code" />
+    <property name="MRNumber" label="MR Number" />
+    <property name="MarkupsCount" label="Markups Count" />
+    <property name="PreviousRevisionCode" label="Previous Revision Code" />
+    <property name="Price" label="Price" />
+    <property name="PrimaryAttachmentName" label="Primary Attachment Name" />
+    <property name="Quantity" label="Quantity" />
+    <property name="RelatedStateCodes" label="Related State Codes" />
+    <property name="RelatedStates" label="Related States" />
+    <property name="RenditionsCount" label="Renditions Count" />
+    <property name="RevisionCode" label="Revision Code" />
+    <property name="RevisionDate" label="Revision Date" />
+    <property name="State" label="State" />
+    <property name="StateCode" label="State Code" />
+    <property name="System" label="System" />
+    <property name="Title1" label="Title 1" />
+    <property name="Title2" label="Title 2" />
+    <property name="Title3" label="Title 3" />
+    <property name="Title4" label="Title 4" />
+  </Class>
+  <Class name="VendorDocument">
+    <property name="ApprovalDate" label="Approval Date" />
+    <property name="ApprovedBy" label="Approved By" />
+    <property name="ClientDocumentNumber" label="Client Document Number" />
+    <property name="CommentsCount" label="Comments Count" />
+    <property name="County" label="County" />
+    <property name="DocumentTitle" label="Document Title" />
+    <property name="ECMDocumentNumber" label="ECM Document Number" />
+    <property name="EngineerAssigned" label="Engineer Assigned" />
+    <property name="EngineerRevisionDate" label="Engineer Revision Date" />
+    <property name="EngineeredBy" label="Engineered By" />
+    <property name="ExpirationDate" label="Expiration Date" />
+    <property name="Facility" label="Facility" />
+    <property name="FusionDocType" label="FusionDocType" />
+    <property name="IsCadtopDrawing" label="Is Cadtop Drawing" />
+    <property name="IsVersioningEnabled" label="Is Versioning Enabled" />
+    <property name="LifecycleState" label="Lifecycle State" />
+    <property name="LifecycleTemplate" label="Lifecycle Template" />
+    <property name="MFIDiscipline" label="MFI Discipline" />
+    <property name="MFIDisciplineCode" label="MFI Discipline Code" />
+    <property name="MFIDocumentType" label="MFI Document Type" />
+    <property name="MFIDocumentTypeCode" label="MFI Document Type Code" />
+    <property name="MRNumber" label="MR Number" />
+    <property name="MarkupsCount" label="Markups Count" />
+    <property name="PreviousRevisionCode" label="Previous Revision Code" />
+    <property name="Price" label="Price" />
+    <property name="PrimaryAttachmentName" label="Primary Attachment Name" />
+    <property name="Quantity" label="Quantity" />
+    <property name="RelatedStateCodes" label="Related State Codes" />
+    <property name="RelatedStates" label="Related States" />
+    <property name="RenditionsCount" label="Renditions Count" />
+    <property name="RevisionCode" label="Rev Code" />
+    <property name="RevisionDate" label="Revision Date" />
+    <property name="State" label="State" />
+    <property name="StateCode" label="State Code" />
+    <property name="System" label="System" />
+    <property name="Title1" label="Title 1" />
+    <property name="Title2" label="Title 2" />
+    <property name="Title3" label="Title 3" />
+    <property name="Title4" label="Title 4" />
+  </Class>
+</propertiesLibrary>
