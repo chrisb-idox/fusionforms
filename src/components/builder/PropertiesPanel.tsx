@@ -97,7 +97,6 @@ export const PropertiesPanel = () => {
     return undefined;
   }, [schema.sections, selection]);
 
-  const [staticHtml, setStaticHtml] = useState<string>('<p>New text</p>');
   const editorRef = useRef<HTMLDivElement | null>(null);
 
   // Property selector modal state
@@ -105,24 +104,56 @@ export const PropertiesPanel = () => {
   const [tempProperty, setTempProperty] = useState<string | null>(null);
 
   useEffect(() => {
-    const next = selectedStatic?.html || '<p>New text</p>';
-    setStaticHtml(next);
+    const next = selectedStatic?.html || '<p>Add your text</p>';
     if (editorRef.current) {
-      editorRef.current.innerHTML = next;
+      // Strip any RTL markers and set content directly
+      const cleanHtml = next.replace(/[\u200E\u200F\u202A\u202B\u202C\u202D\u202E]/g, '');
+      editorRef.current.innerHTML = cleanHtml;
+      // Force LTR direction after setting content
+      editorRef.current.dir = 'ltr';
+      editorRef.current.style.direction = 'ltr';
     }
   }, [selectedStatic?.id, selectedStatic?.html]);
 
-  const commitStatic = (value: string) => {
-    setStaticHtml(value);
-    if (selectedStatic) {
-      updateStaticBlock(selectedStatic.id, value);
-    }
-  };
-
   const handleEditorInput = () => {
     if (editorRef.current) {
+      // Save cursor position
+      const selection = window.getSelection();
+      const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
+      const cursorOffset = range ? range.startOffset : 0;
+      const cursorNode = range ? range.startContainer : null;
+
+      // Get and clean content
       const newHtml = editorRef.current.innerHTML;
-      commitStatic(newHtml);
+      const cleanValue = newHtml.replace(/[\u200E\u200F\u202A\u202B\u202C\u202D\u202E]/g, '');
+      
+      // Update content if it changed
+      if (newHtml !== cleanValue) {
+        editorRef.current.innerHTML = cleanValue;
+        
+        // Restore cursor position
+        if (cursorNode && selection && range) {
+          try {
+            const newRange = document.createRange();
+            newRange.setStart(cursorNode, Math.min(cursorOffset, cursorNode.textContent?.length || 0));
+            newRange.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+          } catch (e) {
+            // Cursor restoration failed, place at end
+            const newRange = document.createRange();
+            newRange.selectNodeContents(editorRef.current);
+            newRange.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+          }
+        }
+      }
+      
+      // Save to schema
+      if (selectedStatic) {
+        updateStaticBlock(selectedStatic.id, cleanValue);
+      }
     }
   };
 
@@ -176,8 +207,8 @@ export const PropertiesPanel = () => {
   };
 
   return (
-    <Card padding="md" radius="md" withBorder>
-      <Stack gap="md">
+    <Card padding="md" radius="md" withBorder style={{ direction: 'ltr' }}>
+      <Stack gap="md" style={{ direction: 'ltr' }}>
         <Text fw={700}>Properties</Text>
         {!selection && (
           <Text size="sm" c="dimmed">
@@ -309,8 +340,8 @@ export const PropertiesPanel = () => {
         {selection?.type === 'static' && selectedStatic && (
           <>
             <Divider label="Static text" labelPosition="left" />
-            <Stack gap="xs">
-              <Group gap="xs">
+            <Stack gap="xs" style={{ direction: 'ltr' }}>
+              <Group gap="xs" style={{ direction: 'ltr' }}>
                 <Tooltip label="Heading 1">
                   <ActionIcon variant="light" onMouseDown={(e) => {
                     e.preventDefault();
@@ -423,7 +454,7 @@ export const PropertiesPanel = () => {
                   </ActionIcon>
                 </Tooltip>
               </Group>
-              <Card withBorder padding="md" radius="md">
+              <Card withBorder padding="md" radius="md" style={{ direction: 'ltr' }}>
                 <Text size="xs" fw={500} mb={8}>
                   Rich Text Editor
                 </Text>
@@ -432,8 +463,15 @@ export const PropertiesPanel = () => {
                   contentEditable
                   suppressContentEditableWarning
                   dir="ltr"
+                  lang="en"
                   onInput={handleEditorInput}
                   onBlur={handleEditorInput}
+                  onKeyDown={(e) => {
+                    // Prevent any RTL shortcuts
+                    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'x' || e.key === 'X')) {
+                      e.preventDefault();
+                    }
+                  }}
                   style={{
                     minHeight: 120,
                     padding: '8px 12px',
@@ -445,9 +483,11 @@ export const PropertiesPanel = () => {
                     backgroundColor: '#fff',
                     direction: 'ltr',
                     textAlign: 'left',
-                    unicodeBidi: 'embed',
+                    unicodeBidi: 'bidi-override',
+                    writingMode: 'horizontal-tb',
+                    transform: 'none',
+                    WebkitTransform: 'none',
                   }}
-                  dangerouslySetInnerHTML={{ __html: staticHtml }}
                 />
                 <Text size="xs" c="dimmed" mt={8}>
                   Type directly or use formatting buttons above. Changes save automatically.
