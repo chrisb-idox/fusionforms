@@ -4,18 +4,65 @@ import { Link } from 'react-router-dom';
 import { useFormBuilder } from '../../context/FormBuilderContext';
 import { actionCodes } from '../../data/actionCodes';
 import { schemaToHtml } from '../../utils/schemaExporter';
+import { parseSampleHtmlToSchema } from '../../utils/sampleParser';
 import logo from '../../assets/logo.png';
 import { FormEditor } from './FormEditor';
 import { getPropertiesLibrary } from '../../utils/propertiesLibrary';
 
 interface BuilderHeaderProps {
   onPreview: () => void;
+  onReset: () => void;
 }
 
-export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
+export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
   const { schema, updateForm } = useFormBuilder();
   const [formEditorOpen, setFormEditorOpen] = useState(false);
   const propertiesLibrary = getPropertiesLibrary();
+
+  const handleReset = () => {
+    if (confirm('Are you sure you want to reset the form? All changes will be lost.')) {
+      onReset();
+    }
+  };
+
+  const handleLoad = async () => {
+    try {
+      // Create file input
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.xml,.html';
+      
+      input.onchange = async (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (!file) return;
+        
+        const text = await file.text();
+        try {
+          const loadedSchema = parseSampleHtmlToSchema(text, file.name);
+          
+          // Update the entire form with loaded schema
+          updateForm({
+            name: loadedSchema.name,
+            description: loadedSchema.description,
+            formClass: loadedSchema.formClass,
+            actionCode: loadedSchema.actionCode,
+            sections: loadedSchema.sections,
+            version: loadedSchema.version,
+          });
+          
+          alert(`Successfully loaded ${file.name}`);
+        } catch (error) {
+          console.error('Failed to parse file', error);
+          alert('Failed to parse file. Please ensure it is a valid XML/HTML form file.');
+        }
+      };
+      
+      input.click();
+    } catch (error) {
+      console.error('Failed to load file', error);
+      alert('Could not load file');
+    }
+  };
 
   const handleSaveFormDetails = (name: string, formClass: string) => {
     // Clear field bindings that don't exist in the new class
@@ -149,6 +196,12 @@ export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
             />
           </Group>
           <Group gap="sm" wrap="wrap">
+            <Button variant="default" onClick={handleReset} color="red">
+              Reset
+            </Button>
+            <Button variant="default" onClick={handleLoad}>
+              Load
+            </Button>
             <Button component={Link} to="/samples" variant="default">
               Samples
             </Button>

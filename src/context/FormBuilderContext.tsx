@@ -8,6 +8,7 @@ import type {
   RowSchema,
   SectionSchema,
   Selection,
+  StaticBlockSchema,
   TableSchema,
 } from '../types/formSchema';
 import {
@@ -43,7 +44,7 @@ type Action =
   | { type: 'removeStaticBlock'; payload: { id: string } }
   | { type: 'reorderRows'; payload: { sectionId: string; from: number; to: number } }
   | { type: 'reorderFields'; payload: { columnId: string; from: number; to: number } }
-  | { type: 'updateStaticBlock'; payload: { id: string; html: string } };
+  | { type: 'updateStaticBlock'; payload: { id: string; updates: Partial<StaticBlockSchema> } };
 
 interface FormBuilderContextValue extends FormBuilderState {
   setSchema: (schema: FormSchema) => void;
@@ -64,7 +65,7 @@ interface FormBuilderContextValue extends FormBuilderState {
   removeStaticBlock: (id: string) => void;
   reorderRows: (sectionId: string, from: number, to: number) => void;
   reorderFields: (columnId: string, from: number, to: number) => void;
-  updateStaticBlock: (id: string, html: string) => void;
+  updateStaticBlock: (id: string, updates: Partial<StaticBlockSchema> | string) => void;
 }
 
 const FormBuilderContext = createContext<FormBuilderContextValue | undefined>(
@@ -336,7 +337,7 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
             rows: mapRowsDeep(section.rows, (column) => ({
               ...column,
               staticBlocks: (column.staticBlocks || []).map((block) =>
-                block.id === action.payload.id ? { ...block, html: action.payload.html } : block,
+                block.id === action.payload.id ? { ...block, ...action.payload.updates } : block,
               ),
             })),
           })),
@@ -392,8 +393,10 @@ export const FormBuilderProvider = ({
         dispatch({ type: 'reorderRows', payload: { sectionId, from, to } }),
       reorderFields: (columnId, from, to) =>
         dispatch({ type: 'reorderFields', payload: { columnId, from, to } }),
-      updateStaticBlock: (id, html) =>
-        dispatch({ type: 'updateStaticBlock', payload: { id, html } }),
+      updateStaticBlock: (id, updates) => {
+        const normalizedUpdates = typeof updates === 'string' ? { html: updates } : updates;
+        dispatch({ type: 'updateStaticBlock', payload: { id, updates: normalizedUpdates } });
+      },
     }),
     [state],
   );

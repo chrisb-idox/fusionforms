@@ -55,9 +55,21 @@ const createInitialSchema = (): FormSchema => {
 };
 
 const BuilderContent = () => {
-  const { schema } = useFormBuilder();
+  const { schema, updateForm } = useFormBuilder();
   const [previewOpen, setPreviewOpen] = useState(false);
   const handleClosePreview = () => setPreviewOpen(false);
+
+  const handleReset = () => {
+    const defaultSchema = createInitialSchema();
+    updateForm({
+      name: defaultSchema.name,
+      description: defaultSchema.description,
+      formClass: defaultSchema.formClass,
+      actionCode: defaultSchema.actionCode,
+      sections: defaultSchema.sections,
+      version: defaultSchema.version,
+    });
+  };
 
   return (
     <>
@@ -82,7 +94,7 @@ const BuilderContent = () => {
             zIndex: 5,
           }}
         >
-          <BuilderHeader onPreview={() => setPreviewOpen(true)} />
+          <BuilderHeader onPreview={() => setPreviewOpen(true)} onReset={handleReset} />
         </AppShell.Header>
         <AppShell.Main>
           <Container fluid px="md">

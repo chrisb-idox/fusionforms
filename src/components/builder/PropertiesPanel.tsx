@@ -453,8 +453,14 @@ export const PropertiesPanel = () => {
 
         {selection?.type === 'static' && selectedStatic && (
           <>
+            <Divider label="Static Block" labelPosition="left" />
+            <TextInput
+              label="Label"
+              value={selectedStatic.label || 'Imported Static Text'}
+              onChange={(e) => updateStaticBlock(selectedStatic.id, { label: e.currentTarget.value })}
+            />
             <Group justify="space-between" align="flex-end">
-              <Divider label={selectedStatic.type === 'richtext' ? 'Rich text' : 'Static HTML'} labelPosition="left" style={{ flex: 1 }} />
+              <Divider label={(selectedStatic.type || 'html') === 'richtext' ? 'Rich text' : 'Static HTML'} labelPosition="left" style={{ flex: 1 }} />
               <Tooltip label="Expand editor">
                 <ActionIcon 
                   variant="light" 
@@ -464,7 +470,7 @@ export const PropertiesPanel = () => {
                 </ActionIcon>
               </Tooltip>
             </Group>
-            {selectedStatic.type === 'richtext' ? (
+            {(selectedStatic.type || 'html') === 'richtext' ? (
               editor && (
                 <Stack gap="xs">
                   <RichTextEditor editor={editor}>
