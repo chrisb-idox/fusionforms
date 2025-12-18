@@ -14,7 +14,7 @@ import {
   Button,
   NumberInput,
 } from '@mantine/core';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useFormBuilder } from '../../context/FormBuilderContext';
 import type { ColumnSchema, FieldSchema, SectionSchema, StaticBlockSchema, FieldOption } from '../../types/formSchema';
 import { createId } from '../../types/formSchema';
