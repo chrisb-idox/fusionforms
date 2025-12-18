@@ -2,6 +2,15 @@
 
 Context for future sessions about the FusionForms Form Builder MVP (renamed from webforms) built with React, Vite, Mantine, dnd-kit, and react-hook-form.
 
+### Versioning
+- Version stored in `package.json` (e.g., "0.1.2")
+- Displayed in Settings > About screen
+- **To increment version before GitHub push:**
+  - Patch (0.1.2 → 0.1.3): `npm run version:patch`
+  - Minor (0.1.2 → 0.2.0): `npm run version:minor`
+  - Major (0.1.2 → 1.0.0): `npm run version:major`
+- Version automatically used in Settings modal via `import packageJson from '../../../package.json'`
+
 ### Current state
 - Project scaffolded via Vite React TS. Mantine provider added globally (`src/main.tsx`), and base styling adjusted (`src/index.css`, `src/App.css`).
 - Schema types in `src/types/formSchema.ts` with helper `createId`; now store table layout metadata, HTML attributes, original ids/names, nested tables, static cell HTML, and **form-level class binding** (`formClass` field). Field-level `bindingClass` removed.

@@ -1,7 +1,9 @@
 import { Modal, Stack, Group, Text, NavLink, Box, Container } from '@mantine/core';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { useState } from 'react';
-import { getVersionString, getCopyrightYear } from '../../config/version';
+import packageJson from '../../../package.json';
+
+const getCopyrightYear = () => new Date().getFullYear();
 
 interface SettingsModalProps {
   opened: boolean;
@@ -32,7 +34,7 @@ export const SettingsModal = ({ opened, onClose }: SettingsModalProps) => {
                 Version
               </Text>
               <Text size="lg" fw={500}>
-                {getVersionString()}
+                {packageJson.version}
               </Text>
             </div>
 
