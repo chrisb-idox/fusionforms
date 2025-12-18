@@ -30,3 +30,14 @@ body {
 a {
   color: var(--accent);
 }
+
+/* Force LTR direction for content editable elements */
+[contenteditable] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: embed !important;
+}
+
+[contenteditable] * {
+  direction: ltr !important;
+}

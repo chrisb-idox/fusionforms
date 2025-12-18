@@ -98,7 +98,7 @@ export const PropertiesPanel = () => {
   }, [schema.sections, selection]);
 
   const [staticHtml, setStaticHtml] = useState<string>('<p>New text</p>');
-  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
 
   // Property selector modal state
   const [propertyModalOpen, setPropertyModalOpen] = useState(false);
@@ -107,6 +107,9 @@ export const PropertiesPanel = () => {
   useEffect(() => {
     const next = selectedStatic?.html || '<p>New text</p>';
     setStaticHtml(next);
+    if (editorRef.current) {
+      editorRef.current.innerHTML = next;
+    }
   }, [selectedStatic?.id, selectedStatic?.html]);
 
   const commitStatic = (value: string) => {
@@ -116,81 +119,30 @@ export const PropertiesPanel = () => {
     }
   };
 
-  const wrapSelection = (before: string, after: string) => {
-    const node = textAreaRef.current;
-    if (!node) return;
-    const { selectionStart, selectionEnd, value } = node;
-
-    let start = selectionStart;
-    let end = selectionEnd;
-
-    if (start === end) {
-      const prevSpace = value.lastIndexOf(' ', Math.max(0, start - 1));
-      const nextSpace = value.indexOf(' ', start);
-      start = prevSpace === -1 ? 0 : prevSpace + 1;
-      end = nextSpace === -1 ? value.length : nextSpace;
+  const handleEditorInput = () => {
+    if (editorRef.current) {
+      const newHtml = editorRef.current.innerHTML;
+      commitStatic(newHtml);
     }
-
-    if (start === end) {
-      start = 0;
-      end = value.length;
-    }
-
-    const selected = value.slice(start, end);
-    const nextValue = value.slice(0, start) + before + selected + after + value.slice(end);
-    commitStatic(nextValue);
-
-    setTimeout(() => {
-      const offset = before.length;
-      node.focus();
-      node.setSelectionRange(start + offset, start + offset + selected.length);
-    }, 0);
   };
 
   const handleLink = () => {
-    const node = textAreaRef.current;
-    if (!node) return;
     const url = window.prompt('Enter URL');
     if (!url) return;
-    wrapSelection(`<a href="${url}">`, '</a>');
+    document.execCommand('createLink', false, url);
+    handleEditorInput();
   };
 
   const handleClearFormatting = () => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(staticHtml, 'text/html');
-    const textContent = doc.body.textContent || '';
-    commitStatic(textContent);
+    document.execCommand('removeFormat', false);
+    document.execCommand('formatBlock', false, '<p>');
+    handleEditorInput();
   };
 
   const handleJustify = (alignment: 'left' | 'center' | 'right') => {
-    const node = textAreaRef.current;
-    if (!node) return;
-    const { selectionStart, selectionEnd, value } = node;
-
-    let start = selectionStart;
-    let end = selectionEnd;
-
-    if (start === end) {
-      const prevSpace = value.lastIndexOf(' ', Math.max(0, start - 1));
-      const nextSpace = value.indexOf(' ', start);
-      start = prevSpace === -1 ? 0 : prevSpace + 1;
-      end = nextSpace === -1 ? value.length : nextSpace;
-    }
-
-    if (start === end) {
-      start = 0;
-      end = value.length;
-    }
-
-    const selected = value.slice(start, end);
-    const alignedContent = `<div style="text-align: ${alignment};">${selected}</div>`;
-    const nextValue = value.slice(0, start) + alignedContent + value.slice(end);
-    commitStatic(nextValue);
-
-    setTimeout(() => {
-      node.focus();
-      node.setSelectionRange(start, start + alignedContent.length);
-    }, 0);
+    const command = alignment === 'left' ? 'justifyLeft' : alignment === 'center' ? 'justifyCenter' : 'justifyRight';
+    document.execCommand(command, false);
+    handleEditorInput();
   };
 
   const handleOpenPropertyModal = () => {
@@ -360,91 +312,146 @@ export const PropertiesPanel = () => {
             <Stack gap="xs">
               <Group gap="xs">
                 <Tooltip label="Heading 1">
-                  <ActionIcon variant="light" onClick={() => wrapSelection('<h1>', '</h1>')}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    document.execCommand('formatBlock', false, '<h1>');
+                    handleEditorInput();
+                  }}>
                     <Text size="xs">H1</Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Heading 2">
-                  <ActionIcon variant="light" onClick={() => wrapSelection('<h2>', '</h2>')}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    document.execCommand('formatBlock', false, '<h2>');
+                    handleEditorInput();
+                  }}>
                     <Text size="xs">H2</Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Bold">
-                  <ActionIcon variant="light" onClick={() => wrapSelection('<strong>', '</strong>')}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    document.execCommand('bold', false);
+                    handleEditorInput();
+                  }}>
                     <Text size="xs" fw={700}>
                       B
                     </Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Italic">
-                  <ActionIcon variant="light" onClick={() => wrapSelection('<em>', '</em>')}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    document.execCommand('italic', false);
+                    handleEditorInput();
+                  }}>
                     <Text size="xs" fs="italic">
                       I
                     </Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Underline">
-                  <ActionIcon variant="light" onClick={() => wrapSelection('<u>', '</u>')}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    document.execCommand('underline', false);
+                    handleEditorInput();
+                  }}>
                     <Text size="xs" td="underline">
                       U
                     </Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Bullet list">
-                  <ActionIcon variant="light" onClick={() => wrapSelection('<ul><li>', '</li></ul>')}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    document.execCommand('insertUnorderedList', false);
+                    handleEditorInput();
+                  }}>
                     <Text size="xs">•</Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Numbered list">
-                  <ActionIcon variant="light" onClick={() => wrapSelection('<ol><li>', '</li></ol>')}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    document.execCommand('insertOrderedList', false);
+                    handleEditorInput();
+                  }}>
                     <Text size="xs">1.</Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Link">
-                  <ActionIcon variant="light" onClick={handleLink}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    handleLink();
+                  }}>
                     <Text size="xs">🔗</Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Clear formatting">
-                  <ActionIcon variant="light" onClick={handleClearFormatting}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    handleClearFormatting();
+                  }}>
                     <Text size="xs">Clear</Text>
                   </ActionIcon>
                 </Tooltip>
               </Group>
               <Group gap="xs">
                 <Tooltip label="Align left">
-                  <ActionIcon variant="light" onClick={() => handleJustify('left')}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    handleJustify('left');
+                  }}>
                     <Text size="xs">⬅</Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Align center">
-                  <ActionIcon variant="light" onClick={() => handleJustify('center')}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    handleJustify('center');
+                  }}>
                     <Text size="xs">↔</Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Align right">
-                  <ActionIcon variant="light" onClick={() => handleJustify('right')}>
+                  <ActionIcon variant="light" onMouseDown={(e) => {
+                    e.preventDefault();
+                    handleJustify('right');
+                  }}>
                     <Text size="xs">➡</Text>
                   </ActionIcon>
                 </Tooltip>
               </Group>
-              <Textarea
-                ref={textAreaRef}
-                label="HTML"
-                autosize
-                minRows={6}
-                value={staticHtml}
-                onChange={(event) => commitStatic(event.currentTarget.value)}
-                styles={{ input: { fontFamily: 'monospace' } }}
-              />
-              <Card withBorder padding="sm" radius="md">
-                <Text size="xs" c="dimmed" mb={4}>
-                  Preview
+              <Card withBorder padding="md" radius="md">
+                <Text size="xs" fw={500} mb={8}>
+                  Rich Text Editor
                 </Text>
                 <div
-                  style={{ lineHeight: 1.6 }}
+                  ref={editorRef}
+                  contentEditable
+                  suppressContentEditableWarning
+                  dir="ltr"
+                  onInput={handleEditorInput}
+                  onBlur={handleEditorInput}
+                  style={{
+                    minHeight: 120,
+                    padding: '8px 12px',
+                    border: '1px solid #dee2e6',
+                    borderRadius: 4,
+                    outline: 'none',
+                    lineHeight: 1.6,
+                    fontSize: 14,
+                    backgroundColor: '#fff',
+                    direction: 'ltr',
+                    textAlign: 'left',
+                    unicodeBidi: 'embed',
+                  }}
                   dangerouslySetInnerHTML={{ __html: staticHtml }}
                 />
+                <Text size="xs" c="dimmed" mt={8}>
+                  Type directly or use formatting buttons above. Changes save automatically.
+                </Text>
               </Card>
               <Text size="xs" c="dimmed">
                 Static blocks render as HTML in exports, similar to imported sample text.
