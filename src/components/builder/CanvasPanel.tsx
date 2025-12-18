@@ -5,6 +5,7 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-
 import { CSS } from '@dnd-kit/utilities';
 import { useFormBuilder } from '../../context/FormBuilderContext';
 import type { ColumnSchema, FieldSchema, RowSchema, SectionSchema, StaticBlockSchema, TableSchema } from '../../types/formSchema';
+import { getFieldColor, staticBlockColor } from '../../utils/fieldColors';
 
 const DragHandle = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
@@ -45,10 +46,12 @@ const FieldItem = ({ field, columnId }: FieldItemProps) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     sortable;
 
+  const fieldColor = getFieldColor(field.type);
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    border: selection?.id === field.id ? '1px solid #228be6' : '1px solid #e2e8f0',
+    border: selection?.id === field.id ? `2px solid ${fieldColor}` : `1px solid ${fieldColor}`,
+    borderLeftWidth: '4px',
     boxShadow: isDragging ? '0 4px 12px rgba(0,0,0,0.12)' : 'none',
     opacity: isDragging ? 0.7 : 1,
   };
@@ -105,8 +108,9 @@ const StaticBlockItem = ({ block }: StaticBlockProps) => {
       radius="md"
       withBorder
       style={{
-        border: isSelected ? '1px solid #228be6' : '1px solid #e2e8f0',
-        backgroundColor: isSelected ? '#eef2ff' : '#fff',
+        border: isSelected ? `2px solid ${staticBlockColor}` : `1px solid ${staticBlockColor}`,
+        borderLeftWidth: '4px',
+        backgroundColor: isSelected ? '#f8fafc' : '#fff',
       }}
       onClick={(event) => {
         event.stopPropagation();

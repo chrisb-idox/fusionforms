@@ -32,7 +32,7 @@ type Action =
   | { type: 'updateRow'; payload: { id: string; data: Partial<RowSchema> } }
   | { type: 'updateField'; payload: { id: string; data: Partial<FieldSchema> } }
   | { type: 'addSection'; payload?: { title?: string } }
-  | { type: 'addTableSection'; payload?: { title?: string } }
+  | { type: 'addTableSection'; payload?: { title?: string; columns?: number } }
   | { type: 'addRow'; payload: { sectionId: string } }
   | { type: 'addField'; payload: { columnId: string; type?: FieldType } }
   | { type: 'addNestedTable'; payload: { columnId: string } }
@@ -53,7 +53,7 @@ interface FormBuilderContextValue extends FormBuilderState {
   updateRow: (id: string, data: Partial<RowSchema>) => void;
   updateField: (id: string, data: Partial<FieldSchema>) => void;
   addSection: (title?: string) => void;
-  addTableSection: (title?: string) => void;
+  addTableSection: (title?: string, columns?: number) => void;
   addRow: (sectionId: string) => void;
   addField: (columnId: string, type?: FieldType) => void;
   addNestedTable: (columnId: string) => void;
@@ -165,7 +165,7 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
         ...state,
         schema: {
           ...state.schema,
-          sections: [...state.schema.sections, createTableSection(action.payload?.title)],
+          sections: [...state.schema.sections, createTableSection(action.payload?.title, action.payload?.columns)],
         },
       };
     case 'addRow':
@@ -374,8 +374,8 @@ export const FormBuilderProvider = ({
       updateField: (id, data) =>
         dispatch({ type: 'updateField', payload: { id, data } }),
       addSection: (title) => dispatch({ type: 'addSection', payload: { title } }),
-      addTableSection: (title) =>
-        dispatch({ type: 'addTableSection', payload: { title } }),
+      addTableSection: (title, columns) =>
+        dispatch({ type: 'addTableSection', payload: { title, columns } }),
       addRow: (sectionId) => dispatch({ type: 'addRow', payload: { sectionId } }),
       addField: (columnId, type) =>
         dispatch({ type: 'addField', payload: { columnId, type } }),

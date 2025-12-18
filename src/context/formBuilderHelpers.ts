@@ -30,7 +30,7 @@ export const createDefaultField = (type: FieldType = 'text'): FieldSchema => {
 
 export const createStaticBlock = (html?: string): StaticBlockSchema => ({
   id: createId(),
-  html: html || '<p>New text</p>',
+  html: html || '<p>Add your text</p>',
   label: 'Static text',
 });
 
@@ -53,37 +53,31 @@ export const createEmptySection = (title?: string): SectionSchema => ({
   rows: [createEmptyRow()],
 });
 
-export const createTableSection = (title?: string): SectionSchema => ({
-  id: createId(),
-  title: title || 'Table section',
-  layout: 'table',
-  tableAttributes: { border: '1', cellpadding: '6', cellspacing: '0' },
-  rows: [
-    {
-      id: createId(),
-      columns: [
-        {
-          id: createId(),
-          span: 4 as const,
-          fields: [createDefaultField('text')],
-          staticBlocks: [],
-          colSpan: 1 as const,
-          rowSpan: 1 as const,
-          nestedTables: [],
-        },
-        {
-          id: createId(),
-          span: 4 as const,
-          fields: [createDefaultField('text')],
-          staticBlocks: [],
-          colSpan: 1 as const,
-          rowSpan: 1 as const,
-          nestedTables: [],
-        },
-      ],
-    },
-  ],
-});
+export const createTableSection = (title?: string, columns?: number): SectionSchema => {
+  const numColumns = Math.min(Math.max(columns || 2, 1), 4);
+  const columnArray = Array.from({ length: numColumns }, () => ({
+    id: createId(),
+    span: 4 as const,
+    fields: [createDefaultField('text')],
+    staticBlocks: [],
+    colSpan: 1 as const,
+    rowSpan: 1 as const,
+    nestedTables: [],
+  }));
+
+  return {
+    id: createId(),
+    title: title || 'Table section',
+    layout: 'table' as const,
+    tableAttributes: { border: '1', cellpadding: '6', cellspacing: '0' },
+    rows: [
+      {
+        id: createId(),
+        columns: columnArray,
+      },
+    ],
+  };
+};
 
 export const createNestedTable = (): TableSchema => ({
   id: createId(),

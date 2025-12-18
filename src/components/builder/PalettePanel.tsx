@@ -3,6 +3,7 @@ import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import type { FieldType } from '../../types/formSchema';
 import { useFormBuilder } from '../../context/FormBuilderContext';
+import { getFieldColor, staticBlockColor } from '../../utils/fieldColors';
 
 const fieldTypes: { label: string; type: FieldType }[] = [
   { label: 'Text', type: 'text' },
@@ -167,6 +168,8 @@ const PaletteItem = ({ label, type, onClick, canAdd }: PaletteItemProps) => {
     data: { type: 'palette-field', fieldType: type },
   });
 
+  const fieldColor = getFieldColor(type);
+
   return (
     <Card
       ref={setNodeRef}
@@ -182,6 +185,8 @@ const PaletteItem = ({ label, type, onClick, canAdd }: PaletteItemProps) => {
         transform: transform ? CSS.Translate.toString(transform) : undefined,
         opacity: isDragging ? 0.65 : 1,
         userSelect: 'none',
+        border: `1px solid ${fieldColor}`,
+        borderLeftWidth: '4px',
       }}
     >
       <Text size="sm" fw={600}>
@@ -221,6 +226,8 @@ const StaticPaletteItem = ({
         transform: transform ? CSS.Translate.toString(transform) : undefined,
         opacity: isDragging ? 0.65 : 1,
         userSelect: 'none',
+        border: `1px solid ${staticBlockColor}`,
+        borderLeftWidth: '4px',
       }}
     >
       <Text size="sm" fw={600}>

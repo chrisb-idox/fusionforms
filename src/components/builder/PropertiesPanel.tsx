@@ -12,10 +12,13 @@ import {
   ScrollArea,
   Modal,
   Button,
+  NumberInput,
 } from '@mantine/core';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFormBuilder } from '../../context/FormBuilderContext';
-import type { ColumnSchema, FieldSchema, SectionSchema, StaticBlockSchema } from '../../types/formSchema';
+import type { ColumnSchema, FieldSchema, SectionSchema, StaticBlockSchema, FieldOption } from '../../types/formSchema';
+import { createId } from '../../types/formSchema';
+import { createDefaultField } from '../../context/formBuilderHelpers';
 import { getPropertiesLibrary } from '../../utils/propertiesLibrary';
 
 export const PropertiesPanel = () => {
@@ -97,83 +100,29 @@ export const PropertiesPanel = () => {
     return undefined;
   }, [schema.sections, selection]);
 
-  const editorRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Property selector modal state
   const [propertyModalOpen, setPropertyModalOpen] = useState(false);
   const [tempProperty, setTempProperty] = useState<string | null>(null);
 
-  useEffect(() => {
-    const next = selectedStatic?.html || '<p>Add your text</p>';
-    if (editorRef.current) {
-      // Strip any RTL markers and set content directly
-      const cleanHtml = next.replace(/[\u200E\u200F\u202A\u202B\u202C\u202D\u202E]/g, '');
-      editorRef.current.innerHTML = cleanHtml;
-      // Force LTR direction after setting content
-      editorRef.current.dir = 'ltr';
-      editorRef.current.style.direction = 'ltr';
-    }
-  }, [selectedStatic?.id, selectedStatic?.html]);
+  const wrapSelection = (before: string, after: string) => {
+    const textarea = textareaRef.current;
+    if (!textarea || !selectedStatic) return;
 
-  const handleEditorInput = () => {
-    if (editorRef.current) {
-      // Save cursor position
-      const selection = window.getSelection();
-      const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
-      const cursorOffset = range ? range.startOffset : 0;
-      const cursorNode = range ? range.startContainer : null;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selectedText = text.substring(start, end) || 'text';
 
-      // Get and clean content
-      const newHtml = editorRef.current.innerHTML;
-      const cleanValue = newHtml.replace(/[\u200E\u200F\u202A\u202B\u202C\u202D\u202E]/g, '');
-      
-      // Update content if it changed
-      if (newHtml !== cleanValue) {
-        editorRef.current.innerHTML = cleanValue;
-        
-        // Restore cursor position
-        if (cursorNode && selection && range) {
-          try {
-            const newRange = document.createRange();
-            newRange.setStart(cursorNode, Math.min(cursorOffset, cursorNode.textContent?.length || 0));
-            newRange.collapse(true);
-            selection.removeAllRanges();
-            selection.addRange(newRange);
-          } catch (e) {
-            // Cursor restoration failed, place at end
-            const newRange = document.createRange();
-            newRange.selectNodeContents(editorRef.current);
-            newRange.collapse(false);
-            selection.removeAllRanges();
-            selection.addRange(newRange);
-          }
-        }
-      }
-      
-      // Save to schema
-      if (selectedStatic) {
-        updateStaticBlock(selectedStatic.id, cleanValue);
-      }
-    }
-  };
+    const newText = text.substring(0, start) + before + selectedText + after + text.substring(end);
+    updateStaticBlock(selectedStatic.id, newText);
 
-  const handleLink = () => {
-    const url = window.prompt('Enter URL');
-    if (!url) return;
-    document.execCommand('createLink', false, url);
-    handleEditorInput();
-  };
-
-  const handleClearFormatting = () => {
-    document.execCommand('removeFormat', false);
-    document.execCommand('formatBlock', false, '<p>');
-    handleEditorInput();
-  };
-
-  const handleJustify = (alignment: 'left' | 'center' | 'right') => {
-    const command = alignment === 'left' ? 'justifyLeft' : alignment === 'center' ? 'justifyCenter' : 'justifyRight';
-    document.execCommand(command, false);
-    handleEditorInput();
+    // Restore focus and selection
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + before.length, start + before.length + selectedText.length);
+    }, 0);
   };
 
   const handleOpenPropertyModal = () => {
@@ -247,6 +196,47 @@ export const PropertiesPanel = () => {
                 updateSection(selectedSection.id, { title: event.currentTarget.value })
               }
             />
+            {selectedSection.layout === 'table' && (
+              <NumberInput
+                label="Number of columns"
+                description="Number of columns in the first row (1-4)"
+                value={selectedSection.rows[0]?.columns.length || 2}
+                min={1}
+                max={4}
+                onChange={(value) => {
+                  const numColumns = typeof value === 'number' ? Math.min(Math.max(value, 1), 4) : 2;
+                  const currentColumns = selectedSection.rows[0]?.columns || [];
+                  const currentLength = currentColumns.length;
+                  
+                  if (numColumns === currentLength) return;
+                  
+                  let newColumns: ColumnSchema[];
+                  if (numColumns > currentLength) {
+                    // Add new columns
+                    const columnsToAdd = Array.from({ length: numColumns - currentLength }, () => ({
+                      id: createId(),
+                      span: 4 as const,
+                      fields: [createDefaultField('text')],
+                      staticBlocks: [],
+                      colSpan: 1 as const,
+                      rowSpan: 1 as const,
+                      nestedTables: [],
+                    }));
+                    newColumns = [...currentColumns, ...columnsToAdd];
+                  } else {
+                    // Remove columns from the end
+                    newColumns = currentColumns.slice(0, numColumns);
+                  }
+                  
+                  updateSection(selectedSection.id, {
+                    rows: [
+                      { ...selectedSection.rows[0], columns: newColumns },
+                      ...selectedSection.rows.slice(1),
+                    ],
+                  });
+                }}
+              />
+            )}
           </>
         )}
 
@@ -334,167 +324,147 @@ export const PropertiesPanel = () => {
                 </Group>
               </Group>
             </Stack>
+            {selectedField.type === 'radio' && (
+              <>
+                <Divider label="Radio Options" labelPosition="left" />
+                <NumberInput
+                  label="Number of options"
+                  description="Number of radio buttons (2-5)"
+                  value={selectedField.options?.length || 2}
+                  min={2}
+                  max={5}
+                  onChange={(value) => {
+                    const numOptions = typeof value === 'number' ? Math.min(Math.max(value, 2), 5) : 2;
+                    const currentOptions = selectedField.options || [];
+                    const currentLength = currentOptions.length;
+                    
+                    if (numOptions === currentLength) return;
+                    
+                    let newOptions: FieldOption[];
+                    if (numOptions > currentLength) {
+                      // Add new options
+                      const optionsToAdd = Array.from({ length: numOptions - currentLength }, (_, i) => ({
+                        label: `Option ${currentLength + i + 1}`,
+                        value: `option${currentLength + i + 1}`,
+                      }));
+                      newOptions = [...currentOptions, ...optionsToAdd];
+                    } else {
+                      // Remove options from the end
+                      newOptions = currentOptions.slice(0, numOptions);
+                    }
+                    
+                    updateField(selectedField.id, { options: newOptions });
+                  }}
+                />
+                <Stack gap="xs">
+                  {(selectedField.options || []).map((option, index) => (
+                    <TextInput
+                      key={index}
+                      label={`Option ${index + 1} label`}
+                      value={option.label}
+                      onChange={(event) => {
+                        const newOptions = [...(selectedField.options || [])];
+                        newOptions[index] = {
+                          ...newOptions[index],
+                          label: event.currentTarget.value,
+                          value: event.currentTarget.value.toLowerCase().replace(/\s+/g, '_'),
+                        };
+                        updateField(selectedField.id, { options: newOptions });
+                      }}
+                    />
+                  ))}
+                </Stack>
+              </>
+            )}
           </>
         )}
 
         {selection?.type === 'static' && selectedStatic && (
           <>
             <Divider label="Static text" labelPosition="left" />
-            <Stack gap="xs" style={{ direction: 'ltr' }}>
-              <Group gap="xs" style={{ direction: 'ltr' }}>
+            <Stack gap="xs">
+              <Group gap="xs">
                 <Tooltip label="Heading 1">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    document.execCommand('formatBlock', false, '<h1>');
-                    handleEditorInput();
-                  }}>
+                  <ActionIcon variant="light" onClick={() => wrapSelection('<h1>', '</h1>')}>
                     <Text size="xs">H1</Text>
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip label="Heading 2">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    document.execCommand('formatBlock', false, '<h2>');
-                    handleEditorInput();
-                  }}>
+                  <ActionIcon variant="light" onClick={() => wrapSelection('<h2>', '</h2>')}>
                     <Text size="xs">H2</Text>
                   </ActionIcon>
                 </Tooltip>
-                <Tooltip label="Bold">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    document.execCommand('bold', false);
-                    handleEditorInput();
-                  }}>
-                    <Text size="xs" fw={700}>
-                      B
-                    </Text>
+                <Tooltip label="Heading 3">
+                  <ActionIcon variant="light" onClick={() => wrapSelection('<h3>', '</h3>')}>
+                    <Text size="xs">H3</Text>
                   </ActionIcon>
                 </Tooltip>
-                <Tooltip label="Italic">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    document.execCommand('italic', false);
-                    handleEditorInput();
-                  }}>
-                    <Text size="xs" fs="italic">
-                      I
-                    </Text>
-                  </ActionIcon>
-                </Tooltip>
-                <Tooltip label="Underline">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    document.execCommand('underline', false);
-                    handleEditorInput();
-                  }}>
-                    <Text size="xs" td="underline">
-                      U
-                    </Text>
-                  </ActionIcon>
-                </Tooltip>
-                <Tooltip label="Bullet list">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    document.execCommand('insertUnorderedList', false);
-                    handleEditorInput();
-                  }}>
-                    <Text size="xs">•</Text>
-                  </ActionIcon>
-                </Tooltip>
-                <Tooltip label="Numbered list">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    document.execCommand('insertOrderedList', false);
-                    handleEditorInput();
-                  }}>
-                    <Text size="xs">1.</Text>
-                  </ActionIcon>
-                </Tooltip>
-                <Tooltip label="Link">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    handleLink();
-                  }}>
-                    <Text size="xs">🔗</Text>
-                  </ActionIcon>
-                </Tooltip>
-                <Tooltip label="Clear formatting">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    handleClearFormatting();
-                  }}>
-                    <Text size="xs">Clear</Text>
+                <Tooltip label="Paragraph">
+                  <ActionIcon variant="light" onClick={() => wrapSelection('<p>', '</p>')}>
+                    <Text size="xs">P</Text>
                   </ActionIcon>
                 </Tooltip>
               </Group>
               <Group gap="xs">
-                <Tooltip label="Align left">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    handleJustify('left');
+                <Tooltip label="Bold">
+                  <ActionIcon variant="light" onClick={() => wrapSelection('<strong>', '</strong>')}>
+                    <Text size="xs" fw={700}>B</Text>
+                  </ActionIcon>
+                </Tooltip>
+                <Tooltip label="Italic">
+                  <ActionIcon variant="light" onClick={() => wrapSelection('<em>', '</em>')}>
+                    <Text size="xs" fs="italic">I</Text>
+                  </ActionIcon>
+                </Tooltip>
+                <Tooltip label="Underline">
+                  <ActionIcon variant="light" onClick={() => wrapSelection('<u>', '</u>')}>
+                    <Text size="xs" td="underline">U</Text>
+                  </ActionIcon>
+                </Tooltip>
+                <Tooltip label="Link">
+                  <ActionIcon variant="light" onClick={() => {
+                    const url = window.prompt('Enter URL:');
+                    if (url) wrapSelection(`<a href="${url}">`, '</a>');
                   }}>
+                    <Text size="xs">🔗</Text>
+                  </ActionIcon>
+                </Tooltip>
+              </Group>
+              <Group gap="xs">
+                <Tooltip label="Left align">
+                  <ActionIcon variant="light" onClick={() => wrapSelection('<div style="text-align:left">', '</div>')}>
                     <Text size="xs">⬅</Text>
                   </ActionIcon>
                 </Tooltip>
-                <Tooltip label="Align center">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    handleJustify('center');
-                  }}>
+                <Tooltip label="Center align">
+                  <ActionIcon variant="light" onClick={() => wrapSelection('<div style="text-align:center">', '</div>')}>
                     <Text size="xs">↔</Text>
                   </ActionIcon>
                 </Tooltip>
-                <Tooltip label="Align right">
-                  <ActionIcon variant="light" onMouseDown={(e) => {
-                    e.preventDefault();
-                    handleJustify('right');
-                  }}>
+                <Tooltip label="Right align">
+                  <ActionIcon variant="light" onClick={() => wrapSelection('<div style="text-align:right">', '</div>')}>
                     <Text size="xs">➡</Text>
                   </ActionIcon>
                 </Tooltip>
               </Group>
-              <Card withBorder padding="md" radius="md" style={{ direction: 'ltr' }}>
-                <Text size="xs" fw={500} mb={8}>
-                  Rich Text Editor
-                </Text>
-                <div
-                  ref={editorRef}
-                  contentEditable
-                  suppressContentEditableWarning
-                  dir="ltr"
-                  lang="en"
-                  onInput={handleEditorInput}
-                  onBlur={handleEditorInput}
-                  onKeyDown={(e) => {
-                    // Prevent any RTL shortcuts
-                    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'x' || e.key === 'X')) {
-                      e.preventDefault();
-                    }
-                  }}
-                  style={{
-                    minHeight: 120,
-                    padding: '8px 12px',
-                    border: '1px solid #dee2e6',
-                    borderRadius: 4,
-                    outline: 'none',
-                    lineHeight: 1.6,
-                    fontSize: 14,
-                    backgroundColor: '#fff',
-                    direction: 'ltr',
-                    textAlign: 'left',
-                    unicodeBidi: 'bidi-override',
-                    writingMode: 'horizontal-tb',
-                    transform: 'none',
-                    WebkitTransform: 'none',
-                  }}
-                />
-                <Text size="xs" c="dimmed" mt={8}>
-                  Type directly or use formatting buttons above. Changes save automatically.
-                </Text>
-              </Card>
+              <Textarea
+                ref={textareaRef}
+                label="HTML Content"
+                description="Edit HTML directly or select text and use formatting buttons above"
+                value={selectedStatic.html}
+                onChange={(e) => updateStaticBlock(selectedStatic.id, e.currentTarget.value)}
+                minRows={8}
+                maxRows={20}
+                autosize
+                styles={{
+                  input: {
+                    fontFamily: 'monospace',
+                    fontSize: 13,
+                  }
+                }}
+              />
               <Text size="xs" c="dimmed">
-                Static blocks render as HTML in exports, similar to imported sample text.
+                Static blocks render as HTML in exports. Use the preview to see how it looks.
               </Text>
             </Stack>
           </>
