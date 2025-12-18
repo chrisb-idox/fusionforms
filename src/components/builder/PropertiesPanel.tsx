@@ -162,6 +162,37 @@ export const PropertiesPanel = () => {
     commitStatic(textContent);
   };
 
+  const handleJustify = (alignment: 'left' | 'center' | 'right') => {
+    const node = textAreaRef.current;
+    if (!node) return;
+    const { selectionStart, selectionEnd, value } = node;
+
+    let start = selectionStart;
+    let end = selectionEnd;
+
+    if (start === end) {
+      const prevSpace = value.lastIndexOf(' ', Math.max(0, start - 1));
+      const nextSpace = value.indexOf(' ', start);
+      start = prevSpace === -1 ? 0 : prevSpace + 1;
+      end = nextSpace === -1 ? value.length : nextSpace;
+    }
+
+    if (start === end) {
+      start = 0;
+      end = value.length;
+    }
+
+    const selected = value.slice(start, end);
+    const alignedContent = `<div style="text-align: ${alignment};">${selected}</div>`;
+    const nextValue = value.slice(0, start) + alignedContent + value.slice(end);
+    commitStatic(nextValue);
+
+    setTimeout(() => {
+      node.focus();
+      node.setSelectionRange(start, start + alignedContent.length);
+    }, 0);
+  };
+
   const handleOpenPropertyModal = () => {
     setTempProperty(selectedField?.bindingProperty || null);
     setPropertyModalOpen(true);
@@ -377,6 +408,23 @@ export const PropertiesPanel = () => {
                 <Tooltip label="Clear formatting">
                   <ActionIcon variant="light" onClick={handleClearFormatting}>
                     <Text size="xs">Clear</Text>
+                  </ActionIcon>
+                </Tooltip>
+              </Group>
+              <Group gap="xs">
+                <Tooltip label="Align left">
+                  <ActionIcon variant="light" onClick={() => handleJustify('left')}>
+                    <Text size="xs">⬅</Text>
+                  </ActionIcon>
+                </Tooltip>
+                <Tooltip label="Align center">
+                  <ActionIcon variant="light" onClick={() => handleJustify('center')}>
+                    <Text size="xs">↔</Text>
+                  </ActionIcon>
+                </Tooltip>
+                <Tooltip label="Align right">
+                  <ActionIcon variant="light" onClick={() => handleJustify('right')}>
+                    <Text size="xs">➡</Text>
                   </ActionIcon>
                 </Tooltip>
               </Group>

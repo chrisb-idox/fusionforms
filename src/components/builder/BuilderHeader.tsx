@@ -62,15 +62,48 @@ export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
   const handleExportHtml = () => {
     try {
       const html = schemaToHtml(schema);
-      const action = schema.actionCode ? `_${schema.actionCode}` : '';
-      const filename = `${(schema.name || 'form').replace(/\s+/g, '_')}${action}.html`;
-      const blob = new Blob([html], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      link.click();
-      URL.revokeObjectURL(url);
+      const className = schema.formClass || 'UnknownClass';
+      const actionCode = schema.actionCode || 'CRE';
+      const filename = `${className}_${actionCode}.xml`;
+      
+      // Check if we can detect file exists (browser limitation workaround)
+      // Use showSaveFilePicker if available (modern browsers)
+      if ('showSaveFilePicker' in window) {
+        (async () => {
+          try {
+            const opts = {
+              suggestedName: filename,
+              types: [{
+                description: 'XML Files',
+                accept: { 'text/xml': ['.xml'] },
+              }],
+            };
+            const handle = await (window as any).showSaveFilePicker(opts);
+            const writable = await handle.createWritable();
+            await writable.write(html);
+            await writable.close();
+          } catch (err: any) {
+            if (err.name !== 'AbortError') {
+              console.error('Save failed', err);
+              alert('Could not save file');
+            }
+          }
+        })();
+      } else {
+        // Fallback to traditional download with confirmation
+        const confirmDownload = confirm(
+          `Export as "${filename}"?\n\nNote: If a file with this name already exists in your Downloads folder, it will be overwritten or renamed by your browser.`
+        );
+        if (confirmDownload) {
+          const blob = new Blob([html], { type: 'text/xml' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = filename;
+          link.click();
+          URL.revokeObjectURL(url);
+        }
+      }
     } catch (error) {
       console.error('Failed to export HTML', error);
       alert('Could not export HTML');
@@ -107,11 +140,12 @@ export const BuilderHeader = ({ onPreview }: BuilderHeaderProps) => {
                 value: item.value,
                 label: `${item.label} — ${item.description}`,
               }))}
-              value={schema.actionCode || null}
-              onChange={(value) => updateForm({ actionCode: (value as typeof schema.actionCode) || undefined })}
+              value={schema.actionCode || 'CRE'}
+              onChange={(value) => updateForm({ actionCode: (value as typeof schema.actionCode) || 'CRE' })}
               searchable
               nothingFoundMessage="No actions"
               w={320}
+              required
             />
           </Group>
           <Group gap="sm" wrap="wrap">
