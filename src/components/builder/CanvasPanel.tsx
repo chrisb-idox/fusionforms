@@ -124,6 +124,9 @@ const StaticBlockItem = ({ block }: StaticBlockProps) => {
             color: '#475569',
             direction: 'ltr',
             flex: 1,
+            pointerEvents: 'none',
+            overflow: 'hidden',
+            maxHeight: '150px',
           }}
           dangerouslySetInnerHTML={{ __html: block.html }}
         />
@@ -135,6 +138,7 @@ const StaticBlockItem = ({ block }: StaticBlockProps) => {
             event.stopPropagation();
             removeStaticBlock(block.id);
           }}
+          style={{ pointerEvents: 'auto' }}
         >
           ✕
         </ActionIcon>

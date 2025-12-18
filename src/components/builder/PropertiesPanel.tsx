@@ -111,22 +111,44 @@ export const PropertiesPanel = () => {
   // Property selector modal state
   const [propertyModalOpen, setPropertyModalOpen] = useState(false);
   const [tempProperty, setTempProperty] = useState<string | null>(null);
+  
+  // Expanded editor modal state
+  const [expandedEditorOpen, setExpandedEditorOpen] = useState(false);
 
-  // TipTap editor for rich text blocks (inline in properties panel)
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      TiptapLink,
-      TextAlign.configure({ types: ['heading', 'paragraph'] }),
-    ],
-    content: selectedStatic?.html || '<p>Add your text</p>',
-    onUpdate: ({ editor }) => {
-      if (selectedStatic && selectedStatic.type === 'richtext') {
-        updateStaticBlock(selectedStatic.id, editor.getHTML());
-      }
+  // TipTap editor for rich text blocks (inline in properties panel) - only create for richtext type
+  const editor = useEditor(
+    {
+      extensions: [
+        StarterKit,
+        Underline,
+        TiptapLink,
+        TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      ],
+      content: selectedStatic?.html || '<p>Add your text</p>',
+      onUpdate: ({ editor }) => {
+        if (selectedStatic && selectedStatic.type === 'richtext') {
+          updateStaticBlock(selectedStatic.id, editor.getHTML());
+        }
+      },
+      editable: selectedStatic?.type === 'richtext',
     },
-  });
+    [selectedStatic?.type, selectedStatic?.id]
+  );
+
+  // Separate TipTap editor for expanded modal view
+  const modalEditor = useEditor(
+    {
+      extensions: [
+        StarterKit,
+        Underline,
+        TiptapLink,
+        TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      ],
+      content: selectedStatic?.html || '<p>Add your text</p>',
+      editable: true,
+    },
+    [expandedEditorOpen, selectedStatic?.id]
+  );
 
   // Update editor content when selection changes
   useEffect(() => {
@@ -138,6 +160,23 @@ export const PropertiesPanel = () => {
       }
     }
   }, [editor, selectedStatic?.id, selectedStatic?.html]);
+
+  // Update modal editor when opened
+  useEffect(() => {
+    if (modalEditor && selectedStatic && expandedEditorOpen) {
+      modalEditor.commands.setContent(selectedStatic.html || '<p>Add your text</p>');
+    }
+  }, [modalEditor, expandedEditorOpen, selectedStatic?.html]);
+
+  const handleSaveExpandedEditor = () => {
+    if (selectedStatic) {
+      if (selectedStatic.type === 'richtext' && modalEditor) {
+        updateStaticBlock(selectedStatic.id, modalEditor.getHTML());
+      }
+      // For HTML type, content is saved via textarea onChange
+    }
+    setExpandedEditorOpen(false);
+  };
 
   const wrapSelection = (before: string, after: string) => {
     const textarea = textareaRef.current;
@@ -414,7 +453,17 @@ export const PropertiesPanel = () => {
 
         {selection?.type === 'static' && selectedStatic && (
           <>
-            <Divider label={selectedStatic.type === 'richtext' ? 'Rich text' : 'Static HTML'} labelPosition="left" />
+            <Group justify="space-between" align="flex-end">
+              <Divider label={selectedStatic.type === 'richtext' ? 'Rich text' : 'Static HTML'} labelPosition="left" style={{ flex: 1 }} />
+              <Tooltip label="Expand editor">
+                <ActionIcon 
+                  variant="light" 
+                  onClick={() => setExpandedEditorOpen(true)}
+                >
+                  <Text size="lg">⤢</Text>
+                </ActionIcon>
+              </Tooltip>
+            </Group>
             {selectedStatic.type === 'richtext' ? (
               editor && (
                 <Stack gap="xs">
@@ -638,6 +687,76 @@ export const PropertiesPanel = () => {
             </Button>
           </Group>
         </Stack>
+      </Modal>
+
+      {/* Expanded Editor Modal */}
+      <Modal
+        opened={expandedEditorOpen}
+        onClose={() => setExpandedEditorOpen(false)}
+        title={selectedStatic?.type === 'richtext' ? 'Rich Text Editor' : 'HTML Editor'}
+        size="90%"
+        centered
+      >
+        {selectedStatic && (
+          <Stack gap="md">
+            {selectedStatic.type === 'richtext' && modalEditor ? (
+              <RichTextEditor editor={modalEditor}>
+                <RichTextEditor.Toolbar sticky stickyOffset={60}>
+                  <RichTextEditor.ControlsGroup>
+                    <RichTextEditor.H1 />
+                    <RichTextEditor.H2 />
+                    <RichTextEditor.H3 />
+                  </RichTextEditor.ControlsGroup>
+
+                  <RichTextEditor.ControlsGroup>
+                    <RichTextEditor.Bold />
+                    <RichTextEditor.Italic />
+                    <RichTextEditor.Underline />
+                    <RichTextEditor.ClearFormatting />
+                  </RichTextEditor.ControlsGroup>
+
+                  <RichTextEditor.ControlsGroup>
+                    <RichTextEditor.BulletList />
+                    <RichTextEditor.OrderedList />
+                  </RichTextEditor.ControlsGroup>
+
+                  <RichTextEditor.ControlsGroup>
+                    <RichTextEditor.AlignLeft />
+                    <RichTextEditor.AlignCenter />
+                    <RichTextEditor.AlignRight />
+                  </RichTextEditor.ControlsGroup>
+
+                  <RichTextEditor.ControlsGroup>
+                    <RichTextEditor.Link />
+                    <RichTextEditor.Unlink />
+                  </RichTextEditor.ControlsGroup>
+                </RichTextEditor.Toolbar>
+
+                <RichTextEditor.Content style={{ minHeight: 400 }} />
+              </RichTextEditor>
+            ) : (
+              <Textarea
+                value={selectedStatic.html}
+                onChange={(e) => updateStaticBlock(selectedStatic.id, e.currentTarget.value)}
+                minRows={20}
+                maxRows={40}
+                autosize
+                styles={{
+                  input: {
+                    fontFamily: 'monospace',
+                    fontSize: 14,
+                  }
+                }}
+              />
+            )}
+            
+            <Group justify="flex-end">
+              <Button onClick={handleSaveExpandedEditor}>
+                Done
+              </Button>
+            </Group>
+          </Stack>
+        )}
       </Modal>
     </Card>
   );

@@ -153,7 +153,7 @@ const parseTable = (doc: Document, tableEl: HTMLTableElement): TableSchema => {
             rowSpan: 1,
             fields,
             staticHtml,
-            staticBlocks: staticHtml ? [{ id: createId(), html: staticHtml }] : undefined,
+            staticBlocks: staticHtml ? [{ id: createId(), html: staticHtml, type: 'html', label: 'Imported Static Text' }] : undefined,
           }],
           htmlAttributes: collectAttributes(cell), // Inherit attributes?
         });
@@ -230,7 +230,7 @@ const parseTable = (doc: Document, tableEl: HTMLTableElement): TableSchema => {
         fields,
         nestedTables,
         staticHtml,
-        staticBlocks: staticHtml ? [{ id: createId(), html: staticHtml }] : undefined,
+        staticBlocks: staticHtml ? [{ id: createId(), html: staticHtml, type: 'html', label: 'Imported Static Text' }] : undefined,
       };
     });
 
