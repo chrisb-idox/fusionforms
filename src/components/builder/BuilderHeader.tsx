@@ -1,4 +1,5 @@
-import { Button, Group, Select, Stack, Text, Badge } from '@mantine/core';
+import { Button, Group, Select, Stack, Text, Badge, ActionIcon } from '@mantine/core';
+import { IconSettings } from '@tabler/icons-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormBuilder } from '../../context/FormBuilderContext';
@@ -8,6 +9,7 @@ import { parseSampleHtmlToSchema } from '../../utils/sampleParser';
 import logo from '../../assets/logo.png';
 import { FormEditor } from './FormEditor';
 import { getPropertiesLibrary } from '../../utils/propertiesLibrary';
+import { SettingsModal } from '../settings/SettingsModal';
 
 interface BuilderHeaderProps {
   onPreview: () => void;
@@ -17,6 +19,7 @@ interface BuilderHeaderProps {
 export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
   const { schema, updateForm } = useFormBuilder();
   const [formEditorOpen, setFormEditorOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const propertiesLibrary = getPropertiesLibrary();
 
   const handleReset = () => {
@@ -27,18 +30,34 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
 
   const handleLoad = async () => {
     try {
-      // Create file input
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.xml,.html';
-      
-      input.onchange = async (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (!file) return;
+      // Use showOpenFilePicker if available (modern browsers)
+      if ('showOpenFilePicker' in window) {
+        const opts = {
+          types: [{
+            description: 'Form Files',
+            accept: {
+              'application/json': ['.json'],
+              'text/html': ['.html', '.xml'],
+            },
+          }],
+          multiple: false,
+        };
         
+        const [fileHandle] = await (window as any).showOpenFilePicker(opts);
+        const file = await fileHandle.getFile();
         const text = await file.text();
+        
         try {
-          const loadedSchema = parseSampleHtmlToSchema(text, file.name);
+          let loadedSchema;
+          
+          // Detect file type and parse accordingly
+          if (file.name.endsWith('.json')) {
+            // Parse JSON schema from Save button
+            loadedSchema = JSON.parse(text);
+          } else {
+            // Parse HTML/XML legacy form
+            loadedSchema = parseSampleHtmlToSchema(text, file.name);
+          }
           
           // Update the entire form with loaded schema
           updateForm({
@@ -53,14 +72,55 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
           alert(`Successfully loaded ${file.name}`);
         } catch (error) {
           console.error('Failed to parse file', error);
-          alert('Failed to parse file. Please ensure it is a valid XML/HTML form file.');
+          alert('Failed to parse file. Please ensure it is a valid JSON or HTML form file.');
         }
-      };
-      
-      input.click();
-    } catch (error) {
-      console.error('Failed to load file', error);
-      alert('Could not load file');
+      } else {
+        // Fallback for older browsers - create file input
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json,.html,.xml';
+        
+        input.onchange = async (e) => {
+          const file = (e.target as HTMLInputElement).files?.[0];
+          if (!file) return;
+          
+          const text = await file.text();
+          try {
+            let loadedSchema;
+            
+            // Detect file type and parse accordingly
+            if (file.name.endsWith('.json')) {
+              // Parse JSON schema from Save button
+              loadedSchema = JSON.parse(text);
+            } else {
+              // Parse HTML/XML legacy form
+              loadedSchema = parseSampleHtmlToSchema(text, file.name);
+            }
+            
+            // Update the entire form with loaded schema
+            updateForm({
+              name: loadedSchema.name,
+              description: loadedSchema.description,
+              formClass: loadedSchema.formClass,
+              actionCode: loadedSchema.actionCode,
+              sections: loadedSchema.sections,
+              version: loadedSchema.version,
+            });
+            
+            alert(`Successfully loaded ${file.name}`);
+          } catch (error) {
+            console.error('Failed to parse file', error);
+            alert('Failed to parse file. Please ensure it is a valid JSON or HTML form file.');
+          }
+        };
+        
+        input.click();
+      }
+    } catch (error: any) {
+      if (error?.name !== 'AbortError') {
+        console.error('Failed to load file', error);
+        alert('Could not load file');
+      }
     }
   };
 
@@ -95,14 +155,55 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
-      const action = schema.actionCode ? `_${schema.actionCode}` : '';
-      const filename = `${(schema.name || 'form').replace(/\s+/g, '_')}${action}.json`;
-      localStorage.setItem('form-builder-schema', JSON.stringify(schema));
-      alert(`Saved schema as ${filename} in localStorage`);
+      const filename = `${(schema.name || 'form').replace(/\s+/g, '_')}.json`;
+      const jsonContent = JSON.stringify(schema, null, 2);
+      
+      // Use showSaveFilePicker if available (modern browsers)
+      if ('showSaveFilePicker' in window) {
+        try {
+          const opts = {
+            suggestedName: filename,
+            types: [{
+              description: 'JSON Schema',
+              accept: { 'application/json': ['.json'] },
+            }],
+          };
+          const handle = await (window as any).showSaveFilePicker(opts);
+          const writable = await handle.createWritable();
+          await writable.write(jsonContent);
+          await writable.close();
+          
+          // Also backup to localStorage for auto-recovery
+          localStorage.setItem('form-builder-schema', JSON.stringify(schema));
+        } catch (err: any) {
+          if (err.name !== 'AbortError') {
+            console.error('Save failed', err);
+            alert('Could not save file');
+          }
+        }
+      } else {
+        // Fallback to traditional download
+        const confirmDownload = confirm(
+          `Save as "${filename}"?\n\nThe file will be downloaded to your Downloads folder.`
+        );
+        if (confirmDownload) {
+          const blob = new Blob([jsonContent], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = filename;
+          link.click();
+          URL.revokeObjectURL(url);
+          
+          // Also backup to localStorage for auto-recovery
+          localStorage.setItem('form-builder-schema', JSON.stringify(schema));
+        }
+      }
     } catch (error) {
       console.error('Failed to save schema', error);
+      alert('Could not save file');
     }
   };
 
@@ -111,7 +212,7 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
       const html = schemaToHtml(schema);
       const className = schema.formClass || 'UnknownClass';
       const actionCode = schema.actionCode || 'CRE';
-      const filename = `${className}_${actionCode}.xml`;
+      const filename = `${className}_${actionCode}.html`;
       
       // Check if we can detect file exists (browser limitation workaround)
       // Use showSaveFilePicker if available (modern browsers)
@@ -121,8 +222,8 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
             const opts = {
               suggestedName: filename,
               types: [{
-                description: 'XML Files',
-                accept: { 'text/xml': ['.xml'] },
+                description: 'HTML Files',
+                accept: { 'text/html': ['.html'] },
               }],
             };
             const handle = await (window as any).showSaveFilePicker(opts);
@@ -142,7 +243,7 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
           `Export as "${filename}"?\n\nNote: If a file with this name already exists in your Downloads folder, it will be overwritten or renamed by your browser.`
         );
         if (confirmDownload) {
-          const blob = new Blob([html], { type: 'text/xml' });
+          const blob = new Blob([html], { type: 'text/html' });
           const url = URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;
@@ -217,7 +318,17 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
             Build your sections and fields, then preview before saving.
           </Text>
         </Stack>
-        <img src={logo} style={{ width: 128, height: 128, borderRadius: 8 }} alt="Logo" />
+        <Group gap="sm" align="center">
+          <ActionIcon
+            variant="subtle"
+            size="lg"
+            onClick={() => setSettingsOpen(true)}
+            aria-label="Settings"
+          >
+            <IconSettings size={24} />
+          </ActionIcon>
+          <img src={logo} style={{ width: 128, height: 128, borderRadius: 8 }} alt="Logo" />
+        </Group>
       </Group>
 
       <FormEditor
@@ -227,6 +338,8 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
         formClass={schema.formClass}
         onSave={handleSaveFormDetails}
       />
+
+      <SettingsModal opened={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </>
   );
 };
