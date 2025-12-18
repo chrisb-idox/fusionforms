@@ -79,9 +79,15 @@ export const PalettePanel = () => {
     }
   };
 
-  const handleAddStatic = () => {
+  const handleAddStaticHtml = () => {
     if (targetColumnId) {
-      addStaticBlock(targetColumnId);
+      addStaticBlock(targetColumnId, 'html');
+    }
+  };
+
+  const handleAddRichText = () => {
+    if (targetColumnId) {
+      addStaticBlock(targetColumnId, 'richtext');
     }
   };
 
@@ -109,7 +115,18 @@ export const PalettePanel = () => {
             />
           ))}
         </SimpleGrid>
-        <StaticPaletteItem onClick={handleAddStatic} canAdd={Boolean(targetColumnId)} />
+        <Stack gap="xs">
+          <StaticPaletteItem 
+            onClick={handleAddStaticHtml} 
+            canAdd={Boolean(targetColumnId)}
+            label="Static HTML"
+            description="Add HTML block"
+          />
+          <RichTextPaletteItem 
+            onClick={handleAddRichText} 
+            canAdd={Boolean(targetColumnId)}
+          />
+        </Stack>
         <Group grow>
           <Card
             padding="sm"
@@ -202,9 +219,13 @@ const PaletteItem = ({ label, type, onClick, canAdd }: PaletteItemProps) => {
 const StaticPaletteItem = ({
   onClick,
   canAdd,
+  label,
+  description,
 }: {
   onClick: () => void;
   canAdd: boolean;
+  label: string;
+  description: string;
 }) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: 'palette-static',
@@ -231,10 +252,53 @@ const StaticPaletteItem = ({
       }}
     >
       <Text size="sm" fw={600}>
-        Static text
+        {label}
       </Text>
       <Text size="xs" c="dimmed">
-        Add rich text block
+        {description}
+      </Text>
+    </Card>
+  );
+};
+
+const RichTextPaletteItem = ({
+  onClick,
+  canAdd,
+}: {
+  onClick: () => void;
+  canAdd: boolean;
+}) => {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: 'palette-richtext',
+    data: { type: 'palette-richtext' },
+  });
+
+  const richtextColor = '#6366f1'; // Indigo for rich text
+
+  return (
+    <Card
+      ref={setNodeRef}
+      padding="sm"
+      withBorder
+      radius="md"
+      shadow="xs"
+      {...attributes}
+      {...listeners}
+      onClick={() => canAdd && onClick()}
+      style={{
+        cursor: canAdd ? 'grab' : 'not-allowed',
+        transform: transform ? CSS.Translate.toString(transform) : undefined,
+        opacity: isDragging ? 0.65 : 1,
+        userSelect: 'none',
+        border: `1px solid ${richtextColor}`,
+        borderLeftWidth: '4px',
+      }}
+    >
+      <Text size="sm" fw={600}>
+        Rich text
+      </Text>
+      <Text size="xs" c="dimmed">
+        Add WYSIWYG editor
       </Text>
     </Card>
   );

@@ -28,10 +28,11 @@ export const createDefaultField = (type: FieldType = 'text'): FieldSchema => {
   };
 };
 
-export const createStaticBlock = (html?: string): StaticBlockSchema => ({
+export const createStaticBlock = (html?: string, type: 'html' | 'richtext' = 'html'): StaticBlockSchema => ({
   id: createId(),
   html: html || '<p>Add your text</p>',
-  label: 'Static text',
+  label: type === 'richtext' ? 'Rich text' : 'Static HTML',
+  type,
 });
 
 export const createEmptyRow = (): RowSchema => ({

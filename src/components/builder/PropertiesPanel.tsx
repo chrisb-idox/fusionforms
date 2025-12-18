@@ -14,7 +14,13 @@ import {
   Button,
   NumberInput,
 } from '@mantine/core';
-import { useMemo, useRef, useState } from 'react';
+import { RichTextEditor } from '@mantine/tiptap';
+import { useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
+import TextAlign from '@tiptap/extension-text-align';
+import TiptapLink from '@tiptap/extension-link';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFormBuilder } from '../../context/FormBuilderContext';
 import type { ColumnSchema, FieldSchema, SectionSchema, StaticBlockSchema, FieldOption } from '../../types/formSchema';
 import { createId } from '../../types/formSchema';
@@ -105,6 +111,33 @@ export const PropertiesPanel = () => {
   // Property selector modal state
   const [propertyModalOpen, setPropertyModalOpen] = useState(false);
   const [tempProperty, setTempProperty] = useState<string | null>(null);
+
+  // TipTap editor for rich text blocks (inline in properties panel)
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      TiptapLink,
+      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+    ],
+    content: selectedStatic?.html || '<p>Add your text</p>',
+    onUpdate: ({ editor }) => {
+      if (selectedStatic && selectedStatic.type === 'richtext') {
+        updateStaticBlock(selectedStatic.id, editor.getHTML());
+      }
+    },
+  });
+
+  // Update editor content when selection changes
+  useEffect(() => {
+    if (editor && selectedStatic && selectedStatic.type === 'richtext') {
+      const currentContent = editor.getHTML();
+      const newContent = selectedStatic.html || '<p>Add your text</p>';
+      if (currentContent !== newContent) {
+        editor.commands.setContent(newContent);
+      }
+    }
+  }, [editor, selectedStatic?.id, selectedStatic?.html]);
 
   const wrapSelection = (before: string, after: string) => {
     const textarea = textareaRef.current;
@@ -381,8 +414,51 @@ export const PropertiesPanel = () => {
 
         {selection?.type === 'static' && selectedStatic && (
           <>
-            <Divider label="Static text" labelPosition="left" />
-            <Stack gap="xs">
+            <Divider label={selectedStatic.type === 'richtext' ? 'Rich text' : 'Static HTML'} labelPosition="left" />
+            {selectedStatic.type === 'richtext' ? (
+              editor && (
+                <Stack gap="xs">
+                  <RichTextEditor editor={editor}>
+                    <RichTextEditor.Toolbar sticky stickyOffset={60}>
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.H1 />
+                        <RichTextEditor.H2 />
+                        <RichTextEditor.H3 />
+                      </RichTextEditor.ControlsGroup>
+
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.Bold />
+                        <RichTextEditor.Italic />
+                        <RichTextEditor.Underline />
+                        <RichTextEditor.ClearFormatting />
+                      </RichTextEditor.ControlsGroup>
+
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.BulletList />
+                        <RichTextEditor.OrderedList />
+                      </RichTextEditor.ControlsGroup>
+
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.AlignLeft />
+                        <RichTextEditor.AlignCenter />
+                        <RichTextEditor.AlignRight />
+                      </RichTextEditor.ControlsGroup>
+
+                      <RichTextEditor.ControlsGroup>
+                        <RichTextEditor.Link />
+                        <RichTextEditor.Unlink />
+                      </RichTextEditor.ControlsGroup>
+                    </RichTextEditor.Toolbar>
+
+                    <RichTextEditor.Content style={{ minHeight: 200 }} />
+                  </RichTextEditor>
+                  <Text size="xs" c="dimmed">
+                    Rich text blocks render as formatted HTML in exports.
+                  </Text>
+                </Stack>
+              )
+            ) : (
+              <Stack gap="xs">
               <Group gap="xs">
                 <Tooltip label="Heading 1">
                   <ActionIcon variant="light" onClick={() => wrapSelection('<h1>', '</h1>')}>
@@ -464,9 +540,10 @@ export const PropertiesPanel = () => {
                 }}
               />
               <Text size="xs" c="dimmed">
-                Static blocks render as HTML in exports. Use the preview to see how it looks.
-              </Text>
-            </Stack>
+                  Static HTML blocks render as-is in exports. Use the preview to see how it looks.
+                </Text>
+              </Stack>
+            )}
           </>
         )}
       </Stack>

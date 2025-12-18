@@ -24,6 +24,7 @@ export interface StaticBlockSchema {
   id: string;
   html: string;
   label?: string;
+  type?: 'html' | 'richtext';
 }
 
 export interface FieldSchema {

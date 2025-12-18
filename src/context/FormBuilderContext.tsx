@@ -36,7 +36,7 @@ type Action =
   | { type: 'addRow'; payload: { sectionId: string } }
   | { type: 'addField'; payload: { columnId: string; type?: FieldType } }
   | { type: 'addNestedTable'; payload: { columnId: string } }
-  | { type: 'addStaticBlock'; payload: { columnId: string } }
+  | { type: 'addStaticBlock'; payload: { columnId: string; blockType?: 'html' | 'richtext' } }
   | { type: 'removeSection'; payload: { id: string } }
   | { type: 'removeRow'; payload: { id: string } }
   | { type: 'removeField'; payload: { id: string } }
@@ -57,7 +57,7 @@ interface FormBuilderContextValue extends FormBuilderState {
   addRow: (sectionId: string) => void;
   addField: (columnId: string, type?: FieldType) => void;
   addNestedTable: (columnId: string) => void;
-  addStaticBlock: (columnId: string) => void;
+  addStaticBlock: (columnId: string, blockType?: 'html' | 'richtext') => void;
   removeSection: (id: string) => void;
   removeRow: (id: string) => void;
   removeField: (id: string) => void;
@@ -209,7 +209,7 @@ const reducer = (state: FormBuilderState, action: Action): FormBuilderState => {
               column.id === action.payload.columnId
                 ? {
                     ...column,
-                    staticBlocks: [...(column.staticBlocks || []), createStaticBlock()],
+                    staticBlocks: [...(column.staticBlocks || []), createStaticBlock(undefined, action.payload.blockType)],
                   }
                 : column,
             ),
@@ -381,8 +381,8 @@ export const FormBuilderProvider = ({
         dispatch({ type: 'addField', payload: { columnId, type } }),
       addNestedTable: (columnId) =>
         dispatch({ type: 'addNestedTable', payload: { columnId } }),
-      addStaticBlock: (columnId) =>
-        dispatch({ type: 'addStaticBlock', payload: { columnId } }),
+      addStaticBlock: (columnId, blockType) =>
+        dispatch({ type: 'addStaticBlock', payload: { columnId, blockType } }),
       removeSection: (id) => dispatch({ type: 'removeSection', payload: { id } }),
       removeRow: (id) => dispatch({ type: 'removeRow', payload: { id } }),
       removeField: (id) => dispatch({ type: 'removeField', payload: { id } }),
