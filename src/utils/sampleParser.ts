@@ -256,7 +256,7 @@ export const parseSampleHtmlToSchema = (html: string, sampleName: string): FormS
   // 2. Replace <table><td... with <table><tr><td...
   // 3. Close the </tr> before </tbody> or </table> if we added one.
   // Note: This is a simple heuristic for this specific sample issue.
-  let cleanHtml = html
+  const cleanHtml = html
     .replace(/(<tbody[^>]*>)\s*(<td)/gi, '$1<tr>$2')
     .replace(/(<table[^>]*>)\s*(<td)/gi, '$1<tr>$2');
 

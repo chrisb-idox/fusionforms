@@ -159,6 +159,7 @@ export const PropertiesPanel = () => {
         editor.commands.setContent(newContent);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor, selectedStatic?.id, selectedStatic?.html]);
 
   // Update modal editor when opened
@@ -166,6 +167,7 @@ export const PropertiesPanel = () => {
     if (modalEditor && selectedStatic && expandedEditorOpen) {
       modalEditor.commands.setContent(selectedStatic.html || '<p>Add your text</p>');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalEditor, expandedEditorOpen, selectedStatic?.html]);
 
   const handleSaveExpandedEditor = () => {

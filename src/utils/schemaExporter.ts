@@ -45,6 +45,7 @@ const renderFieldLines = (field: FieldSchema, level: number, includeLabel = true
 
   // Helper to remove 'type' from attributes to avoid duplication
   const getAttrsWithoutType = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { type, ...rest } = attrs;
     return attrsToString(rest);
   };

@@ -43,7 +43,7 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
           multiple: false,
         };
         
-        const [fileHandle] = await (window as any).showOpenFilePicker(opts);
+        const [fileHandle] = await (window as unknown as { showOpenFilePicker: (opts: unknown) => Promise<FileSystemFileHandle[]> }).showOpenFilePicker(opts);
         const file = await fileHandle.getFile();
         const text = await file.text();
         
@@ -116,8 +116,8 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
         
         input.click();
       }
-    } catch (error: any) {
-      if (error?.name !== 'AbortError') {
+    } catch (error) {
+      if (error instanceof Error && error.name !== 'AbortError') {
         console.error('Failed to load file', error);
         alert('Could not load file');
       }
@@ -139,6 +139,7 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
           fields: column.fields.map((field) => {
             if (field.bindingProperty && !validPropertyNames.has(field.bindingProperty)) {
               // Remove invalid binding
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               const { bindingProperty, defaultValue, ...rest } = field;
               return rest;
             }
@@ -170,15 +171,15 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
               accept: { 'application/json': ['.json'] },
             }],
           };
-          const handle = await (window as any).showSaveFilePicker(opts);
+          const handle = await (window as unknown as { showSaveFilePicker: (opts: unknown) => Promise<FileSystemFileHandle> }).showSaveFilePicker(opts);
           const writable = await handle.createWritable();
           await writable.write(jsonContent);
           await writable.close();
           
           // Also backup to localStorage for auto-recovery
           localStorage.setItem('form-builder-schema', JSON.stringify(schema));
-        } catch (err: any) {
-          if (err.name !== 'AbortError') {
+        } catch (err) {
+          if (err instanceof Error && err.name !== 'AbortError') {
             console.error('Save failed', err);
             alert('Could not save file');
           }
@@ -226,12 +227,12 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
                 accept: { 'text/html': ['.html'] },
               }],
             };
-            const handle = await (window as any).showSaveFilePicker(opts);
+            const handle = await (window as unknown as { showSaveFilePicker: (opts: unknown) => Promise<FileSystemFileHandle> }).showSaveFilePicker(opts);
             const writable = await handle.createWritable();
             await writable.write(html);
             await writable.close();
-          } catch (err: any) {
-            if (err.name !== 'AbortError') {
+          } catch (err) {
+            if (err instanceof Error && err.name !== 'AbortError') {
               console.error('Save failed', err);
               alert('Could not save file');
             }

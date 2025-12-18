@@ -12,13 +12,19 @@ interface FormEditorProps {
 
 export const FormEditor = ({ opened, onClose, formName, formClass, onSave }: FormEditorProps) => {
   const propertiesLibrary = getPropertiesLibrary();
+  const defaultClass = formClass || propertiesLibrary[0]?.name || '';
+  
   const [name, setName] = useState(formName);
-  const [selectedClass, setSelectedClass] = useState(formClass || propertiesLibrary[0]?.name || '');
+  const [selectedClass, setSelectedClass] = useState(defaultClass);
 
+  // Reset form when modal opens with new values
   useEffect(() => {
-    setName(formName);
-    setSelectedClass(formClass || propertiesLibrary[0]?.name || '');
-  }, [formName, formClass, opened]);
+    if (opened) {
+      setName(formName);
+      setSelectedClass(formClass || propertiesLibrary[0]?.name || '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [opened]);
 
   const handleSave = () => {
     if (name.trim() && selectedClass) {
