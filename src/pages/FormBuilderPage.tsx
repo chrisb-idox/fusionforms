@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AppShell, Container, Modal, Loader, Center, Stack, Text, Alert } from '@mantine/core';
+import { AppShell, Container, Modal, Loader, Center, Stack, Text, Button } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { BuilderBody } from '../components/builder/BuilderBody';
 import { BuilderHeader } from '../components/builder/BuilderHeader';
@@ -50,7 +50,7 @@ const createInitialSchema = (): FormSchema => {
     name: 'Untitled form',
     description: 'Start describing your form purpose here.',
     formClass: 'FusionDocument', // Default to first class
-    actionCode: 'CRE', // Default to first action code
+    actionCode: undefined, // No default - user can choose or leave as None
     version: 1,
     sections: [section],
   };
@@ -152,11 +152,33 @@ export const FormBuilderPage = () => {
         const result = await loadFormFromSource(formSource);
         
         if (result.success && result.schema) {
-          setInitialSchema(result.schema);
+          const schema = result.schema;
+          
+          // Parse filename to extract action code and set form name
+          if (result.filename) {
+            const filenameWithoutExt = result.filename.replace(/\.html$/, '');
+            const parts = filenameWithoutExt.split('_');
+            
+            if (parts.length >= 2) {
+              const className = parts.slice(0, -1).join('_');
+              const actionCode = parts[parts.length - 1];
+              
+              // Set the action code if it exists
+              schema.actionCode = actionCode || schema.actionCode;
+              
+              // Set a friendly form name if not already set
+              if (!schema.name || schema.name === 'Untitled form') {
+                schema.name = `${className} ${actionCode || ''} Form`.trim();
+              }
+            }
+          }
+          
+          setInitialSchema(schema);
           setLoadError(null);
         } else {
+          // Form load failed - show error without loading default form
           setLoadError(result.error || 'Failed to load form');
-          setInitialSchema(createInitialSchema()); // Fallback to default
+          setInitialSchema(null); // Don't load any form
         }
         
         setLoading(false);
@@ -170,7 +192,8 @@ export const FormBuilderPage = () => {
     loadForm();
   }, [importedSchema]);
 
-  if (loading || !initialSchema) {
+  // Show loading spinner only when actively loading
+  if (loading) {
     return (
       <Center style={{ height: '100vh' }}>
         <Stack align="center" gap="md">
@@ -181,31 +204,43 @@ export const FormBuilderPage = () => {
     );
   }
 
+  // Show error if form load failed
+  if (loadError) {
+    return (
+      <Center style={{ height: '100vh' }}>
+        <Stack align="center" gap="lg" style={{ maxWidth: '600px', padding: '2rem' }}>
+          <IconAlertCircle size={64} color="red" />
+          <Text size="xl" fw={600} ta="center">Form Not Found</Text>
+          <div style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>
+            <Text size="sm" c="dimmed">
+              {loadError}
+            </Text>
+          </div>
+          <Button onClick={() => window.location.href = window.location.origin + import.meta.env.BASE_URL}>
+            Go to Form Builder
+          </Button>
+        </Stack>
+      </Center>
+    );
+  }
+
+  // Only render form if we have a schema
+  if (!initialSchema) {
+    return (
+      <Center style={{ height: '100vh' }}>
+        <Stack align="center" gap="md">
+          <Text size="lg" c="dimmed">No form to display</Text>
+          <Button onClick={() => window.location.href = window.location.origin + import.meta.env.BASE_URL}>
+            Go to Form Builder
+          </Button>
+        </Stack>
+      </Center>
+    );
+  }
+
   return (
-    <>
-      {loadError && (
-        <Alert 
-          icon={<IconAlertCircle size={16} />} 
-          title="Form Load Warning" 
-          color="yellow"
-          style={{ 
-            position: 'fixed', 
-            top: 16, 
-            left: '50%', 
-            transform: 'translateX(-50%)', 
-            zIndex: 1000,
-            maxWidth: '600px',
-            width: '90%'
-          }}
-          withCloseButton
-          onClose={() => setLoadError(null)}
-        >
-          {loadError}. Using default form instead.
-        </Alert>
-      )}
-      <FormBuilderProvider initialSchema={initialSchema}>
-        <BuilderContent />
-      </FormBuilderProvider>
-    </>
+    <FormBuilderProvider initialSchema={initialSchema}>
+      <BuilderContent />
+    </FormBuilderProvider>
   );
 };

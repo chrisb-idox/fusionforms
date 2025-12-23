@@ -112,7 +112,7 @@ export const BuilderBody = () => {
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <Stack gap="md">
+      <Stack gap="md" style={{ height: 'calc(100vh - 120px)' }}>
         <Title order={3} fw={600}>
           Form canvas
         </Title>
@@ -122,27 +122,36 @@ export const BuilderBody = () => {
           wrap="nowrap"
           justify="space-between"
           w="100%"
+          style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}
         >
           <Box
             style={{
-              position: 'sticky',
-              top: 96,
-              alignSelf: 'flex-start',
               flex: '0 0 260px',
+              height: '100%',
+              overflowY: 'auto',
+              overflowX: 'hidden',
             }}
           >
             <PalettePanel />
           </Box>
-          <Box style={{ flex: '1 1 auto', minWidth: 0 }}>
+          <Box 
+            style={{ 
+              flex: '1 1 auto', 
+              minWidth: 0,
+              height: '100%',
+              overflowY: 'auto',
+              overflowX: 'hidden',
+            }}
+          >
             <CanvasPanel />
           </Box>
           <Box
             style={{
-              position: 'sticky',
-              top: 96,
-              alignSelf: 'flex-start',
               flex: '0 0 320px',
               marginLeft: 'auto',
+              height: '100%',
+              overflowY: 'auto',
+              overflowX: 'hidden',
             }}
           >
             <PropertiesPanel />

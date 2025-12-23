@@ -73,7 +73,7 @@ export interface FormSchema {
   id: string;
   name: string;
   description?: string;
-  actionCode?: ActionCode;
+  actionCode?: string;
   formClass?: string;
   version: number;
   sections: SectionSchema[];
@@ -83,7 +83,8 @@ export interface FormSchema {
   remainingBodyHtml?: string;
 }
 
-export type ActionCode = 'CRE' | 'AMD' | 'CO' | 'CI' | 'DF' | 'SAS' | 'QRY' | 'REC' | 'CPY';
+// Legacy type - kept for backward compatibility but now accepts any string
+export type ActionCode = string;
 
 export type Selection =
   | { type: 'form'; id: string }

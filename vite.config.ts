@@ -5,6 +5,23 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/fusionforms/',
   plugins: [react()],
+  server: {
+    port: 5174,
+    host: '0.0.0.0',
+    allowedHosts: ['dev-codex.idoxgroup.local'],
+    middlewareMode: false,
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        // Redirect /fusionforms (without trailing slash) to /fusionforms/
+        if (req.url === '/fusionforms') {
+          res.writeHead(301, { Location: '/fusionforms/' });
+          res.end();
+          return;
+        }
+        next();
+      });
+    },
+  },
   build: {
     rollupOptions: {
       output: {

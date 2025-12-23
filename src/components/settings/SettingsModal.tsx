@@ -1,7 +1,8 @@
 import { Modal, Stack, Group, Text, NavLink, Box, Container, Code, Divider, Alert, Tabs } from '@mantine/core';
-import { IconInfoCircle, IconPlug, IconAlertCircle } from '@tabler/icons-react';
+import { IconInfoCircle, IconPlug, IconAlertCircle, IconCode } from '@tabler/icons-react';
 import { useState } from 'react';
 import packageJson from '../../../package.json';
+import { ActionCodesSettings } from './ActionCodesSettings';
 
 const getCopyrightYear = () => new Date().getFullYear();
 
@@ -10,7 +11,7 @@ interface SettingsModalProps {
   onClose: () => void;
 }
 
-type SettingsPage = 'about' | 'integration';
+type SettingsPage = 'about' | 'integration' | 'actionCodes';
 
 export const SettingsModal = ({ opened, onClose }: SettingsModalProps) => {
   const [activePage, setActivePage] = useState<SettingsPage>('about');
@@ -45,6 +46,9 @@ export const SettingsModal = ({ opened, onClose }: SettingsModalProps) => {
             </div>
           </Stack>
         );
+      
+      case 'actionCodes':
+        return <ActionCodesSettings />;
       
       case 'integration':
         return (
@@ -302,6 +306,12 @@ window.open(url, '_blank');`}
               leftSection={<IconInfoCircle size={20} />}
               active={activePage === 'about'}
               onClick={() => setActivePage('about')}
+            />
+            <NavLink
+              label="Action Codes"
+              leftSection={<IconCode size={20} />}
+              active={activePage === 'actionCodes'}
+              onClick={() => setActivePage('actionCodes')}
             />
             <NavLink
               label="Integration"

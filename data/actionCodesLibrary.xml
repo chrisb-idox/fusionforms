@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionCodes>
+  <actionCode value="AMD" label="AMD" description="Amendment" />
+  <actionCode value="CI" label="CI" description="Check in" />
+  <actionCode value="CO" label="CO" description="Check out" />
+  <actionCode value="CPY" label="CPY" description="Copy" />
+  <actionCode value="CRE" label="CRE" description="Creation" />
+  <actionCode value="DF" label="DF" description="Details" />
+  <actionCode value="QRY" label="QRY" description="Query" />
+  <actionCode value="REC" label="REC" description="Re-categorize" />
+  <actionCode value="SAS" label="SAS" description="Save document" />
+</actionCodes>

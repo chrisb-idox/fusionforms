@@ -22,7 +22,7 @@ interface SampleEntry {
   description?: string;
 }
 
-const manifestUrl = '/samples/manifest.json';
+const manifestUrl = `${import.meta.env.BASE_URL}samples/manifest.json`;
 
 export const SampleViewerPage = () => {
   const [samples, setSamples] = useState<SampleEntry[]>([]);
@@ -70,7 +70,8 @@ export const SampleViewerPage = () => {
     setImporting(true);
     setError(null);
     try {
-      const response = await fetch(`/samples/${selectedSample.file}`);
+      const sampleUrl = `${import.meta.env.BASE_URL}samples/${selectedSample.file}`;
+      const response = await fetch(sampleUrl);
       if (!response.ok) {
         throw new Error(`Failed to load sample (${response.status})`);
       }
@@ -178,7 +179,7 @@ export const SampleViewerPage = () => {
               <Paper withBorder radius="md" shadow="sm" p="sm" style={{ overflowX: 'auto' }}>
                 <Box
                   component="iframe"
-                  src={`/samples/${selectedSample.file}`}
+                  src={`${import.meta.env.BASE_URL}samples/${selectedSample.file}`}
                   title={selectedSample.name}
                   sandbox="allow-same-origin allow-scripts allow-forms allow-modals allow-popups allow-downloads"
                   style={{ width: '100%', height: '70vh', border: 'none', borderRadius: 8 }}

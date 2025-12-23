@@ -1,9 +1,9 @@
-import { Button, Group, Select, Stack, Text, Badge, ActionIcon } from '@mantine/core';
-import { IconSettings } from '@tabler/icons-react';
-import { useState } from 'react';
+import { Button, Group, Select, Stack, Text, Badge, ActionIcon, Menu } from '@mantine/core';
+import { IconSettings, IconDownload, IconFileExport, IconChevronDown } from '@tabler/icons-react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormBuilder } from '../../context/FormBuilderContext';
-import { actionCodes } from '../../data/actionCodes';
+import { getActionCodesSync, type ActionCodeItem } from '../../utils/actionCodesLibrary';
 import { schemaToHtml } from '../../utils/schemaExporter';
 import { parseSampleHtmlToSchema } from '../../utils/sampleParser';
 import logo from '../../assets/logo.png';
@@ -20,7 +20,37 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
   const { schema, updateForm } = useFormBuilder();
   const [formEditorOpen, setFormEditorOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [formsLibraryOpen, setFormsLibraryOpen] = useState(false);
+  const [actionCodes, setActionCodes] = useState<ActionCodeItem[]>([]);
   const propertiesLibrary = getPropertiesLibrary();
+
+  useEffect(() => {
+    // Load action codes on mount and when settings might have changed
+    const loadCodes = () => {
+      const codes = getActionCodesSync();
+      setActionCodes(codes);
+    };
+    
+    loadCodes();
+    
+    // Listen for storage events to update when codes change in settings
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'fusionforms_action_codes') {
+        loadCodes();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also listen for custom event for same-window updates
+    const handleCodesUpdate = () => loadCodes();
+    window.addEventListener('fusionforms_codes_updated', handleCodesUpdate);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('fusionforms_codes_updated', handleCodesUpdate);
+    };
+  }, []);
 
   const handleReset = () => {
     if (confirm('Are you sure you want to reset the form? All changes will be lost.')) {
@@ -208,12 +238,12 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
     }
   };
 
-  const handleExportHtml = () => {
+  const handleExportDownload = () => {
     try {
       const html = schemaToHtml(schema);
       const className = schema.formClass || 'UnknownClass';
-      const actionCode = schema.actionCode || 'CRE';
-      const filename = `${className}_${actionCode}.html`;
+      const actionCode = schema.actionCode;
+      const filename = actionCode ? `${className}_${actionCode}.html` : `${className}.html`;
       
       // Check if we can detect file exists (browser limitation workaround)
       // Use showSaveFilePicker if available (modern browsers)
@@ -259,6 +289,35 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
     }
   };
 
+  const handleExportToApp = () => {
+    try {
+      const html = schemaToHtml(schema);
+      const className = schema.formClass || 'UnknownClass';
+      const actionCode = schema.actionCode;
+      const filename = actionCode ? `${className}_${actionCode}.html` : `${className}.html`;
+      
+      // Save to localStorage Forms Library
+      const libraryKey = 'fusionforms_library';
+      const library = JSON.parse(localStorage.getItem(libraryKey) || '{}');
+      
+      library[filename] = {
+        html,
+        filename,
+        className,
+        actionCode,
+        savedAt: new Date().toISOString(),
+        formName: schema.name,
+      };
+      
+      localStorage.setItem(libraryKey, JSON.stringify(library));
+      
+      alert(`Form saved to Forms Library as "${filename}"\n\nGraphCycle can now access this form using:\n?form=forms/${filename}`);
+    } catch (error) {
+      console.error('Failed to save to Forms Library', error);
+      alert('Could not save to Forms Library');
+    }
+  };
+
   return (
     <>
       <Group justify="space-between" align="flex-start" px="md" py="sm" style={{ backdropFilter: 'blur(6px)' }}>
@@ -285,16 +344,18 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
             <Select
               label="Action code"
               placeholder="Select action"
-              data={actionCodes.map((item) => ({
-                value: item.value,
-                label: `${item.label} — ${item.description}`,
-              }))}
-              value={schema.actionCode || 'CRE'}
-              onChange={(value) => updateForm({ actionCode: (value as typeof schema.actionCode) || 'CRE' })}
+              data={[
+                { value: '', label: 'None - No suffix on filename' },
+                ...actionCodes.map((item) => ({
+                  value: item.value,
+                  label: `${item.value} - ${item.label}`,
+                })),
+              ]}
+              value={schema.actionCode || ''}
+              onChange={(value) => updateForm({ actionCode: (value || undefined) as typeof schema.actionCode })}
               searchable
               nothingFoundMessage="No actions"
               w={320}
-              required
             />
           </Group>
           <Group gap="sm" wrap="wrap">
@@ -310,9 +371,27 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
             <Button variant="default" onClick={handleSave}>
               Save
             </Button>
-            <Button variant="default" onClick={handleExportHtml}>
-              Export HTML
-            </Button>
+            <Menu position="bottom-start" shadow="md">
+              <Menu.Target>
+                <Button variant="default" rightSection={<IconChevronDown size={16} />}>
+                  Export HTML
+                </Button>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item
+                  leftSection={<IconDownload size={16} />}
+                  onClick={handleExportDownload}
+                >
+                  Download
+                </Menu.Item>
+                <Menu.Item
+                  leftSection={<IconFileExport size={16} />}
+                  onClick={handleExportToApp}
+                >
+                  Forms Library
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
             <Button onClick={onPreview}>Preview</Button>
           </Group>
           <Text size="sm" c="dimmed">
