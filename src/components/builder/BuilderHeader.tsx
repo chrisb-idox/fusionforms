@@ -20,7 +20,6 @@ export const BuilderHeader = ({ onPreview, onReset }: BuilderHeaderProps) => {
   const { schema, updateForm } = useFormBuilder();
   const [formEditorOpen, setFormEditorOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [formsLibraryOpen, setFormsLibraryOpen] = useState(false);
   const [actionCodes, setActionCodes] = useState<ActionCodeItem[]>([]);
   const propertiesLibrary = getPropertiesLibrary();
 

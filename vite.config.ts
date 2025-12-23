@@ -1,26 +1,30 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
+import type { IncomingMessage, ServerResponse } from 'http'
+
+// Plugin to redirect /fusionforms to /fusionforms/
+const redirectPlugin = (): Plugin => ({
+  name: 'redirect-base-url',
+  configureServer(server) {
+    server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: () => void) => {
+      if (req.url === '/fusionforms') {
+        res.writeHead(301, { Location: '/fusionforms/' });
+        res.end();
+        return;
+      }
+      next();
+    });
+  },
+});
 
 // https://vite.dev/config/
 export default defineConfig({
   base: '/fusionforms/',
-  plugins: [react()],
+  plugins: [react(), redirectPlugin()],
   server: {
     port: 5174,
     host: '0.0.0.0',
     allowedHosts: ['dev-codex.idoxgroup.local'],
-    middlewareMode: false,
-    configureServer(server) {
-      server.middlewares.use((req, res, next) => {
-        // Redirect /fusionforms (without trailing slash) to /fusionforms/
-        if (req.url === '/fusionforms') {
-          res.writeHead(301, { Location: '/fusionforms/' });
-          res.end();
-          return;
-        }
-        next();
-      });
-    },
   },
   build: {
     rollupOptions: {
