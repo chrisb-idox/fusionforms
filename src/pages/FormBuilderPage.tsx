@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { AppShell, Container, Modal } from '@mantine/core';
+import { useState, useEffect } from 'react';
+import { AppShell, Container, Modal, Loader, Center, Stack, Text, Alert } from '@mantine/core';
+import { IconAlertCircle } from '@tabler/icons-react';
 import { BuilderBody } from '../components/builder/BuilderBody';
 import { BuilderHeader } from '../components/builder/BuilderHeader';
 import { FormRenderer } from '../components/renderer/FormRenderer';
@@ -8,6 +9,7 @@ import type { FormSchema } from '../types/formSchema';
 import { createId } from '../types/formSchema';
 import { createEmptySection } from '../context/formBuilderHelpers';
 import { useLocation } from 'react-router-dom';
+import { getFormSourceFromUrl, loadFormFromSource } from '../utils/formLoader';
 
 const createInitialSchema = (): FormSchema => {
   const section = createEmptySection('Getting started');
@@ -126,11 +128,84 @@ export const FormBuilderPage = () => {
   const location = useLocation();
   const importedSchema =
     (location.state as { importedSchema?: FormSchema } | null)?.importedSchema;
-  const [initialSchema] = useState<FormSchema>(() => importedSchema ?? createInitialSchema());
+  
+  const [initialSchema, setInitialSchema] = useState<FormSchema | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadForm = async () => {
+      // Check if we have an imported schema from router state
+      if (importedSchema) {
+        setInitialSchema(importedSchema);
+        setLoading(false);
+        return;
+      }
+
+      // Check for URL parameters
+      const formSource = getFormSourceFromUrl();
+      
+      if (formSource) {
+        setLoading(true);
+        setLoadError(null);
+        
+        const result = await loadFormFromSource(formSource);
+        
+        if (result.success && result.schema) {
+          setInitialSchema(result.schema);
+          setLoadError(null);
+        } else {
+          setLoadError(result.error || 'Failed to load form');
+          setInitialSchema(createInitialSchema()); // Fallback to default
+        }
+        
+        setLoading(false);
+      } else {
+        // No import source, use default schema
+        setInitialSchema(createInitialSchema());
+        setLoading(false);
+      }
+    };
+
+    loadForm();
+  }, [importedSchema]);
+
+  if (loading || !initialSchema) {
+    return (
+      <Center style={{ height: '100vh' }}>
+        <Stack align="center" gap="md">
+          <Loader size="xl" />
+          <Text size="lg" c="dimmed">Loading form...</Text>
+        </Stack>
+      </Center>
+    );
+  }
 
   return (
-    <FormBuilderProvider initialSchema={initialSchema}>
-      <BuilderContent />
-    </FormBuilderProvider>
+    <>
+      {loadError && (
+        <Alert 
+          icon={<IconAlertCircle size={16} />} 
+          title="Form Load Warning" 
+          color="yellow"
+          style={{ 
+            position: 'fixed', 
+            top: 16, 
+            left: '50%', 
+            transform: 'translateX(-50%)', 
+            zIndex: 1000,
+            maxWidth: '600px',
+            width: '90%'
+          }}
+          withCloseButton
+          onClose={() => setLoadError(null)}
+        >
+          {loadError}. Using default form instead.
+        </Alert>
+      )}
+      <FormBuilderProvider initialSchema={initialSchema}>
+        <BuilderContent />
+      </FormBuilderProvider>
+    </>
   );
 };

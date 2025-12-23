@@ -1,6 +1,35 @@
-# React + TypeScript + Vite
+# FusionForms - Form Builder Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A visual form builder for creating and editing EDMS-integrated forms.
+
+## Features
+
+- Visual drag-and-drop form builder
+- EDMS class integration (FusionDocument, VendorDocument)
+- Import/Export HTML forms
+- Property binding with `${propertyName}` tokens
+- Multiple layout options (table, stack, nested tables)
+- External application integration API
+
+## External Integration
+
+FusionForms can be launched from other applications with pre-loaded forms. See [INTEGRATION_API.md](INTEGRATION_API.md) for complete documentation.
+
+**Quick Example:**
+```javascript
+// Load form from URL
+window.open('http://dev-codex.idoxgroup.local/fusionforms?formUrl=http://server/form.html');
+
+// Load via localStorage
+localStorage.setItem('fusionforms_import', JSON.stringify(formSchema));
+window.open('http://dev-codex.idoxgroup.local/fusionforms?import=local');
+```
+
+**Test Page:** `/integration-test.html`
+
+## Development
+
+This is a React + TypeScript + Vite application.
 
 Currently, two official plugins are available:
 

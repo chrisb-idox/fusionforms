@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FusionForms Integration Test</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f7fa;
+    }
+    h1 {
+      color: #333;
+      border-bottom: 3px solid #228be6;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #495057;
+      margin-top: 30px;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 5px;
+      background: #228be6;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .button:hover {
+      background: #1c7ed6;
+    }
+    .button.secondary {
+      background: #868e96;
+    }
+    .button.secondary:hover {
+      background: #495057;
+    }
+    code {
+      background: #f8f9fa;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+    pre {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+      border-left: 3px solid #228be6;
+    }
+    .note {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔗 FusionForms Integration Test</h1>
+  <p>Test the integration API for launching FusionForms from external applications.</p>
+
+  <!-- Method 1: File Path -->
+  <div class="test-section">
+    <h2>Method 1: File Path Parameter</h2>
+    <p>Load a form from the public/samples folder.</p>
+    <button class="button" onclick="testFilePath('samples/design.html')">
+      Load design.html
+    </button>
+    <button class="button" onclick="testFilePath('samples/design_CRE.html')">
+      Load design_CRE.html
+    </button>
+    <button class="button" onclick="testFilePath('samples/calculation.html')">
+      Load calculation.html
+    </button>
+    <pre id="filepath-url" style="margin-top: 10px; font-size: 11px;"></pre>
+  </div>
+
+  <!-- Method 2: Remote URL -->
+  <div class="test-section">
+    <h2>Method 2: Remote URL Parameter</h2>
+    <p>Load a form from a URL (requires CORS support).</p>
+    <input type="text" id="remote-url" placeholder="http://example.com/form.html" 
+           style="width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;">
+    <button class="button" onclick="testRemoteUrl()">
+      Load from URL
+    </button>
+    <pre id="remoteurl-url" style="margin-top: 10px; font-size: 11px;"></pre>
+  </div>
+
+  <!-- Method 3: localStorage Bridge -->
+  <div class="test-section">
+    <h2>Method 3: localStorage Bridge</h2>
+    <p>Pass form data via localStorage (best for large forms, same-origin only).</p>
+    <button class="button" onclick="testLocalStorage()">
+      Load Test Form via localStorage
+    </button>
+    <button class="button secondary" onclick="testLocalStorageCustom()">
+      Load with Custom Schema
+    </button>
+    <div class="note">
+      <strong>Note:</strong> This method requires same origin. Works if this test page is served from the same domain as FusionForms.
+    </div>
+    <pre id="localstorage-url" style="margin-top: 10px; font-size: 11px;"></pre>
+  </div>
+
+  <!-- Method 4: Base64 Data -->
+  <div class="test-section">
+    <h2>Method 4: Inline Base64 Data</h2>
+    <p>Embed form data directly in URL (best for small forms).</p>
+    <button class="button" onclick="testBase64()">
+      Load Minimal Form via Base64
+    </button>
+    <button class="button secondary" onclick="testBase64Complex()">
+      Load Complex Form via Base64
+    </button>
+    <pre id="base64-url" style="margin-top: 10px; font-size: 11px;"></pre>
+    <div class="note">
+      <strong>Note:</strong> Limited by browser URL length (~2000 characters). Best for simple forms.
+    </div>
+  </div>
+
+  <!-- GraphCycle Integration Example -->
+  <div class="test-section">
+    <h2>GraphCycle Integration Example</h2>
+    <p>Example code for integrating with GraphCycle:</p>
+    <pre><code>// In GraphCycle application
+const FUSIONFORMS_URL = 'http://dev-codex.idoxgroup.local/fusionforms';
+
+function openInFusionForms(formData) {
+  // Use localStorage for reliability
+  localStorage.setItem('fusionforms_import', JSON.stringify(formData));
+  window.open(`${FUSIONFORMS_URL}?import=local`, '_blank');
+  
+  // Clean up after 10 seconds
+  setTimeout(() => {
+    localStorage.removeItem('fusionforms_import');
+  }, 10000);
+}</code></pre>
+  </div>
+
+  <script>
+    const FUSIONFORMS_BASE = 'http://dev-codex.idoxgroup.local/fusionforms';
+
+    function testFilePath(path) {
+      const url = `${FUSIONFORMS_BASE}?form=${encodeURIComponent(path)}`;
+      document.getElementById('filepath-url').textContent = url;
+      window.open(url, '_blank');
+    }
+
+    function testRemoteUrl() {
+      const url = document.getElementById('remote-url').value;
+      if (!url) {
+        alert('Please enter a URL');
+        return;
+      }
+      const targetUrl = `${FUSIONFORMS_BASE}?formUrl=${encodeURIComponent(url)}`;
+      document.getElementById('remoteurl-url').textContent = targetUrl;
+      window.open(targetUrl, '_blank');
+    }
+
+    function testLocalStorage() {
+      const schema = {
+        id: 'test_' + Date.now(),
+        name: 'Test Form from localStorage',
+        description: 'This form was loaded via localStorage integration',
+        formClass: 'FusionDocument',
+        actionCode: 'CRE',
+        version: 1,
+        sections: [
+          {
+            id: 'section_1',
+            title: 'Test Section',
+            layout: 'table',
+            rows: [
+              {
+                id: 'row_1',
+                columns: [
+                  {
+                    id: 'col_1',
+                    span: 1,
+                    fields: [
+                      {
+                        id: 'field_1',
+                        type: 'text',
+                        name: 'testField',
+                        label: 'Test Field',
+                        placeholder: 'Enter text here'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+      
+      localStorage.setItem('fusionforms_import', JSON.stringify(schema));
+      const url = `${FUSIONFORMS_BASE}?import=local`;
+      document.getElementById('localstorage-url').textContent = url;
+      window.open(url, '_blank');
+      
+      // Clean up after 10 seconds
+      setTimeout(() => {
+        localStorage.removeItem('fusionforms_import');
+      }, 10000);
+    }
+
+    function testLocalStorageCustom() {
+      const schema = {
+        id: 'custom_' + Date.now(),
+        name: 'Advanced Form Example',
+        description: 'Form with multiple field types',
+        formClass: 'VendorDocument',
+        actionCode: 'AMD',
+        version: 1,
+        sections: [
+          {
+            id: 'section_1',
+            title: 'Personal Information',
+            layout: 'table',
+            rows: [
+              {
+                id: 'row_1',
+                columns: [
+                  {
+                    id: 'col_1',
+                    span: 1,
+                    fields: [
+                      {
+                        id: 'field_1',
+                        type: 'text',
+                        name: 'fullName',
+                        label: 'Full Name',
+                        bindingProperty: 'VendorName',
+                        validations: [{ type: 'required', message: 'Name is required' }]
+                      }
+                    ]
+                  },
+                  {
+                    id: 'col_2',
+                    span: 1,
+                    fields: [
+                      {
+                        id: 'field_2',
+                        type: 'date',
+                        name: 'birthDate',
+                        label: 'Date of Birth',
+                        bindingProperty: 'VendorDate'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                id: 'row_2',
+                columns: [
+                  {
+                    id: 'col_3',
+                    span: 1,
+                    fields: [
+                      {
+                        id: 'field_3',
+                        type: 'select',
+                        name: 'country',
+                        label: 'Country',
+                        options: [
+                          { label: 'United States', value: 'US' },
+                          { label: 'United Kingdom', value: 'UK' },
+                          { label: 'Canada', value: 'CA' }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+      
+      localStorage.setItem('fusionforms_import', JSON.stringify(schema));
+      const url = `${FUSIONFORMS_BASE}?import=local`;
+      document.getElementById('localstorage-url').textContent = url;
+      window.open(url, '_blank');
+      
+      setTimeout(() => {
+        localStorage.removeItem('fusionforms_import');
+      }, 10000);
+    }
+
+    function testBase64() {
+      const schema = {
+        id: 'base64_test',
+        name: 'Base64 Test Form',
+        formClass: 'FusionDocument',
+        actionCode: 'CRE',
+        version: 1,
+        sections: [
+          {
+            id: 's1',
+            title: 'Simple Section',
+            layout: 'stack',
+            rows: [
+              {
+                id: 'r1',
+                columns: [
+                  {
+                    id: 'c1',
+                    span: 1,
+                    fields: [
+                      {
+                        id: 'f1',
+                        type: 'text',
+                        name: 'name',
+                        label: 'Name'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+      
+      const base64 = btoa(JSON.stringify(schema));
+      const url = `${FUSIONFORMS_BASE}?formData=${encodeURIComponent(base64)}`;
+      document.getElementById('base64-url').textContent = url.substring(0, 150) + '... (truncated)';
+      window.open(url, '_blank');
+    }
+
+    function testBase64Complex() {
+      const schema = {
+        id: 'complex_base64',
+        name: 'Complex Form via Base64',
+        formClass: 'FusionDocument',
+        actionCode: 'QRY',
+        version: 1,
+        sections: [
+          {
+            id: 's1',
+            title: 'Application Details',
+            layout: 'table',
+            rows: [
+              {
+                id: 'r1',
+                columns: [
+                  {
+                    id: 'c1',
+                    span: 1,
+                    fields: [
+                      {
+                        id: 'f1',
+                        type: 'text',
+                        name: 'applicant',
+                        label: 'Applicant Name',
+                        bindingProperty: 'Applicant'
+                      }
+                    ]
+                  },
+                  {
+                    id: 'c2',
+                    span: 1,
+                    fields: [
+                      {
+                        id: 'f2',
+                        type: 'textarea',
+                        name: 'description',
+                        label: 'Description',
+                        bindingProperty: 'Description'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+      
+      const base64 = btoa(JSON.stringify(schema));
+      const url = `${FUSIONFORMS_BASE}?formData=${encodeURIComponent(base64)}`;
+      document.getElementById('base64-url').textContent = url.substring(0, 150) + '... (truncated)';
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>

@@ -5,7 +5,7 @@ import './App.css';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/fusionforms">
       <Routes>
         <Route path="/" element={<FormBuilderPage />} />
         <Route path="/samples" element={<SampleViewerPage />} />
