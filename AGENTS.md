@@ -52,9 +52,9 @@ Context for future sessions about the FusionForms Form Builder MVP (renamed from
 ### How to run
 - **Development**: Install deps (already installed). Start dev server: `npm run dev` (runs on dev-codex.idoxgroup.local:5174 with host: '0.0.0.0' and allowedHosts configured for network access).
 - **Production (VM)**: Deployed on Ubuntu VM, accessible at:
-  - HTTPS: https://dev-codex.idoxgroup.local:8444
-  - HTTP: http://dev-codex.idoxgroup.local:8081 (redirects to HTTPS)
-- **Deployment**: Use `./deploy.sh` to build and deploy updates. See [DEPLOYMENT.md](DEPLOYMENT.md) for details.
+  - HTTPS: https://dev-codex.idoxgroup.local:8444/fusionforms/
+  - HTTP: http://dev-codex.idoxgroup.local:8081/fusionforms/ (redirects to HTTPS)
+- **Deployment**: Use `./deploy.sh` to build and deploy updates. For first-time setup or nginx config updates, run `./update-nginx.sh` first. See [DEPLOYMENT.md](DEPLOYMENT.md) for details.
 - **Integration Testing**: Visit `/integration-test.html` to test all external integration methods.
 - **Configuration**: Base path set to `/fusionforms/` in both `vite.config.ts` and `BrowserRouter` for correct asset loading.
 - Build works (`npm run build`) but emits Node version warning noted above.

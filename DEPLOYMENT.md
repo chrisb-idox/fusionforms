@@ -2,40 +2,34 @@
 
 ## Server Setup (Ubuntu VM)
 
-FusionForms is deployed on the Ubuntu VM and accessible via nginx reverse proxy.
+FusionForms is deployed on the Ubuntu VM and served via the main dev-codex nginx configuration on standard HTTP port 80.
 
 ### Access URLs
 
-- **HTTP**: http://dev-codex.idoxgroup.local:8081 (redirects to HTTPS)
-- **HTTPS**: https://dev-codex.idoxgroup.local:8444
-
-### Ports
-
-- Port 8081: HTTP (redirects to HTTPS)
-- Port 8444: HTTPS with SSL
+- **Production**: http://dev-codex.idoxgroup.local/fusionforms/
 
 ### File Locations
 
-- **Application files**: `/var/www/fusionforms/`
-- **Nginx config**: `/etc/nginx/sites-available/fusionforms`
-- **SSL certificate**: `/etc/ssl/certs/fusionforms-selfsigned.crt`
-- **SSL key**: `/etc/ssl/private/fusionforms-selfsigned.key`
+- **Application files**: `/home/IDOXGROUP.LOCAL/chris.brighouse/production/fusionforms/dist`
+- **Nginx config**: `/etc/nginx/sites-available/dev-codex` (shared with other apps)
+- **Dev server**: Port 5174 (when running `npm run dev`)
 
 ## Deployment Process
 
-### Quick Deployment
+### Standard Deployment
 
-Use the deployment script:
+Deploy the application to production:
 
 ```bash
 ./deploy.sh
 ```
 
 This script will:
-1. Build the production version
-2. Deploy to `/var/www/fusionforms/`
-3. Set proper permissions
-4. Reload nginx
+1. Build the production version (`npm run build`)
+2. Deploy to `/home/IDOXGROUP.LOCAL/chris.brighouse/production/fusionforms/dist`
+3. Reload nginx
+
+The application will be immediately accessible at http://dev-codex.idoxgroup.local/fusionforms/
 
 ### Manual Deployment
 
@@ -56,23 +50,44 @@ sudo systemctl reload nginx
 
 ## Nginx Configuration
 
-The nginx configuration (`/etc/nginx/sites-available/fusionforms`) includes:
+FusionForms is served via the main `/etc/nginx/sites-available/dev-codex` configuration alongside other applications (graphcycle, datafix).
 
-- SSL/TLS with self-signed certificate
-- HTTP to HTTPS redirect
-- Static file caching (1 year for assets)
-- SPA routing support (all routes serve index.html)
+The relevant nginx location block:
 
-### Modifying Nginx Config
+```nginx
+location /fusionforms {
+    alias /home/IDOXGROUP.LOCAL/chris.brighouse/production/fusionforms/dist;
+    try_files $uri $uri/ /fusionforms/index.html;
+    
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+The nginx configuration is shared with other applications. To modify only the FusionForms section:
 
 ```bash
-# Edit configuration
-sudo nano /etc/nginx/sites-available/fusionforms
+# Edit the dev-codex configuration
+sudo nano /etc/nginx/sites-available/dev-codex
+
+# Find the "# fusionforms production" section
+# Make your changes
 
 # Test configuration
 sudo nginx -t
 
 # Reload nginx
+sudo systemctl reload nginx
+```
+
+Or use the update script to fix common issues:
+
+```bash
+./update-nginx.sh
+
+# Apply the configuration
+./update-nginx.sh
+
+# Or manually:
+sudo cp nginx-fusionforms.conf /etc/nginx/sites-available/fusionforms
+sudo nginx -t
 sudo systemctl reload nginx
 ```
 
@@ -91,7 +106,25 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 sudo systemctl reload nginx
 ```
 
-## Troubleshooting
+## TApplication not loading or assets returning 404
+
+This usually means the nginx path doesn't match the Vite `base` configuration.
+
+**Check 1**: Verify nginx serves at `/fusionforms/`
+```bash
+curl -I https://dev-codex.idoxgroup.local:8444/fusionforms/
+# Should return 200 OK
+```
+
+**Check 2**: Verify asset paths in index.html
+```bash
+grep 'src=' /var/www/fusionforms/index.html
+# Should show paths like /fusionforms/assets/...
+```
+
+**Fix**: Run `./update-nginx.sh` to update the nginx configuration.
+
+### roubleshooting
 
 ### Check nginx status
 ```bash
